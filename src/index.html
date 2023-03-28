@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>3D WebGL Hollow Object</title>
+  </head>
+  <body>
+    <header>3D WebGL Hollow Object</header>
+    <div class="container">
+      <!-- tools container -->
+      <div class="tools-container">
+        <h1>Tools</h1>
+        <h2>Projection</h2>
+        <div class="projection" id="projection">
+          <input
+            type="radio"
+            id="orthographic"
+            name="projection"
+            value="orthographic"
+          />
+          <label for="orthographic">Orthographic</label>
+          <input type="radio" id="oblique" name="projection" value="oblique" />
+          <label for="oblique">Oblique</label>
+          <input
+            type="radio"
+            id="perspective"
+            name="projection"
+            value="perspective"
+            checked
+          />
+          <label for="perspective">Perspective</label>
+        </div>
+        <h2>Transform</h2>
+        <label for="translate">Translate</label>
+        <div class="translate">
+          <label for="translateX">X</label>
+          <input type="range" id="translate-x" />
+          <label for="translateY">Y</label>
+          <input type="range" id="translate-y" />
+          <label for="translateZ">Z</label>
+          <input type="range" id="translate-z" />
+        </div>
+        <label for="rotate">Rotate</label>
+        <div class="rotate">
+          <label for="rotateX">X</label>
+          <input type="range" id="rotate-x" />
+          <label for="rotateY">Y</label>
+          <input type="range" id="rotate-y" />
+          <label for="rotateZ">Z</label>
+          <input type="range" id="rotate-z" />
+        </div>
+        <label for="scale">Scale</label>
+        <div class="scale">
+          <label for="scaleX">X</label>
+          <input type="range" id="scale-x" min="-100" max="100" value="0" />
+          <label for="scaleY">Y</label>
+          <input type="range" id="scale-y" min="-100" max="100" value="0" />
+          <label for="scaleZ">Z</label>
+          <input type="range" id="scale-z" min="-100" max="100" value="0" />
+        </div>
+        <h2>Camera</h2>
+        <label for="camera-pos">Camera Position</label>
+        <div class="camera-pos">
+          <label for="rangeCameraX">X</label>
+          <input type="range" id="rangeCameraX" min="-2" max="2" value="0" />
+          <label for="rangeCameraY">Y</label>
+          <input type="range" id="rangeCameraY" min="-2" max="2" value="0" />
+          <label for="rangeCameraZ">Z</label>
+          <input type="range" id="rangeCameraZ" min="1" max="45" value="1" />
+        </div>
+        <label for="camera-lookat">Camera LookAt</label>
+        <div class="camera-lookat">
+          <label for="lookatX">X</label>
+          <input type="range" id="look-at-x" />
+          <label for="lookatY">Y</label>
+          <input type="range" id="look-at-y" />
+          <label for="lookatZ">Z</label>
+          <input type="range" id="look-at-z" />
+        </div>
+        <label for="camera-fov">FOV</label>
+        <div class="camera-fov">
+          <input type="range" id="fov" />
+        </div>
+        <label for="theta">Theta</label>
+        <div class="theta">
+          <input type="range" id="theta" min="15" max="165" value="15" />
+        </div>
+        <label for="phi">phi</label>
+        <div class="phi">
+          <input type="range" id="phi" min="15" max="165" value="75" />
+        </div>
+        <h2>Utilities</h2>
+        <div class="save-load">
+          <input type="file" id="objFile" accept="application/json" />
+          <button id="save">Save</button>
+        </div>
+        <div class="color">
+          <label for="color">Color: </label>
+          <input type="color" id="color-picker" />
+        </div>
+        <div class="shading">
+          <label for="lighting">Shading</label>
+          <input type="checkbox" id="lighting" />
+        </div>
+        <div class="bottom-buttons">
+          <button id="help" onclick="location.href='help.html'">
+            Show Help
+          </button>
+          <button id="reset-transform">Reset Transform</button>
+          <button id="reset-camera">Reset Camera</button>
+          <button id="reset">Reset All</button>
+          <button id="animation">Start Animation</button>
+          <button id="stop-anim" class="hidden">Stop Animation</button>
+        </div>
+      </div>
+      <!-- canvas -->
+      <div class="canvas-container">
+        <canvas id="canvas" width="720" height="720"></canvas>
+      </div>
+    </div>
+  </body>
+</html>
