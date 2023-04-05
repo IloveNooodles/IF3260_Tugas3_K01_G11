@@ -4,7 +4,75 @@ setDefaultState();
 
 function setDefaultState() {
   /* Setup default state for webgl canvas */
-  state = {};
+  state = {
+    model: null,
+    transform: {
+      translate: [0, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    pickedColor: [1, 1, 1],
+    viewMatrix: {
+      camera: [0, 0, 0],
+      lookAt: [0, 0, 0],
+    },
+    fov: 45,
+    theta: 0,
+    phi: 0,
+    lighting: false,
+    projection: "orthographic", // orthographic, oblique, perspective
+  };
+  if (state.projection === "perspective") {
+    state.transform.translate[2] = -5;
+  } else {
+    state.transform.translate[2] = 0;
+  }
+}
+
+function setSliderState() {
+  /* setup default state for sliders */
+
+  rangeTranslateX.value = state.transform.translate[0];
+  translateXValue.innerHTML = state.transform.translate[0];
+  rangeTranslateY.value = state.transform.translate[1];
+  translateYValue.innerHTML = state.transform.translate[1];
+  rangeTranslateZ.value = state.transform.translate[2];
+  translateZValue.innerHTML = state.transform.translate[2];
+
+  rangeRotateX.value = state.transform.rotate[0];
+  rotateXValue.innerHTML = state.transform.rotate[0];
+  rangeRotateY.value = state.transform.rotate[1];
+  rotateYValue.innerHTML = state.transform.rotate[1];
+  rangeRotateZ.value = state.transform.rotate[2];
+  rotateZValue.innerHTML = state.transform.rotate[2];
+
+  rangeScaleX.value = state.transform.scale[0];
+  scaleXValue.innerHTML = state.transform.scale[0];
+  rangeScaleY.value = state.transform.scale[1];
+  scaleYValue.innerHTML = state.transform.scale[1];
+  rangeScaleZ.value = state.transform.scale[2];
+  scaleZValue.innerHTML = state.transform.scale[2];
+
+  rangeCameraX.value = state.viewMatrix.camera[0];
+  cameraXValue.innerHTML = state.viewMatrix.camera[0];
+  rangeCameraY.value = state.viewMatrix.camera[1];
+  cameraYValue.innerHTML = state.viewMatrix.camera[1];
+  rangeCameraZ.value = state.viewMatrix.camera[2];
+  cameraZValue.innerHTML = state.viewMatrix.camera[2];
+
+  rangeLookAtX.value = state.viewMatrix.lookAt[0];
+  lookAtXValue.innerHTML = state.viewMatrix.lookAt[0];
+  rangeLookAtY.value = state.viewMatrix.lookAt[1];
+  lookAtYValue.innerHTML = state.viewMatrix.lookAt[1];
+  rangeLookAtZ.value = state.viewMatrix.lookAt[2];
+  lookAtZValue.innerHTML = state.viewMatrix.lookAt[2];
+
+  rangeFOV.value = state.fov;
+  fovValue.innerHTML = state.fov;
+  theta.value = state.theta;
+  thetaValue.innerHTML = state.theta;
+  phi.value = state.phi;
+  phiValue.innerHTML = state.phi;
 }
 
 /* ======= Get Document Object Model ======= */
@@ -22,29 +90,46 @@ const stopAnim = document.getElementById("stop-anim");
 
 /* ======= Transform Sliders ======= */
 const rangeTranslateX = document.getElementById("translate-x");
+const translateXValue = document.getElementById("translate-x-value");
 const rangeTranslateY = document.getElementById("translate-y");
+const translateYValue = document.getElementById("translate-y-value");
 const rangeTranslateZ = document.getElementById("translate-z");
+const translateZValue = document.getElementById("translate-z-value");
 
 const rangeRotateX = document.getElementById("rotate-x");
+const rotateXValue = document.getElementById("rotate-x-value");
 const rangeRotateY = document.getElementById("rotate-y");
+const rotateYValue = document.getElementById("rotate-y-value");
 const rangeRotateZ = document.getElementById("rotate-z");
+const rotateZValue = document.getElementById("rotate-z-value");
 
-const scaleX = document.getElementById("scale-x");
-const scaleY = document.getElementById("scale-y");
-const scaleZ = document.getElementById("scale-z");
+const rangeScaleX = document.getElementById("scale-x");
+const scaleXValue = document.getElementById("scale-x-value");
+const rangeScaleY = document.getElementById("scale-y");
+const scaleYValue = document.getElementById("scale-y-value");
+const rangeScaleZ = document.getElementById("scale-z");
+const scaleZValue = document.getElementById("scale-z-value");
 
-const rangeFOV = document.getElementById("fov");
-
-const rangeCameraX = document.getElementById("rangeCameraX");
-const rangeCameraY = document.getElementById("rangeCameraY");
-const rangeCameraZ = document.getElementById("rangeCameraZ");
+const rangeCameraX = document.getElementById("camera-x");
+const cameraXValue = document.getElementById("camera-x-value");
+const rangeCameraY = document.getElementById("camera-y");
+const cameraYValue = document.getElementById("camera-y-value");
+const rangeCameraZ = document.getElementById("camera-z");
+const cameraZValue = document.getElementById("camera-z-value");
 
 const rangeLookAtX = document.getElementById("look-at-x");
+const lookAtXValue = document.getElementById("look-at-x-value");
 const rangeLookAtY = document.getElementById("look-at-y");
+const lookAtYValue = document.getElementById("look-at-y-value");
 const rangeLookAtZ = document.getElementById("look-at-z");
+const lookAtZValue = document.getElementById("look-at-z-value");
 
+const rangeFOV = document.getElementById("fov");
+const fovValue = document.getElementById("fov-value");
 const theta = document.getElementById("theta");
+const thetaValue = document.getElementById("theta-value");
 const phi = document.getElementById("phi");
+const phiValue = document.getElementById("phi-value");
 
 /* ======= Event Listener ======= */
 projectionRadio.forEach((radio) => {
@@ -52,6 +137,8 @@ projectionRadio.forEach((radio) => {
     state.projection = radio.value;
     if (state.projection === "perspective") {
       state.transform.translate[2] = -5;
+    } else {
+      state.transform.translate[2] = -1;
     }
   });
 });
@@ -69,7 +156,7 @@ modelInput.addEventListener("change", () => {
     const color = state.pickedColor;
     setDefaultState();
     clear();
-    state.model = loadObject(text);
+    state.model = JSON.parse(text);
     state.pickedColor = color;
   };
   reader.readAsText(file);
@@ -150,10 +237,12 @@ stopAnim.addEventListener("click", () => {
 
 rangeTranslateX.addEventListener("input", () => {
   state.transform.translate[0] = -1 + (2 * rangeTranslateX.value) / 100;
+  translateXValue.innerHTML = rangeTranslateX.value;
 });
 
 rangeTranslateY.addEventListener("input", () => {
   state.transform.translate[1] = -1 + (2 * rangeTranslateY.value) / 100;
+  translateYValue.innerHTML = rangeTranslateY.value;
 });
 
 rangeTranslateZ.addEventListener("input", () => {
@@ -162,69 +251,84 @@ rangeTranslateZ.addEventListener("input", () => {
   } else {
     state.transform.translate[2] = -1 + (2 * rangeTranslateZ.value) / 100;
   }
+  translateZValue.innerHTML = rangeTranslateZ.value;
 });
 
 /* rotate from -360 to 360 */
 rangeRotateX.addEventListener("input", () => {
   // rotate -360 to 360
   state.transform.rotate[0] = (2 * rangeRotateX.value * 2 * Math.PI) / 100;
+  rotateXValue.innerHTML = rangeRotateX.value;
 });
 
 rangeRotateY.addEventListener("input", () => {
   state.transform.rotate[1] = (2 * rangeRotateY.value * 2 * Math.PI) / 100;
+  rotateYValue.innerHTML = rangeRotateY.value;
 });
 
 rangeRotateZ.addEventListener("input", () => {
   state.transform.rotate[2] = (2 * rangeRotateZ.value * 2 * Math.PI) / 100;
+  rotateZValue.innerHTML = rangeRotateZ.value;
 });
 
 /* scale from -5 to 5 */
-scaleX.addEventListener("input", () => {
-  state.transform.scale[0] = scaleX.value / 20;
+rangeScaleX.addEventListener("input", () => {
+  state.transform.scale[0] = rangeScaleX.value / 20;
+  scaleXValue.innerHTML = rangeScaleX.value / 20;
 });
 
-scaleY.addEventListener("input", () => {
-  state.transform.scale[1] = scaleY.value / 20;
+rangeScaleY.addEventListener("input", () => {
+  state.transform.scale[1] = rangeScaleY.value / 20;
+  scaleYValue.innerHTML = rangeScaleY.value / 20;
 });
 
-scaleZ.addEventListener("input", () => {
-  state.transform.scale[2] = scaleZ.value / 20;
+rangeScaleZ.addEventListener("input", () => {
+  state.transform.scale[2] = rangeScaleZ.value / 20;
+  scaleZValue.innerHTML = rangeScaleZ.value / 20;
+});
+
+rangeCameraX.addEventListener("input", () => {
+  state.viewMatrix.camera[0] = parseInt(rangeCameraX.value);
+  cameraXValue.innerHTML = rangeCameraX.value;
+});
+rangeCameraY.addEventListener("input", () => {
+  state.viewMatrix.camera[1] = parseInt(rangeCameraY.value);
+  cameraYValue.innerHTML = rangeCameraY.value;
+});
+rangeCameraZ.addEventListener("input", () => {
+  state.viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
+  cameraZValue.innerHTML = rangeCameraZ.value;
+});
+
+rangeLookAtX.addEventListener("input", () => {
+  state.viewMatrix.lookAt[0] = (2 * rangeLookAtX.value * 2 * Math.PI) / 100;
+  lookAtXValue.innerHTML = rangeLookAtX.value;
+});
+
+rangeLookAtY.addEventListener("input", () => {
+  state.viewMatrix.lookAt[1] = (2 * rangeLookAtY.value * 2 * Math.PI) / 100;
+  lookAtYValue.innerHTML = rangeLookAtY.value;
+});
+
+rangeLookAtZ.addEventListener("input", () => {
+  state.viewMatrix.lookAt[2] = (2 * rangeLookAtZ.value * 2 * Math.PI) / 100;
+  lookAtZValue.innerHTML = rangeLookAtZ.value;
 });
 
 rangeFOV.addEventListener("input", () => {
   state.fudgeFactor = rangeFOV.value / 100;
   // console.log(state.fudgeFactor);
-});
-
-rangeCameraX.addEventListener("input", () => {
-  console.log(rangeCameraX.value);
-  state.viewMatrix.camera[0] = parseInt(rangeCameraX.value);
-});
-rangeCameraY.addEventListener("input", () => {
-  state.viewMatrix.camera[1] = parseInt(rangeCameraY.value);
-});
-rangeCameraZ.addEventListener("input", () => {
-  state.viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
-});
-
-rangeLookAtX.addEventListener("input", () => {
-  state.viewMatrix.lookAt[0] = (2 * rangeLookAtX.value * 2 * Math.PI) / 100;
-});
-
-rangeLookAtY.addEventListener("input", () => {
-  state.viewMatrix.lookAt[1] = (2 * rangeLookAtY.value * 2 * Math.PI) / 100;
-});
-
-rangeLookAtZ.addEventListener("input", () => {
-  state.viewMatrix.lookAt[2] = (2 * rangeLookAtZ.value * 2 * Math.PI) / 100;
+  fovValue.innerHTML = rangeFOV.value;
 });
 
 theta.addEventListener("input", () => {
   state.theta = parseInt(theta.value);
+  thetaValue.innerHTML = theta.value;
 });
 
 phi.addEventListener("input", () => {
   state.phi = parseInt(phi.value);
+  phiValue.innerHTML = phi.value;
 });
 
 /* ======= WebGL Functions ======= */
@@ -252,7 +356,7 @@ window.onload = function () {
   if (!gl) {
     alert("WebGL not supported");
   }
-  rangeFOV.value = 0;
+  setSliderState();
   colorPicker.value = "#FF0000";
   state.pickedColor = [1, 0, 0];
   render();

@@ -25,19 +25,27 @@ header {
   padding: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .tools-container {
+  width: 540px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.component-container {
   padding: 10px;
   display: flex;
   flex-direction: column;
 }
 
 .bottom-buttons {
+  padding: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .help-page {
