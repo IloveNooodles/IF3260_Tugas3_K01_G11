@@ -29,7 +29,7 @@ header {
 }
 
 .tools-container {
-  width: 540px;
+  width: 600px;
   padding: 10px;
   display: flex;
   flex-direction: column;

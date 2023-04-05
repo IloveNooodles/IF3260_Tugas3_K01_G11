@@ -5,7 +5,7 @@ setDefaultState();
 function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
-    model: null,
+    model: cube,
     transform: {
       translate: [0, 0, 0],
       rotate: [0, 0, 0],
@@ -13,14 +13,24 @@ function setDefaultState() {
     },
     pickedColor: [1, 1, 1],
     viewMatrix: {
-      camera: [0, 0, 0],
+      camera: [0, 0, 1],
       lookAt: [0, 0, 0],
+      up: [0, 1, 0],
+      near: 0.1,
+      far: 50,
     },
-    fov: 45,
-    theta: 0,
-    phi: 0,
-    lighting: false,
+    lighting: {
+      useLighting: false,
+      lightDirection: [0.5, 0.7, 1],
+    },
     projection: "orthographic", // orthographic, oblique, perspective
+    fudgeFactor: 0.0,
+    theta: 15.0,
+    phi: 75.0,
+    animation: {
+      isAnimate: false,
+      degAnimate: 0.1,
+    },
   };
   if (state.projection === "perspective") {
     state.transform.translate[2] = -5;
@@ -46,11 +56,11 @@ function setSliderState() {
   rangeRotateZ.value = state.transform.rotate[2];
   rotateZValue.innerHTML = state.transform.rotate[2];
 
-  rangeScaleX.value = state.transform.scale[0];
+  rangeScaleX.value = state.transform.scale[0] * 20;
   scaleXValue.innerHTML = state.transform.scale[0];
-  rangeScaleY.value = state.transform.scale[1];
+  rangeScaleY.value = state.transform.scale[1] * 20;
   scaleYValue.innerHTML = state.transform.scale[1];
-  rangeScaleZ.value = state.transform.scale[2];
+  rangeScaleZ.value = state.transform.scale[2] * 20;
   scaleZValue.innerHTML = state.transform.scale[2];
 
   rangeCameraX.value = state.viewMatrix.camera[0];
@@ -67,8 +77,8 @@ function setSliderState() {
   rangeLookAtZ.value = state.viewMatrix.lookAt[2];
   lookAtZValue.innerHTML = state.viewMatrix.lookAt[2];
 
-  rangeFOV.value = state.fov;
-  fovValue.innerHTML = state.fov;
+  rangeFOV.value = state.fudgeFactor;
+  fovValue.innerHTML = state.fudgeFactor;
   theta.value = state.theta;
   thetaValue.innerHTML = state.theta;
   phi.value = state.phi;
@@ -191,8 +201,8 @@ colorPicker.addEventListener("change", () => {
 });
 
 lightingCheckbox.addEventListener("change", () => {
-  state.lighting = lightingCheckbox.checked;
-  if (state.lighting) {
+  state.lighting.useLighting = lightingCheckbox.checked;
+  if (state.lighting.useLighting) {
     program = createShaderProgram(gl, vertex_shader_3d, fragment_shader_3d);
   } else {
     program = createShaderProgram(
@@ -209,19 +219,76 @@ reset.addEventListener("click", () => {
     vertex_shader_3d,
     fragment_shader_3d_no_lighting
   );
+  setDefaultState();
+  clear();
+  resetTransf();
+  resetCam();
 });
 
 resetTransform.addEventListener("click", () => {
   resetTransf();
 });
 
-function resetTransf() {}
+function resetTransf() {
+  state.transform.translate = [0, 0, -5];
+  state.transform.rotate = [0, 0, 0];
+  state.transform.scale = [1, 1, 1];
+  rangeTranslateX.value = 0;
+  translateXValue.innerHTML = 0;
+  rangeTranslateY.value = 0;
+  translateYValue.innerHTML = 0;
+  rangeTranslateZ.value = 0;
+  translateZValue.innerHTML = 0;
+
+  rangeRotateX.value = 0;
+  rotateXValue.innerHTML = 0;
+  rangeRotateY.value = 0;
+  rotateYValue.innerHTML = 0;
+  rangeRotateZ.value = 0;
+  rotateZValue.innerHTML = 0;
+
+  rangeScaleX.value = 0;
+  scaleXValue.innerHTML = 1;
+  rangeScaleY.value = 0;
+  scaleYValue.innerHTML = 1;
+  rangeScaleZ.value = 0;
+  scaleZValue.innerHTML = 1;
+}
 
 resetCamera.addEventListener("click", () => {
   resetCam();
 });
 
-function resetCam() {}
+function resetCam() {
+  state.viewMatrix.camera = [0, 0, 1];
+  state.viewMatrix.lookAt = [0, 0, 0];
+  state.viewMatrix.up = [0, 1, 0];
+  state.viewMatrix.near = 0.1;
+  state.viewMatrix.far = 50;
+  state.fudgeFactor = 0;
+  state.theta = 0;
+  state.phi = 0;
+  rangeCameraX.value = 0;
+  cameraXValue.innerHTML = 0;
+  rangeCameraY.value = 0;
+  cameraYValue.innerHTML = 0;
+  rangeCameraZ.value = 0;
+  cameraZValue.innerHTML = 1;
+
+  rangeLookAtX.value = 0;
+  lookAtXValue.innerHTML = 0;
+  rangeLookAtY.value = 0;
+  lookAtYValue.innerHTML = 0;
+  rangeLookAtZ.value = 0;
+  lookAtZValue.innerHTML = 0;
+
+  rangeFOV.value = 0;
+  fovValue.innerHTML = 0;
+  theta.value = 15;
+  thetaValue.innerHTML = 15;
+  phi.value = 75;
+  phiValue.innerHTML = 75;
+}
 
 startAnim.addEventListener("click", () => {
   state.isObjectAnimate = true;
@@ -257,17 +324,17 @@ rangeTranslateZ.addEventListener("input", () => {
 /* rotate from -360 to 360 */
 rangeRotateX.addEventListener("input", () => {
   // rotate -360 to 360
-  state.transform.rotate[0] = (2 * rangeRotateX.value * 2 * Math.PI) / 100;
+  state.transform.rotate[0] = degToRad(rangeRotateX.value);
   rotateXValue.innerHTML = rangeRotateX.value;
 });
 
 rangeRotateY.addEventListener("input", () => {
-  state.transform.rotate[1] = (2 * rangeRotateY.value * 2 * Math.PI) / 100;
+  state.transform.rotate[1] = degToRad(rangeRotateY.value);
   rotateYValue.innerHTML = rangeRotateY.value;
 });
 
 rangeRotateZ.addEventListener("input", () => {
-  state.transform.rotate[2] = (2 * rangeRotateZ.value * 2 * Math.PI) / 100;
+  state.transform.rotate[2] = degToRad(rangeRotateZ.value);
   rotateZValue.innerHTML = rangeRotateZ.value;
 });
 
@@ -291,10 +358,12 @@ rangeCameraX.addEventListener("input", () => {
   state.viewMatrix.camera[0] = parseInt(rangeCameraX.value);
   cameraXValue.innerHTML = rangeCameraX.value;
 });
+
 rangeCameraY.addEventListener("input", () => {
   state.viewMatrix.camera[1] = parseInt(rangeCameraY.value);
   cameraYValue.innerHTML = rangeCameraY.value;
 });
+
 rangeCameraZ.addEventListener("input", () => {
   state.viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
   cameraZValue.innerHTML = rangeCameraZ.value;
@@ -378,6 +447,197 @@ function render() {
   gl.useProgram(program);
 
   /* insert render logic */
+  const view = setView();
+  const geometry = setGeometry();
+  const transform = setTransform();
+  const projection = setProjection();
+
+  if (state.animation.isObjectAnimate) {
+    state.transform.rotate[1] +=
+      (2 * state.animation.degAnimate * Math.PI) / 100;
+    state.degAnimate += 0.1;
+  }
+
+  var fudgeFactor = gl.getUniformLocation(program, "fudgeFactor");
+  gl.uniform1f(fudgeFactor, state.fudgeFactor);
+
+  var transformMatrix = gl.getUniformLocation(program, "uTransform");
+  gl.uniformMatrix4fv(transformMatrix, false, transform);
+
+  var projectionMatrix = gl.getUniformLocation(program, "uProjection");
+  gl.uniformMatrix4fv(
+    projectionMatrix,
+    false,
+    matrices.multiply(projection, view)
+  );
+
+  var normalMatrix = gl.getUniformLocation(program, "uNormal");
+  let modelMatrix = matrices.transpose(
+    matrices.inverse(matrices.multiply(view, transform))
+  );
+
+  gl.uniformMatrix4fv(normalMatrix, false, modelMatrix);
+
+  if (state.lighting.useLighting) {
+    var uniformColor = gl.getUniformLocation(program, "uColor");
+    gl.uniform3fv(uniformColor, state.pickedColor);
+
+    var uReverseLightDirectionLocation = gl.getUniformLocation(
+      program,
+      "uReverseLightDirection"
+    );
+
+    normalizeLight = matrices.normalize(state.lighting.lightDirection);
+
+    gl.uniform3fv(uReverseLightDirectionLocation, normalizeLight);
+  } else {
+    setColor();
+    var vertexColor = gl.getAttribLocation(program, "aColor");
+    gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vertexColor);
+  }
+
+  gl.drawElements(gl.TRIANGLES, geometry.numFaces, gl.UNSIGNED_SHORT, 0);
 
   window.requestAnimFrame(render);
+}
+
+function setView() {
+  /* Setup view matrix */
+  let deg = state.viewMatrix.lookAt.map((x) => degToRad(x));
+  // console.log(deg);
+
+  var viewMatrix = matrices.multiply(
+    matrices.translate(0, 0, state.viewMatrix.camera[2]),
+    matrices.rotateX(deg[0])
+  );
+  viewMatrix = matrices.multiply(viewMatrix, matrices.rotateY(deg[1]));
+  viewMatrix = matrices.multiply(viewMatrix, matrices.rotateZ(deg[2]));
+
+  let camPos = [viewMatrix[12], viewMatrix[13], viewMatrix[14]];
+
+  let newCamPos = matrices.lookAt(
+    camPos,
+    state.viewMatrix.lookAt,
+    state.viewMatrix.up
+  );
+  var viewMatrix = matrices.inverse(newCamPos);
+
+  return viewMatrix;
+}
+
+function setGeometry() {
+  /* Setup geometry */
+
+  const vertices = new Float32Array(state.model.vertices.flat(1));
+  const faces = new Uint16Array(state.model.faces.flat(1).map((x) => x - 1));
+  const normals = new Float32Array(state.model.normals.flat(1));
+
+  const vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+  var aPosition = gl.getAttribLocation(program, "aPosition");
+  gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(aPosition);
+
+  const normalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
+
+  var aNormal = gl.getAttribLocation(program, "aNormal");
+  gl.vertexAttribPointer(aNormal, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(aNormal);
+
+  const faceBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, faces, gl.STATIC_DRAW);
+
+  return {
+    vertexBuffer,
+    normalBuffer,
+    faceBuffer,
+    numFaces: faces.length,
+  };
+}
+
+function setColor() {
+  const colorBuffer = gl.createBuffer();
+  const color = new Float32Array(state.model.colors.flat(1));
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);
+}
+
+function setTransform() {
+  /* Setup transform matrix */
+  let centroid = locateCentroid(state.model.vertices);
+
+  var transformMatrix = matrices.multiply(
+    matrices.translate(
+      state.transform.translate[0],
+      state.transform.translate[1],
+      state.transform.translate[2]
+    ),
+    matrices.translate(centroid[0], centroid[1], centroid[2])
+  );
+
+  transformMatrix = matrices.multiply(
+    transformMatrix,
+    matrices.rotateX(state.transform.rotate[0])
+  );
+
+  transformMatrix = matrices.multiply(
+    transformMatrix,
+    matrices.rotateY(state.transform.rotate[1])
+  );
+
+  transformMatrix = matrices.multiply(
+    transformMatrix,
+    matrices.rotateZ(state.transform.rotate[2])
+  );
+
+  transformMatrix = matrices.multiply(
+    transformMatrix,
+    matrices.scale(
+      state.transform.scale[0],
+      state.transform.scale[1],
+      state.transform.scale[2]
+    )
+  );
+
+  transformMatrix = matrices.multiply(
+    transformMatrix,
+    matrices.translate(-centroid[0], -centroid[1], -centroid[2])
+  );
+
+  return transformMatrix;
+}
+
+function setProjection() {
+  /* Setup projection matrix */
+
+  const aspect = canvas.width / canvas.height;
+  const fovy = degToRad(45);
+  const left = -2;
+  const right = 2;
+  const bottom = -2;
+  const top = 2;
+  let farOrtho = state.viewMatrix.far * 1;
+  let nearOrtho = -farOrtho;
+
+  if (state.projection === "orthographic") {
+    return matrices.orthographic(left, right, bottom, top, nearOrtho, farOrtho);
+  } else if (state.projection === "oblique") {
+    return matrices.multiply(
+      matrices.oblique(state.theta, state.phi),
+      matrices.orthographic(left, right, bottom, top, nearOrtho, farOrtho)
+    );
+  } else if (state.projection === "perspective") {
+    return matrices.perspective(
+      fovy,
+      aspect,
+      state.viewMatrix.near,
+      state.viewMatrix.far
+    );
+  }
 }

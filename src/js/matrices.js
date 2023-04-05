@@ -136,21 +136,21 @@ var matrices = {
     return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1];
   },
 
-  xRotate: function (angleInRadians) {
+  rotateX: function (angleInRadians) {
     var c = Math.cos(angleInRadians);
     var s = Math.sin(angleInRadians);
 
     return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
   },
 
-  yRotate: function (angleInRadians) {
+  rotateY: function (angleInRadians) {
     var c = Math.cos(angleInRadians);
     var s = Math.sin(angleInRadians);
 
     return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
   },
 
-  zRotate: function (angleInRadians) {
+  rotateZ: function (angleInRadians) {
     var c = Math.cos(angleInRadians);
     var s = Math.sin(angleInRadians);
 
@@ -245,16 +245,28 @@ var matrices = {
     return [x, y, z];
   },
 
-  transpose: function(a){
+  transpose: function (a) {
     return [
-      a[0], a[4], a[8], a[12],
-      a[1], a[5], a[9], a[13],
-      a[2], a[6], a[10], a[14],
-      a[3], a[7], a[11], a[15],
-    ]
+      a[0],
+      a[4],
+      a[8],
+      a[12],
+      a[1],
+      a[5],
+      a[9],
+      a[13],
+      a[2],
+      a[6],
+      a[10],
+      a[14],
+      a[3],
+      a[7],
+      a[11],
+      a[15],
+    ];
   },
 
-  lookAt: function(cameraPosition, target, up){
+  lookAt: function (cameraPosition, target, up) {
     let zAxis = normalize(subtractVectors(cameraPosition, target));
     let xAxis = normalize(cross(up, zAxis));
     let yAxis = normalize(cross(zAxis, xAxis));

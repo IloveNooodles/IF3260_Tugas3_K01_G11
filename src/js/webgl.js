@@ -9,15 +9,14 @@ varying vec4 vNormal;
 varying float colorFactor;
 
 uniform float fudgeFactor;
-uniform mat4 uTransformationMatrix;
-uniform mat4 uViewMatrix;
-uniform mat4 uProjectionMatrix;
-uniform mat4 uNormalMatrix;
+uniform mat4 uTransform;
+uniform mat4 uProjection;
+uniform mat4 uNormal;
 
 void main(void) {
-    vec4 transformedPos = uTransformationMatrix * vec4(aPosition, 1.0);
-    vec4 transformedNormal = uTransformationMatrix * vec4(aNormal, 1.0);
-    vec4 projectedPos = uProjectionMatrix * transformedPos;
+    vec4 transformedPos = uTransform * vec4(aPosition, 1.0);
+    vec4 transformedNormal = uTransform * vec4(aNormal, 1.0);
+    vec4 projectedPos = uProjection * transformedPos;
     if (fudgeFactor < 0.01)
         gl_Position = projectedPos;
     else {
@@ -25,7 +24,7 @@ void main(void) {
         gl_Position = vec4(projectedPos.xy / zDivider, projectedPos.zw);
     }
   
-    vNormal = uNormalMatrix * vec4(aNormal, 0.0);
+    vNormal = uNormal * vec4(aNormal, 0.0);
     fragColor = vec4(aColor, 1.0);    
     colorFactor = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
 }
