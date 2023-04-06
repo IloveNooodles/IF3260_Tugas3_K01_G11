@@ -39,134 +39,10 @@ function locateCentroid(matrix) {
   return [x, y, z];
 }
 
-/* Calculate normal vector */
-/* Isinya 3 array */
-function calculateNormal(array) {
-  /* v1: 2 - 1, v2: 3 - 2 */
-  let len = array.length;
-  let normal = [];
-  for (let i = 0; i < len - 2; i++) {
-    let v1 = {
-      x: array[i + 1][0] - array[i][0],
-      y: array[i + 1][1] - array[i][1],
-      z: array[i + 1][2] - array[i][2],
-    };
-
-    let v2 = {
-      x: array[i + 2][0] - array[i + 1][0],
-      y: array[i + 2][1] - array[i + 1][1],
-      z: array[i + 2][2] - array[i + 1][2],
-    };
-
-    let cross = [];
-    cross.push(v1.y * v2.z - v1.z * v2.y);
-    cross.push(v1.z * v2.x - v1.x * v2.z);
-    cross.push(v1.x * v2.y - v1.y * v2.x);
-
-    /* Normalize vector */
-    let vectorLen = calculateEulerDistance(cross);
-
-    for (let j = 0; j < cross.length; j++) {
-      if (!cross[j]) {
-        cross[j] = 0;
-      }
-      cross[j] = cross[j] / vectorLen;
-    }
-
-    // if (i == 0) {
-    //   normal.push(cross);
-    //   normal.push(cross);
-    //   normal.push(cross);
-    // } else {
-    //   normal.push(cross);
-    // }
-    normal = cross;
-  }
-  return normal;
-}
-
 function calculateEulerDistance(cross) {
   return Math.sqrt(
     Math.pow(cross[0], 2) + Math.pow(cross[1], 2) + Math.pow(cross[2], 2)
   );
-}
-
-/* Will create 1 sides with 2 faces */
-/* will return array vertices, colors, faces, normal */
-/* 1 array will contains minimal 3 vertex */
-function createSides(model, array) {
-  let arrLen = array.length;
-  let len = model.vertices.length;
-  /* Add color */
-  let colors = [];
-  let normals = [];
-  let faces = [];
-  let vertices = [];
-  let normals2 = [];
-
-  for (let i = 0; i < arrLen; i++) {
-    colors.push([Math.random(), Math.random(), Math.random()]);
-  }
-
-  /* Create inward faces and outward faces*/
-  for (let i = 0; i < arrLen - 2; i++) {
-    faces.push(
-      [len + 1, len + 2 + i, len + 3 + i],
-      [len + 1, len + 3 + i, len + 2 + i]
-    );
-  }
-
-  vertices.push(...array);
-
-  return {
-    vertices,
-    faces,
-    colors,
-    // normals,
-  };
-}
-
-function create3d(model, vert) {
-  let len = vert.length / 4;
-  for (let i = 0; i < len; i++) {
-    let a = vert.slice(i * 4, (i + 1) * 4);
-    let b = createSides(model, a);
-
-    model.vertices.push(...b.vertices);
-    model.faces.push(...b.faces);
-    model.colors.push(...b.colors);
-    // model.normals.push(...b.normals);
-  }
-
-  len = model.faces.length;
-  let normals = Array(len).fill([]);
-  for (let i = 0; i < len; i++) {
-    let selectedFaces = model.faces[i];
-    selectedFaces = selectedFaces.map((x) => x - 1);
-
-    let a = model.vertices[selectedFaces[0]];
-    let b = model.vertices[selectedFaces[1]];
-    let c = model.vertices[selectedFaces[2]];
-
-    let selectedArr = [a, b, c];
-    let normal = calculateNormal(selectedArr);
-    for (let i = 0; i < 3; i++) {
-      let selectedIndex = selectedFaces[i];
-      normals[selectedIndex] = normal;
-    }
-  }
-
-  model.normals = normals;
-  // console.log(JSON.stringify(normals))
-}
-
-function normalize(v) {
-  let length = calculateEulerDistance(v);
-  if (length > 0.00001) {
-    return [v[0] / length, v[1] / length, v[2] / length];
-  } else {
-    return [0, 0, 0];
-  }
 }
 
 function subtractVectors(a, b) {
@@ -179,4 +55,54 @@ function cross(a, b) {
     a[2] * b[0] - a[0] * b[2],
     a[0] * b[1] - a[1] * b[0],
   ];
+}
+
+function normalize(v) {
+  let length = calculateEulerDistance(v);
+  if (length > 0.00001) {
+    return [v[0] / length, v[1] / length, v[2] / length];
+  } else {
+    return [0, 0, 0];
+  }
+}
+
+function toVertices(vertices, faces) {
+  let newVertices = [];
+  for (let i = 0; i < faces.length; i++) {
+    let face = faces[i];
+    for (let j = 0; j < face.length; j++) {
+      let vertex = vertices[face[j] - 1];
+      newVertices.push(vertex);
+    }
+  }
+  return newVertices;
+}
+
+function generateNormals(vertices, faces) {
+  let normals = [];
+  for (let i = 0; i < faces.length; i++) {
+    let face = faces[i];
+    let v1 = vertices[face[0] - 1];
+    let v2 = vertices[face[1] - 1];
+    let v3 = vertices[face[2] - 1];
+
+    let v1v2 = subtractVectors(v2, v1);
+    let v1v3 = subtractVectors(v3, v1);
+
+    let crossRes = normalize(cross(v1v2, v1v3));
+
+    // add for each 3 vertices
+    normals.push(crossRes);
+    normals.push(crossRes);
+    normals.push(crossRes);
+  }
+  return normals;
+}
+
+function generateRandomColors(vertices) {
+  let colors = [];
+  for (let i = 0; i < vertices.length; i++) {
+    colors.push([Math.random(), Math.random(), Math.random()]);
+  }
+  return colors;
 }

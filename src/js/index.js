@@ -5,7 +5,7 @@ setDefaultState();
 function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
-    model: tetrahedron,
+    model: cubeAlt,
     transform: {
       translate: [0, 0, -5],
       rotate: [0, 0, 0],
@@ -21,7 +21,7 @@ function setDefaultState() {
     },
     lighting: {
       useLighting: false,
-      lightDirection: [1, 0, 1],
+      lightDirection: [0, 0, 1],
     },
     projection: "orthographic", // orthographic, oblique, perspective
     fudgeFactor: 0.0,
@@ -85,7 +85,7 @@ function render() {
 
   /* insert render logic */
   const camera = setCamera();
-  const geometry = setGeometry();
+  setGeometry();
   const transform = setTransform();
   const projection = setProjection();
 
@@ -128,8 +128,8 @@ function render() {
     gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vertexColor);
   }
-
-  gl.drawElements(gl.TRIANGLES, geometry.numFaces, gl.UNSIGNED_SHORT, 0);
+  // console.log(state.model.vertices.length);
+  gl.drawArrays(gl.TRIANGLES, 0, state.model.vertices.length);
 
   window.requestAnimFrame(render);
 }
@@ -159,10 +159,9 @@ function setCamera() {
 
 function setGeometry() {
   /* Setup geometry */
-
   const vertices = new Float32Array(state.model.vertices.flat(1));
-  const faces = new Uint16Array(state.model.faces.flat(1).map((x) => x - 1));
   const normals = new Float32Array(state.model.normals.flat(1));
+  // console.log(normals);
 
   const vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -179,21 +178,13 @@ function setGeometry() {
   var aNormal = gl.getAttribLocation(program, "aNormal");
   gl.vertexAttribPointer(aNormal, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(aNormal);
-
-  const faceBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, faces, gl.STATIC_DRAW);
-
-  return {
-    vertexBuffer,
-    normalBuffer,
-    faceBuffer,
-    numFaces: faces.length,
-  };
 }
 
 function setColor() {
   const colorBuffer = gl.createBuffer();
+  if (!state.model.colors) {
+    state.model.colors = generateRandomColors(state.model.vertices);
+  }
   const color = new Float32Array(state.model.colors.flat(1));
   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);

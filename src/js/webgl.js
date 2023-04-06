@@ -33,7 +33,7 @@ void main(void) {
     float light = dot(normal, uReverseLightDirection);
     gl_FragColor = uColor;
     //add the ambience light
-    gl_FragColor.rgb *= (light + vec3(0.25, 0.25, 0.25));
+    gl_FragColor.rgb *= light;
 }
 `;
 
