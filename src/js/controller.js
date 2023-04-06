@@ -115,7 +115,6 @@ colorPicker.addEventListener("change", () => {
 lightingCheckbox.addEventListener("change", () => {
   state.lighting.useLighting = lightingCheckbox.checked;
   if (state.lighting.useLighting) {
-    console.log("lighting on");
     program = createShaderProgram(gl, vertex_shader_3d, fragment_shader_3d);
   } else {
     program = createShaderProgram(
@@ -206,13 +205,13 @@ function resetCam() {
 }
 
 startAnim.addEventListener("click", () => {
-  state.isObjectAnimate = true;
+  state.animation.isObjectAnimate = true;
   startAnim.classList.add("hidden");
   stopAnim.classList.remove("hidden");
 });
 
 stopAnim.addEventListener("click", () => {
-  state.isObjectAnimate = false;
+  state.animation.isObjectAnimate = false;
   stopAnim.classList.add("hidden");
   startAnim.classList.remove("hidden");
 });

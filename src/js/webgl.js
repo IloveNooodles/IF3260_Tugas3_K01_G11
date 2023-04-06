@@ -30,7 +30,7 @@ uniform vec4 uColor;
 void main(void) {
     vec3 normal = normalize(vNormal);
 
-    float light = max(dot(normal, uReverseLightDirection), 0.0);
+    float light = dot(normal, uReverseLightDirection);
     gl_FragColor = uColor;
     //add the ambience light
     gl_FragColor.rgb *= (light + vec3(0.25, 0.25, 0.25));

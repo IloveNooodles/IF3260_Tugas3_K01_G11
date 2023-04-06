@@ -21,7 +21,7 @@ function setDefaultState() {
     },
     lighting: {
       useLighting: false,
-      lightDirection: [0, 0, 1],
+      lightDirection: [1, 0, 1],
     },
     projection: "orthographic", // orthographic, oblique, perspective
     fudgeFactor: 0.0,
@@ -92,10 +92,13 @@ function render() {
   if (state.animation.isObjectAnimate) {
     state.transform.rotate[1] +=
       (2 * state.animation.degAnimate * Math.PI) / 100;
-    state.degAnimate += 0.1;
   }
 
-  var viewProjectionMatrix = matrices.multiply(projection, camera);
+  var view = matrices.inverse(camera);
+  var viewProjectionMatrix = matrices.multiply(projection, view);
+  if (state.fudgeFactor < 0.01) {
+    state.fudgeFactor = 0.01;
+  }
   var endMatrix = matrices.makeZtoWMatrix(state.fudgeFactor);
   endMatrix = matrices.multiply(endMatrix, viewProjectionMatrix);
   endMatrix = matrices.multiply(endMatrix, transform);
@@ -104,12 +107,10 @@ function render() {
   gl.uniformMatrix4fv(uMatrix, false, endMatrix);
 
   if (state.lighting.useLighting) {
-    var normalMatrix = gl.getUniformLocation(program, "uNormal");
-    let modelMatrix = matrices.transpose(
-      matrices.inverse(matrices.multiply(camera, transform))
-    );
+    var uNormal = gl.getUniformLocation(program, "uNormal");
+    var normalMatrix = matrices.transpose(matrices.inverse(transform));
 
-    gl.uniformMatrix4fv(normalMatrix, false, modelMatrix);
+    gl.uniformMatrix4fv(uNormal, false, normalMatrix);
     var uniformColor = gl.getUniformLocation(program, "uColor");
     gl.uniform4fv(uniformColor, state.pickedColor.concat(1.0));
 
