@@ -5,9 +5,9 @@ setDefaultState();
 function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
-    model: cube,
+    model: tetrahedron,
     transform: {
-      translate: [0, 0, 0],
+      translate: [0, 0, -5],
       rotate: [0, 0, 0],
       scale: [1, 1, 1],
     },
@@ -21,7 +21,7 @@ function setDefaultState() {
     },
     lighting: {
       useLighting: false,
-      lightDirection: [0.5, 0.7, 1],
+      lightDirection: [0, 0, 1],
     },
     projection: "orthographic", // orthographic, oblique, perspective
     fudgeFactor: 0.0,
@@ -32,11 +32,6 @@ function setDefaultState() {
       degAnimate: 0.1,
     },
   };
-  if (state.projection === "perspective") {
-    state.transform.translate[2] = -5;
-  } else {
-    state.transform.translate[2] = 0;
-  }
 }
 
 /* ======= Get Document Object Model ======= */
@@ -89,7 +84,7 @@ function render() {
   gl.useProgram(program);
 
   /* insert render logic */
-  const view = setView();
+  const camera = setCamera();
   const geometry = setGeometry();
   const transform = setTransform();
   const projection = setProjection();
@@ -100,29 +95,23 @@ function render() {
     state.degAnimate += 0.1;
   }
 
-  var fudgeFactor = gl.getUniformLocation(program, "fudgeFactor");
-  gl.uniform1f(fudgeFactor, state.fudgeFactor);
+  var viewProjectionMatrix = matrices.multiply(projection, camera);
+  var endMatrix = matrices.makeZtoWMatrix(state.fudgeFactor);
+  endMatrix = matrices.multiply(endMatrix, viewProjectionMatrix);
+  endMatrix = matrices.multiply(endMatrix, transform);
 
-  var transformMatrix = gl.getUniformLocation(program, "uTransform");
-  gl.uniformMatrix4fv(transformMatrix, false, transform);
-
-  var projectionMatrix = gl.getUniformLocation(program, "uProjection");
-  gl.uniformMatrix4fv(
-    projectionMatrix,
-    false,
-    matrices.multiply(projection, view)
-  );
-
-  var normalMatrix = gl.getUniformLocation(program, "uNormal");
-  let modelMatrix = matrices.transpose(
-    matrices.inverse(matrices.multiply(view, transform))
-  );
-
-  gl.uniformMatrix4fv(normalMatrix, false, modelMatrix);
+  var uMatrix = gl.getUniformLocation(program, "uMatrix");
+  gl.uniformMatrix4fv(uMatrix, false, endMatrix);
 
   if (state.lighting.useLighting) {
+    var normalMatrix = gl.getUniformLocation(program, "uNormal");
+    let modelMatrix = matrices.transpose(
+      matrices.inverse(matrices.multiply(camera, transform))
+    );
+
+    gl.uniformMatrix4fv(normalMatrix, false, modelMatrix);
     var uniformColor = gl.getUniformLocation(program, "uColor");
-    gl.uniform3fv(uniformColor, state.pickedColor);
+    gl.uniform4fv(uniformColor, state.pickedColor.concat(1.0));
 
     var uReverseLightDirectionLocation = gl.getUniformLocation(
       program,
@@ -144,7 +133,7 @@ function render() {
   window.requestAnimFrame(render);
 }
 
-function setView() {
+function setCamera() {
   /* Setup view matrix */
   let deg = state.viewMatrix.lookAt.map((x) => degToRad(x));
   // console.log(deg);
@@ -158,14 +147,13 @@ function setView() {
 
   let camPos = [viewMatrix[12], viewMatrix[13], viewMatrix[14]];
 
-  let newCamPos = matrices.lookAt(
+  let cameraMatrix = matrices.lookAt(
     camPos,
     state.viewMatrix.lookAt,
     state.viewMatrix.up
   );
-  var viewMatrix = matrices.inverse(newCamPos);
 
-  return viewMatrix;
+  return cameraMatrix;
 }
 
 function setGeometry() {

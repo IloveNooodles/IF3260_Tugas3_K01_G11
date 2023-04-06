@@ -4,44 +4,34 @@ attribute vec3 aPosition;
 attribute vec3 aColor;
 attribute vec3 aNormal;
 
-varying vec4 fragColor;
-varying vec4 vNormal;
-varying float colorFactor;
-
-uniform float fudgeFactor;
-uniform mat4 uTransform;
-uniform mat4 uProjection;
+uniform mat4 uMatrix;
 uniform mat4 uNormal;
 
+varying vec3 vNormal;
+varying vec4 fragColor;
+varying float colorFactor;
+
 void main(void) {
-    vec4 transformedPos = uTransform * vec4(aPosition, 1.0);
-    vec4 transformedNormal = uTransform * vec4(aNormal, 1.0);
-    vec4 projectedPos = uProjection * transformedPos;
-    if (fudgeFactor < 0.01)
-        gl_Position = projectedPos;
-    else {
-        float zDivider = 1.0 + projectedPos.z * fudgeFactor;
-        gl_Position = vec4(projectedPos.xy / zDivider, projectedPos.zw);
-    }
+    gl_Position = uMatrix * vec4(aPosition, 1.0);
   
-    vNormal = uNormal * vec4(aNormal, 0.0);
-    fragColor = vec4(aColor, 1.0);    
-    colorFactor = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);
+    vNormal = mat3(uNormal) * aNormal;
+    fragColor = vec4(aColor, 1.0);  
 }
 `;
 
 const fragment_shader_3d = `
 precision mediump float;
 
-varying vec4 vNormal;
-varying float colorFactor;
+varying vec3 vNormal;
 
-uniform vec3 userColor;
 uniform vec3 uReverseLightDirection;
+uniform vec4 uColor;
 
 void main(void) {
-    float light = max(dot(vNormal.xyz, uReverseLightDirection), 0.0);
-    gl_FragColor = vec4(userColor * colorFactor, 1.0);
+    vec3 normal = normalize(vNormal);
+
+    float light = max(dot(normal, uReverseLightDirection), 0.0);
+    gl_FragColor = uColor;
     //add the ambience light
     gl_FragColor.rgb *= (light + vec3(0.25, 0.25, 0.25));
 }
@@ -67,7 +57,7 @@ function loadShader(gl, type, input) {
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     console.error(
       "ERROR compiling vertex shader!",
-      gl.getShaderInfoLog(vertexShader)
+      gl.getShaderInfoLog(shader)
     );
     return null;
   }

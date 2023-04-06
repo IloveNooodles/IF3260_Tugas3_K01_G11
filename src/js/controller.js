@@ -115,6 +115,7 @@ colorPicker.addEventListener("change", () => {
 lightingCheckbox.addEventListener("change", () => {
   state.lighting.useLighting = lightingCheckbox.checked;
   if (state.lighting.useLighting) {
+    console.log("lighting on");
     program = createShaderProgram(gl, vertex_shader_3d, fragment_shader_3d);
   } else {
     program = createShaderProgram(
@@ -151,8 +152,8 @@ function resetTransf() {
   translateXValue.innerHTML = 0;
   rangeTranslateY.value = 0;
   translateYValue.innerHTML = 0;
-  rangeTranslateZ.value = 0;
-  translateZValue.innerHTML = 0;
+  rangeTranslateZ.value = -5;
+  translateZValue.innerHTML = -5;
 
   rangeRotateX.value = 0;
   rotateXValue.innerHTML = 0;

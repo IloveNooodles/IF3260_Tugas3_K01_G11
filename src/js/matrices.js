@@ -1,6 +1,28 @@
 /* ======= Transformation Matrices ======= */
 
 var matrices = {
+  /* transpose a 4x4 matrix */
+  transpose: function (a) {
+    return [
+      a[0],
+      a[4],
+      a[8],
+      a[12],
+      a[1],
+      a[5],
+      a[9],
+      a[13],
+      a[2],
+      a[6],
+      a[10],
+      a[14],
+      a[3],
+      a[7],
+      a[11],
+      a[15],
+    ];
+  },
+
   /* multiply two 4x4 matrices */
   multiply: function (a, b) {
     var a00 = a[0 * 4 + 0];
@@ -245,27 +267,6 @@ var matrices = {
     return [x, y, z];
   },
 
-  transpose: function (a) {
-    return [
-      a[0],
-      a[4],
-      a[8],
-      a[12],
-      a[1],
-      a[5],
-      a[9],
-      a[13],
-      a[2],
-      a[6],
-      a[10],
-      a[14],
-      a[3],
-      a[7],
-      a[11],
-      a[15],
-    ];
-  },
-
   lookAt: function (cameraPosition, target, up) {
     let zAxis = normalize(subtractVectors(cameraPosition, target));
     let xAxis = normalize(cross(up, zAxis));
@@ -288,5 +289,9 @@ var matrices = {
       cameraPosition[2],
       1,
     ];
+  },
+
+  makeZtoWMatrix: function (fudgeFactor) {
+    return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, fudgeFactor, 0, 0, 0, 1];
   },
 };
