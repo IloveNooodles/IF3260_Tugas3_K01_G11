@@ -25,8 +25,8 @@ function setDefaultState() {
     },
     projection: "orthographic", // orthographic, oblique, perspective
     fudgeFactor: 0.0,
-    theta: 15.0,
-    phi: 75.0,
+    theta: 90.0,
+    phi: 90.0,
     animation: {
       isAnimate: false,
       degAnimate: 0.1,

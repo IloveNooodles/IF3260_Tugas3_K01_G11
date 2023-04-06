@@ -135,6 +135,8 @@ reset.addEventListener("click", () => {
   clear();
   resetTransf();
   resetCam();
+  document.getElementById("orthographic").checked = true;
+  lightingCheckbox.checked = false;
 });
 
 resetTransform.addEventListener("click", () => {
@@ -178,8 +180,8 @@ function resetCam() {
   state.viewMatrix.near = 0.1;
   state.viewMatrix.far = 50;
   state.fudgeFactor = 0;
-  state.theta = 0;
-  state.phi = 0;
+  state.theta = 90;
+  state.phi = 90;
   rangeCameraX.value = 0;
   cameraXValue.innerHTML = 0;
   rangeCameraY.value = 0;
@@ -196,10 +198,10 @@ function resetCam() {
 
   rangeFOV.value = 0;
   fovValue.innerHTML = 0;
-  theta.value = 15;
-  thetaValue.innerHTML = 15;
-  phi.value = 75;
-  phiValue.innerHTML = 75;
+  theta.value = 90;
+  thetaValue.innerHTML = 90;
+  phi.value = 90;
+  phiValue.innerHTML = 90;
 }
 
 startAnim.addEventListener("click", () => {
