@@ -5,7 +5,7 @@ setDefaultState();
 function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
-    model: cubeAlt,
+    model: generateCuboid(1, 1, 1, [0, 0, 0]),
     transform: {
       translate: [0, 0, -5],
       rotate: [0, 0, 0],
@@ -76,62 +76,86 @@ function clear() {
 
 function render() {
   /* Render loop for webgl canvas */
-  /* Setup */
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  clear();
-  gl.enable(gl.CULL_FACE);
-  gl.enable(gl.DEPTH_TEST);
-  gl.useProgram(program);
 
-  /* insert render logic */
-  const camera = setCamera();
-  setGeometry();
-  const transform = setTransform();
-  const projection = setProjection();
+  // precalculations
+  if (!state.model.colors) {
+    state.model.colors = generateRandomColors(state.model.vertices);
+  }
 
   if (state.animation.isObjectAnimate) {
     state.transform.rotate[1] +=
       (2 * state.animation.degAnimate * Math.PI) / 100;
   }
 
+  const transform = setTransform();
+  var worldViewProjectionMatrix = setWorldViewProjectionMatrix(transform);
+
+  var worldInverseTransposeMatrix = matrices.transpose(
+    matrices.inverse(transform)
+  );
+
+  normalizeLight = matrices.normalize(state.lighting.lightDirection);
+
+  // prepare for rendering
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  clear();
+  gl.enable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);
+  gl.useProgram(program);
+
+  var attribs = {
+    aPosition: {
+      buffer: new Float32Array(state.model.vertices.flat(1)),
+      numComponents: 3,
+    },
+    aNormal: {
+      buffer: new Float32Array(state.model.normals.flat(1)),
+      numComponents: 3,
+    },
+    aColor: {
+      buffer: new Float32Array(state.model.colors.flat(1)),
+      numComponents: 3,
+    },
+  };
+
+  var attribSetters = initAttribs(gl, program);
+  setAttribs(attribSetters, attribs);
+
+  var uniforms = {
+    uWorldViewProjection: worldViewProjectionMatrix,
+    uWorldInverseTranspose: worldInverseTransposeMatrix,
+    uReverseLightDirection: normalizeLight,
+    uColor: state.pickedColor.concat(1.0),
+  };
+
+  var uniformSetters = initUniforms(gl, program);
+  setUniforms(uniformSetters, uniforms);
+
+  // render
+  gl.drawArrays(gl.TRIANGLES, 0, state.model.vertices.length);
+
+  window.requestAnimFrame(render);
+}
+
+function setWorldViewProjectionMatrix(transform) {
+  const camera = setCamera();
+  const projection = setProjection();
   var view = matrices.inverse(camera);
   var viewProjectionMatrix = matrices.multiply(projection, view);
   if (state.fudgeFactor < 0.01) {
     state.fudgeFactor = 0.01;
   }
-  var endMatrix = matrices.makeZtoWMatrix(state.fudgeFactor);
-  endMatrix = matrices.multiply(endMatrix, viewProjectionMatrix);
-  endMatrix = matrices.multiply(endMatrix, transform);
+  var worldViewProjectionMatrix = matrices.makeZtoWMatrix(state.fudgeFactor);
+  worldViewProjectionMatrix = matrices.multiply(
+    worldViewProjectionMatrix,
+    viewProjectionMatrix
+  );
+  worldViewProjectionMatrix = matrices.multiply(
+    worldViewProjectionMatrix,
+    transform
+  );
 
-  var uMatrix = gl.getUniformLocation(program, "uMatrix");
-  gl.uniformMatrix4fv(uMatrix, false, endMatrix);
-
-  if (state.lighting.useLighting) {
-    var uNormal = gl.getUniformLocation(program, "uNormal");
-    var normalMatrix = matrices.transpose(matrices.inverse(transform));
-
-    gl.uniformMatrix4fv(uNormal, false, normalMatrix);
-    var uniformColor = gl.getUniformLocation(program, "uColor");
-    gl.uniform4fv(uniformColor, state.pickedColor.concat(1.0));
-
-    var uReverseLightDirectionLocation = gl.getUniformLocation(
-      program,
-      "uReverseLightDirection"
-    );
-
-    normalizeLight = matrices.normalize(state.lighting.lightDirection);
-
-    gl.uniform3fv(uReverseLightDirectionLocation, normalizeLight);
-  } else {
-    setColor();
-    var vertexColor = gl.getAttribLocation(program, "aColor");
-    gl.vertexAttribPointer(vertexColor, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vertexColor);
-  }
-  // console.log(state.model.vertices.length);
-  gl.drawArrays(gl.TRIANGLES, 0, state.model.vertices.length);
-
-  window.requestAnimFrame(render);
+  return worldViewProjectionMatrix;
 }
 
 function setCamera() {
@@ -155,39 +179,6 @@ function setCamera() {
   );
 
   return cameraMatrix;
-}
-
-function setGeometry() {
-  /* Setup geometry */
-  const vertices = new Float32Array(state.model.vertices.flat(1));
-  const normals = new Float32Array(state.model.normals.flat(1));
-  // console.log(normals);
-
-  const vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-  var aPosition = gl.getAttribLocation(program, "aPosition");
-  gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(aPosition);
-
-  const normalBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
-
-  var aNormal = gl.getAttribLocation(program, "aNormal");
-  gl.vertexAttribPointer(aNormal, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(aNormal);
-}
-
-function setColor() {
-  const colorBuffer = gl.createBuffer();
-  if (!state.model.colors) {
-    state.model.colors = generateRandomColors(state.model.vertices);
-  }
-  const color = new Float32Array(state.model.colors.flat(1));
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, color, gl.STATIC_DRAW);
 }
 
 function setTransform() {

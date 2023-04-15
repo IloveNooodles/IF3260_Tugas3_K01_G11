@@ -4,17 +4,17 @@ attribute vec3 aPosition;
 attribute vec3 aColor;
 attribute vec3 aNormal;
 
-uniform mat4 uMatrix;
-uniform mat4 uNormal;
+uniform mat4 uWorldViewProjection;
+uniform mat4 uWorldInverseTranspose;
 
 varying vec3 vNormal;
 varying vec4 fragColor;
 varying float colorFactor;
 
 void main(void) {
-    gl_Position = uMatrix * vec4(aPosition, 1.0);
+    gl_Position = uWorldViewProjection * vec4(aPosition, 1.0);
   
-    vNormal = mat3(uNormal) * aNormal;
+    vNormal = mat3(uWorldInverseTranspose) * aNormal;
     fragColor = vec4(aColor, 1.0);  
 }
 `;
@@ -92,4 +92,65 @@ function createShaderProgram(gl, vertexShaderText, fragmentShaderText) {
   gl.deleteShader(fragmentShader);
 
   return program;
+}
+
+function initAttribs(gl, program) {
+  return {
+    position: gl.getAttribLocation(program, "aPosition"),
+    color: gl.getAttribLocation(program, "aColor"),
+    normal: gl.getAttribLocation(program, "aNormal"),
+  };
+}
+
+function setAttribs(attribSetters, attribs) {
+  const vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, attribs.aPosition.buffer, gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(attribSetters.position);
+  gl.vertexAttribPointer(attribSetters.position, 3, gl.FLOAT, false, 0, 0);
+
+  const normalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, attribs.aNormal.buffer, gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(attribSetters.normal);
+  gl.vertexAttribPointer(attribSetters.normal, 3, gl.FLOAT, false, 0, 0);
+
+  const colorBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, attribs.aColor.buffer, gl.STATIC_DRAW);
+  gl.vertexAttribPointer(attribSetters.color, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(attribSetters.color);
+}
+
+function initUniforms(gl, program) {
+  return {
+    worldViewProjection: gl.getUniformLocation(program, "uWorldViewProjection"),
+    worldInverseTranspose: gl.getUniformLocation(
+      program,
+      "uWorldInverseTranspose"
+    ),
+    color: gl.getUniformLocation(program, "uColor"),
+    reverseLightDirection: gl.getUniformLocation(
+      program,
+      "uReverseLightDirection"
+    ),
+  };
+}
+
+function setUniforms(uniformSetters, uniforms) {
+  gl.uniformMatrix4fv(
+    uniformSetters.worldViewProjection,
+    false,
+    uniforms.uWorldViewProjection
+  );
+  gl.uniformMatrix4fv(
+    uniformSetters.worldInverseTranspose,
+    false,
+    uniforms.uWorldInverseTranspose
+  );
+  gl.uniform4fv(uniformSetters.color, uniforms.uColor);
+  gl.uniform3fv(
+    uniformSetters.reverseLightDirection,
+    uniforms.uReverseLightDirection
+  );
 }
