@@ -6,6 +6,10 @@ function degToRad(degrees) {
   return (degrees * Math.PI) / 180;
 }
 
+function rgbToHex(r, g, b) {
+  return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
 function resizeCanvas(canvas) {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;

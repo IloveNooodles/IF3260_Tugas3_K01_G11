@@ -1,3 +1,7 @@
+/* ======= Get Document Object Model ======= */
+const canvas = document.getElementById("canvas");
+const components = document.getElementById("components");
+
 /* ======= Global object ======= */
 var state;
 setDefaultState();
@@ -5,20 +9,25 @@ setDefaultState();
 function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
-    model: generateCuboid(1, 1, 1, [0, 0, 0]),
-    transform: {
-      translate: [0, 0, -5],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    pickedColor: [1, 1, 1],
-    viewMatrix: {
-      camera: [0, 0, 1],
-      lookAt: [0, 0, 0],
-      up: [0, 1, 0],
-      near: 0.1,
-      far: 50,
-    },
+    models: [
+      {
+        name: "cuboid",
+        model: generateCuboid(1, 1, 1, [0, 0, 0]),
+        transform: {
+          translate: [0, 0, -5],
+          rotate: [0, 0, 0],
+          scale: [1, 1, 1],
+        },
+        pickedColor: [1, 1, 1],
+        viewMatrix: {
+          camera: [0, 0, 1],
+          lookAt: [0, 0, 0],
+          up: [0, 1, 0],
+          near: 0.1,
+          far: 50,
+        },
+      },
+    ],
     lighting: {
       useLighting: false,
       lightDirection: [0, 0, 1],
@@ -32,10 +41,90 @@ function setDefaultState() {
       degAnimate: 0.1,
     },
   };
-}
 
-/* ======= Get Document Object Model ======= */
-const canvas = document.getElementById("canvas");
+  for (var model in state.models) {
+    let component = document.createElement("div");
+    component.className = "component";
+    component.id = "component-" + model;
+    component.innerHTML = `
+      <div class="component-header">
+        <h3>${state.models[model].name}</h3>
+      </div>`;
+    //   <div class="component-body">
+    //     <div class="component-body-row">
+    //       <div class="component-body-col">
+    //         <label for="translate-x-${model}">Translate X</label>
+    //         <input type="number" class="form-control" id="translate-x-${model}" value="${
+    //   state.models[model].transform.translate[0]
+    // }" onchange="updateModel(${model}, 'translate', 'x', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="translate-y-${model}">Translate Y</label>
+    //         <input type="number" class="form-control" id="translate-y-${model}" value="${
+    //   state.models[model].transform.translate[1]
+    // }" onchange="updateModel(${model}, 'translate', 'y', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="translate-z-${model}">Translate Z</label>
+    //         <input type="number" class="form-control" id="translate-z-${model}" value="${
+    //   state.models[model].transform.translate[2]
+    // }" onchange="updateModel(${model}, 'translate', 'z', this.value)">
+    //       </div>
+    //     </div>
+    //     <div class="component-body-row">
+    //       <div class="component-body-col">
+    //         <label for="rotate-x-${model}">Rotate X</label>
+    //         <input type="number" class="form-control" id="rotate-x-${model}" value="${
+    //   state.models[model].transform.rotate[0]
+    // }" onchange="updateModel(${model}, 'rotate', 'x', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="rotate-y-${model}">Rotate Y</label>
+    //         <input type="number" class="form-control" id="rotate-y-${model}" value="${
+    //   state.models[model].transform.rotate[1]
+    // }" onchange="updateModel(${model}, 'rotate', 'y', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="rotate-z-${model}">Rotate Z</label>
+    //         <input type="number" class="form-control" id="rotate-z-${model}" value="${
+    //   state.models[model].transform.rotate[2]
+    // }" onchange="updateModel(${model}, 'rotate', 'z', this.value)">
+    //       </div>
+    //     </div>
+    //     <div class="component-body-row">
+    //       <div class="component-body-col">
+    //         <label for="scale-x-${model}">Scale X</label>
+    //         <input type="number" class="form-control" id="scale-x-${model}" value="${
+    //   state.models[model].transform.scale[0]
+    // }" onchange="updateModel(${model}, 'scale', 'x', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="scale-y-${model}">Scale Y</label>
+    //         <input type="number" class="form-control" id="scale-y-${model}" value="${
+    //   state.models[model].transform.scale[1]
+    // }" onchange="updateModel(${model}, 'scale', 'y', this.value)">
+    //       </div>
+    //       <div class="component-body-col">
+    //         <label for="scale-z-${model}">Scale Z</label>
+    //         <input type="number" class="form-control" id="scale-z-${model}" value="${
+    //   state.models[model].transform.scale[2]
+    // }" onchange="updateModel(${model}, 'scale', 'z', this.value)">
+    //       </div>
+    //     </div>
+    //     <div class="component-body-row">
+    //       <div class="component-body-col">
+    //         <label for="color-${model}">Color</label>
+    //         <input type="color" class="form-control" id="color-${model}" value="#${rgbToHex(
+    //   state.models[model].pickedColor[0],
+    //   state.models[model].pickedColor[1],
+    //   state.models[model].pickedColor[2]
+    // )}" onchange="updateModel(${model}, 'color', this.value)">
+    //       </div>
+    //     </div>
+    //   </div>
+    components.appendChild(component);
+  }
+}
 
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
@@ -64,7 +153,7 @@ window.onload = function () {
   }
   setSliderState();
   colorPicker.value = "#FF0000";
-  state.pickedColor = [1, 0, 0];
+  state.models[0].pickedColor = [1, 0, 0];
   render();
 };
 
@@ -78,12 +167,14 @@ function render() {
   /* Render loop for webgl canvas */
 
   // precalculations
-  if (!state.model.colors) {
-    state.model.colors = generateRandomColors(state.model.vertices);
+  if (!state.models[0].model.colors) {
+    state.models[0].model.colors = generateRandomColors(
+      state.models[0].model.vertices
+    );
   }
 
   if (state.animation.isObjectAnimate) {
-    state.transform.rotate[1] +=
+    state.models[0].transform.rotate[1] +=
       (2 * state.animation.degAnimate * Math.PI) / 100;
   }
 
@@ -105,15 +196,15 @@ function render() {
 
   var attribs = {
     aPosition: {
-      buffer: new Float32Array(state.model.vertices.flat(1)),
+      buffer: new Float32Array(state.models[0].model.vertices.flat(1)),
       numComponents: 3,
     },
     aNormal: {
-      buffer: new Float32Array(state.model.normals.flat(1)),
+      buffer: new Float32Array(state.models[0].model.normals.flat(1)),
       numComponents: 3,
     },
     aColor: {
-      buffer: new Float32Array(state.model.colors.flat(1)),
+      buffer: new Float32Array(state.models[0].model.colors.flat(1)),
       numComponents: 3,
     },
   };
@@ -125,14 +216,14 @@ function render() {
     uWorldViewProjection: worldViewProjectionMatrix,
     uWorldInverseTranspose: worldInverseTransposeMatrix,
     uReverseLightDirection: normalizeLight,
-    uColor: state.pickedColor.concat(1.0),
+    uColor: state.models[0].pickedColor.concat(1.0),
   };
 
   var uniformSetters = initUniforms(gl, program);
   setUniforms(uniformSetters, uniforms);
 
   // render
-  gl.drawArrays(gl.TRIANGLES, 0, state.model.vertices.length);
+  gl.drawArrays(gl.TRIANGLES, 0, state.models[0].model.vertices.length);
 
   window.requestAnimFrame(render);
 }
@@ -160,11 +251,11 @@ function setWorldViewProjectionMatrix(transform) {
 
 function setCamera() {
   /* Setup view matrix */
-  let deg = state.viewMatrix.lookAt.map((x) => degToRad(x));
+  let deg = state.models[0].viewMatrix.lookAt.map((x) => degToRad(x));
   // console.log(deg);
 
   var viewMatrix = matrices.multiply(
-    matrices.translate(0, 0, state.viewMatrix.camera[2]),
+    matrices.translate(0, 0, state.models[0].viewMatrix.camera[2]),
     matrices.rotateX(deg[0])
   );
   viewMatrix = matrices.multiply(viewMatrix, matrices.rotateY(deg[1]));
@@ -174,8 +265,8 @@ function setCamera() {
 
   let cameraMatrix = matrices.lookAt(
     camPos,
-    state.viewMatrix.lookAt,
-    state.viewMatrix.up
+    state.models[0].viewMatrix.lookAt,
+    state.models[0].viewMatrix.up
   );
 
   return cameraMatrix;
@@ -183,38 +274,38 @@ function setCamera() {
 
 function setTransform() {
   /* Setup transform matrix */
-  let centroid = locateCentroid(state.model.vertices);
+  let centroid = locateCentroid(state.models[0].model.vertices);
 
   var transformMatrix = matrices.multiply(
     matrices.translate(
-      state.transform.translate[0],
-      state.transform.translate[1],
-      state.transform.translate[2]
+      state.models[0].transform.translate[0],
+      state.models[0].transform.translate[1],
+      state.models[0].transform.translate[2]
     ),
     matrices.translate(centroid[0], centroid[1], centroid[2])
   );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
-    matrices.rotateX(state.transform.rotate[0])
+    matrices.rotateX(state.models[0].transform.rotate[0])
   );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
-    matrices.rotateY(state.transform.rotate[1])
+    matrices.rotateY(state.models[0].transform.rotate[1])
   );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
-    matrices.rotateZ(state.transform.rotate[2])
+    matrices.rotateZ(state.models[0].transform.rotate[2])
   );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
     matrices.scale(
-      state.transform.scale[0],
-      state.transform.scale[1],
-      state.transform.scale[2]
+      state.models[0].transform.scale[0],
+      state.models[0].transform.scale[1],
+      state.models[0].transform.scale[2]
     )
   );
 
@@ -235,7 +326,7 @@ function setProjection() {
   const right = 2;
   const bottom = -2;
   const top = 2;
-  let farOrtho = state.viewMatrix.far * 1;
+  let farOrtho = state.models[0].viewMatrix.far * 1;
   let nearOrtho = -farOrtho;
 
   if (state.projection === "orthographic") {
@@ -249,8 +340,8 @@ function setProjection() {
     return matrices.perspective(
       fovy,
       aspect,
-      state.viewMatrix.near,
-      state.viewMatrix.far
+      state.models[0].viewMatrix.near,
+      state.models[0].viewMatrix.far
     );
   }
 }
