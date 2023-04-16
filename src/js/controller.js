@@ -58,9 +58,9 @@ projectionRadio.forEach((radio) => {
   radio.addEventListener("change", () => {
     state.projection = radio.value;
     if (state.projection === "perspective") {
-      state.models[0].transform.translate[2] = -5;
+      state.objects[0].transform.translate[2] = -5;
     } else {
-      state.models[0].transform.translate[2] = -1;
+      state.objects[0].transform.translate[2] = -1;
     }
   });
 });
@@ -75,28 +75,28 @@ modelInput.addEventListener("change", () => {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result;
-    const color = state.models[0].pickedColor;
+    const color = state.objects[0].pickedColor;
     setDefaultState();
     clear();
-    state.models[0].model = JSON.parse(text);
-    state.models[0].pickedColor = color;
+    state.objects[0].model = JSON.parse(text);
+    state.objects[0].pickedColor = color;
   };
   reader.readAsText(file);
 });
 
 buttonSave.addEventListener("click", () => {
   const transform = setTransform(
-    state.models[0].model,
-    state.models[0].transform
+    state.objects[0].model,
+    state.objects[0].transform
   );
   // console.table(transform[1][0]);
-  // console.table(state.models[0].model.vertices);
-  const appliedtransform = state.models[0].model.vertices.map((x) =>
+  // console.table(state.objects[0].model.vertices);
+  const appliedtransform = state.objects[0].model.vertices.map((x) =>
     matrices.applyTransform(transform, x)
   );
   // console.table(appliedtransform);
-  state.models[0].model.vertices = appliedtransform;
-  const obj = saveObject(state.models[0].model);
+  state.objects[0].model.vertices = appliedtransform;
+  const obj = saveObject(state.objects[0].model);
   const blob = new Blob([obj], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -108,7 +108,7 @@ buttonSave.addEventListener("click", () => {
 colorPicker.addEventListener("change", () => {
   const color = colorPicker.value;
   /* convert hex to rgb, normalize */
-  state.models[0].pickedColor = [
+  state.objects[0].pickedColor = [
     parseInt(color.substring(1, 3), 16) / 255,
     parseInt(color.substring(3, 5), 16) / 255,
     parseInt(color.substring(5, 7), 16) / 255,
@@ -118,13 +118,21 @@ colorPicker.addEventListener("change", () => {
 lightingCheckbox.addEventListener("change", () => {
   state.lighting.useLighting = lightingCheckbox.checked;
   if (state.lighting.useLighting) {
-    program = createShaderProgram(gl, vertex_shader_3d, fragment_shader_3d);
+    state.objects.forEach((object) => {
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_3d
+      );
+    });
   } else {
-    program = createShaderProgram(
-      gl,
-      vertex_shader_3d,
-      fragment_shader_3d_no_lighting
-    );
+    state.objects.forEach((object) => {
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_3d_no_lighting
+      );
+    });
   }
 });
 
@@ -147,9 +155,9 @@ resetTransform.addEventListener("click", () => {
 });
 
 function resetTransf() {
-  state.models[0].transform.translate = [0, 0, -5];
-  state.models[0].transform.rotate = [0, 0, 0];
-  state.models[0].transform.scale = [1, 1, 1];
+  state.objects[0].transform.translate = [0, 0, -5];
+  state.objects[0].transform.rotate = [0, 0, 0];
+  state.objects[0].transform.scale = [1, 1, 1];
   rangeTranslateX.value = 0;
   translateXValue.innerHTML = 0;
   rangeTranslateY.value = 0;
@@ -177,11 +185,11 @@ resetCamera.addEventListener("click", () => {
 });
 
 function resetCam() {
-  state.models[0].viewMatrix.camera = [0, 0, 1];
-  state.models[0].viewMatrix.lookAt = [0, 0, 0];
-  state.models[0].viewMatrix.up = [0, 1, 0];
-  state.models[0].viewMatrix.near = 0.1;
-  state.models[0].viewMatrix.far = 50;
+  state.objects[0].viewMatrix.camera = [0, 0, 1];
+  state.objects[0].viewMatrix.lookAt = [0, 0, 0];
+  state.objects[0].viewMatrix.up = [0, 1, 0];
+  state.objects[0].viewMatrix.near = 0.1;
+  state.objects[0].viewMatrix.far = 50;
   state.fudgeFactor = 0;
   state.theta = 90;
   state.phi = 90;
@@ -208,35 +216,39 @@ function resetCam() {
 }
 
 startAnim.addEventListener("click", () => {
-  state.animation.isObjectAnimate = true;
+  state.objects.forEach((object) => {
+    object.animation.isObjectAnimate = true;
+  });
   startAnim.classList.add("hidden");
   stopAnim.classList.remove("hidden");
 });
 
 stopAnim.addEventListener("click", () => {
-  state.animation.isObjectAnimate = false;
+  state.objects.forEach((object) => {
+    object.animation.isObjectAnimate = false;
+  });
   stopAnim.classList.add("hidden");
   startAnim.classList.remove("hidden");
 });
 
 rangeTranslateX.addEventListener("input", () => {
-  state.models[0].transform.translate[0] =
+  state.objects[0].transform.translate[0] =
     -1 + (2 * rangeTranslateX.value) / 100;
   translateXValue.innerHTML = rangeTranslateX.value;
 });
 
 rangeTranslateY.addEventListener("input", () => {
-  state.models[0].transform.translate[1] =
+  state.objects[0].transform.translate[1] =
     -1 + (2 * rangeTranslateY.value) / 100;
   translateYValue.innerHTML = rangeTranslateY.value;
 });
 
 rangeTranslateZ.addEventListener("input", () => {
   if (state.projection === "perspective") {
-    state.models[0].transform.translate[2] =
+    state.objects[0].transform.translate[2] =
       -5 + (2 * rangeTranslateZ.value) / 100;
   } else {
-    state.models[0].transform.translate[2] =
+    state.objects[0].transform.translate[2] =
       -1 + (2 * rangeTranslateZ.value) / 100;
   }
   translateZValue.innerHTML = rangeTranslateZ.value;
@@ -245,65 +257,65 @@ rangeTranslateZ.addEventListener("input", () => {
 /* rotate from -360 to 360 */
 rangeRotateX.addEventListener("input", () => {
   // rotate -360 to 360
-  state.models[0].transform.rotate[0] = degToRad(rangeRotateX.value);
+  state.objects[0].transform.rotate[0] = degToRad(rangeRotateX.value);
   rotateXValue.innerHTML = rangeRotateX.value;
 });
 
 rangeRotateY.addEventListener("input", () => {
-  state.models[0].transform.rotate[1] = degToRad(rangeRotateY.value);
+  state.objects[0].transform.rotate[1] = degToRad(rangeRotateY.value);
   rotateYValue.innerHTML = rangeRotateY.value;
 });
 
 rangeRotateZ.addEventListener("input", () => {
-  state.models[0].transform.rotate[2] = degToRad(rangeRotateZ.value);
+  state.objects[0].transform.rotate[2] = degToRad(rangeRotateZ.value);
   rotateZValue.innerHTML = rangeRotateZ.value;
 });
 
 /* scale from -5 to 5 */
 rangeScaleX.addEventListener("input", () => {
-  state.models[0].transform.scale[0] = rangeScaleX.value / 20;
+  state.objects[0].transform.scale[0] = rangeScaleX.value / 20;
   scaleXValue.innerHTML = (rangeScaleX.value / 20).toFixed(2);
 });
 
 rangeScaleY.addEventListener("input", () => {
-  state.models[0].transform.scale[1] = rangeScaleY.value / 20;
+  state.objects[0].transform.scale[1] = rangeScaleY.value / 20;
   scaleYValue.innerHTML = (rangeScaleY.value / 20).toFixed(2);
 });
 
 rangeScaleZ.addEventListener("input", () => {
-  state.models[0].transform.scale[2] = rangeScaleZ.value / 20;
+  state.objects[0].transform.scale[2] = rangeScaleZ.value / 20;
   scaleZValue.innerHTML = (rangeScaleZ.value / 20).toFixed(2);
 });
 
 rangeCameraX.addEventListener("input", () => {
-  state.models[0].viewMatrix.camera[0] = parseInt(rangeCameraX.value);
+  state.objects[0].viewMatrix.camera[0] = parseInt(rangeCameraX.value);
   cameraXValue.innerHTML = rangeCameraX.value;
 });
 
 rangeCameraY.addEventListener("input", () => {
-  state.models[0].viewMatrix.camera[1] = parseInt(rangeCameraY.value);
+  state.objects[0].viewMatrix.camera[1] = parseInt(rangeCameraY.value);
   cameraYValue.innerHTML = rangeCameraY.value;
 });
 
 rangeCameraZ.addEventListener("input", () => {
-  state.models[0].viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
+  state.objects[0].viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
   cameraZValue.innerHTML = rangeCameraZ.value;
 });
 
 rangeLookAtX.addEventListener("input", () => {
-  state.models[0].viewMatrix.lookAt[0] =
+  state.objects[0].viewMatrix.lookAt[0] =
     (2 * rangeLookAtX.value * 2 * Math.PI) / 100;
   lookAtXValue.innerHTML = rangeLookAtX.value;
 });
 
 rangeLookAtY.addEventListener("input", () => {
-  state.models[0].viewMatrix.lookAt[1] =
+  state.objects[0].viewMatrix.lookAt[1] =
     (2 * rangeLookAtY.value * 2 * Math.PI) / 100;
   lookAtYValue.innerHTML = rangeLookAtY.value;
 });
 
 rangeLookAtZ.addEventListener("input", () => {
-  state.models[0].viewMatrix.lookAt[2] =
+  state.objects[0].viewMatrix.lookAt[2] =
     (2 * rangeLookAtZ.value * 2 * Math.PI) / 100;
   lookAtZValue.innerHTML = rangeLookAtZ.value;
 });
@@ -327,40 +339,40 @@ phi.addEventListener("input", () => {
 function setSliderState() {
   /* setup default state for sliders */
 
-  rangeTranslateX.value = state.models[0].transform.translate[0];
-  translateXValue.innerHTML = state.models[0].transform.translate[0];
-  rangeTranslateY.value = state.models[0].transform.translate[1];
-  translateYValue.innerHTML = state.models[0].transform.translate[1];
-  rangeTranslateZ.value = state.models[0].transform.translate[2];
-  translateZValue.innerHTML = state.models[0].transform.translate[2];
+  rangeTranslateX.value = state.objects[0].transform.translate[0];
+  translateXValue.innerHTML = state.objects[0].transform.translate[0];
+  rangeTranslateY.value = state.objects[0].transform.translate[1];
+  translateYValue.innerHTML = state.objects[0].transform.translate[1];
+  rangeTranslateZ.value = state.objects[0].transform.translate[2];
+  translateZValue.innerHTML = state.objects[0].transform.translate[2];
 
-  rangeRotateX.value = state.models[0].transform.rotate[0];
-  rotateXValue.innerHTML = state.models[0].transform.rotate[0];
-  rangeRotateY.value = state.models[0].transform.rotate[1];
-  rotateYValue.innerHTML = state.models[0].transform.rotate[1];
-  rangeRotateZ.value = state.models[0].transform.rotate[2];
-  rotateZValue.innerHTML = state.models[0].transform.rotate[2];
+  rangeRotateX.value = state.objects[0].transform.rotate[0];
+  rotateXValue.innerHTML = state.objects[0].transform.rotate[0];
+  rangeRotateY.value = state.objects[0].transform.rotate[1];
+  rotateYValue.innerHTML = state.objects[0].transform.rotate[1];
+  rangeRotateZ.value = state.objects[0].transform.rotate[2];
+  rotateZValue.innerHTML = state.objects[0].transform.rotate[2];
 
-  rangeScaleX.value = state.models[0].transform.scale[0] * 20;
-  scaleXValue.innerHTML = state.models[0].transform.scale[0];
-  rangeScaleY.value = state.models[0].transform.scale[1] * 20;
-  scaleYValue.innerHTML = state.models[0].transform.scale[1];
-  rangeScaleZ.value = state.models[0].transform.scale[2] * 20;
-  scaleZValue.innerHTML = state.models[0].transform.scale[2];
+  rangeScaleX.value = state.objects[0].transform.scale[0] * 20;
+  scaleXValue.innerHTML = state.objects[0].transform.scale[0];
+  rangeScaleY.value = state.objects[0].transform.scale[1] * 20;
+  scaleYValue.innerHTML = state.objects[0].transform.scale[1];
+  rangeScaleZ.value = state.objects[0].transform.scale[2] * 20;
+  scaleZValue.innerHTML = state.objects[0].transform.scale[2];
 
-  rangeCameraX.value = state.models[0].viewMatrix.camera[0];
-  cameraXValue.innerHTML = state.models[0].viewMatrix.camera[0];
-  rangeCameraY.value = state.models[0].viewMatrix.camera[1];
-  cameraYValue.innerHTML = state.models[0].viewMatrix.camera[1];
-  rangeCameraZ.value = state.models[0].viewMatrix.camera[2];
-  cameraZValue.innerHTML = state.models[0].viewMatrix.camera[2];
+  rangeCameraX.value = state.objects[0].viewMatrix.camera[0];
+  cameraXValue.innerHTML = state.objects[0].viewMatrix.camera[0];
+  rangeCameraY.value = state.objects[0].viewMatrix.camera[1];
+  cameraYValue.innerHTML = state.objects[0].viewMatrix.camera[1];
+  rangeCameraZ.value = state.objects[0].viewMatrix.camera[2];
+  cameraZValue.innerHTML = state.objects[0].viewMatrix.camera[2];
 
-  rangeLookAtX.value = state.models[0].viewMatrix.lookAt[0];
-  lookAtXValue.innerHTML = state.models[0].viewMatrix.lookAt[0];
-  rangeLookAtY.value = state.models[0].viewMatrix.lookAt[1];
-  lookAtYValue.innerHTML = state.models[0].viewMatrix.lookAt[1];
-  rangeLookAtZ.value = state.models[0].viewMatrix.lookAt[2];
-  lookAtZValue.innerHTML = state.models[0].viewMatrix.lookAt[2];
+  rangeLookAtX.value = state.objects[0].viewMatrix.lookAt[0];
+  lookAtXValue.innerHTML = state.objects[0].viewMatrix.lookAt[0];
+  rangeLookAtY.value = state.objects[0].viewMatrix.lookAt[1];
+  lookAtYValue.innerHTML = state.objects[0].viewMatrix.lookAt[1];
+  rangeLookAtZ.value = state.objects[0].viewMatrix.lookAt[2];
+  lookAtZValue.innerHTML = state.objects[0].viewMatrix.lookAt[2];
 
   rangeFOV.value = state.fudgeFactor;
   fovValue.innerHTML = state.fudgeFactor;

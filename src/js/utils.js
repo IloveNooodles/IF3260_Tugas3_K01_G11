@@ -1,3 +1,4 @@
+/* ======= value conversion ======= */
 function radToDeg(radians) {
   return (radians * 180) / Math.PI;
 }
@@ -10,6 +11,7 @@ function rgbToHex(r, g, b) {
   return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
+/* ======= WebGL-related ======= */
 function resizeCanvas(canvas) {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -105,8 +107,25 @@ function generateNormals(vertices, faces) {
 
 function generateRandomColors(vertices) {
   let colors = [];
-  for (let i = 0; i < vertices.length; i++) {
-    colors.push([Math.random(), Math.random(), Math.random()]);
+  for (let i = 0; i < vertices.length; i += 3) {
+    temp = [Math.random(), Math.random(), Math.random()];
+    colors.push(temp);
+    colors.push(temp);
+    colors.push(temp);
+    colors.push(temp);
+    colors.push(temp);
+    colors.push(temp);
   }
   return colors;
+}
+
+/* ======= JSON Handler ======= */
+function loadObject(jsonString) {
+  parsedObject = JSON.parse(jsonString);
+  return parsedObject;
+}
+
+function saveObject(model) {
+  saveObject = JSON.stringify(model);
+  return saveObject;
 }
