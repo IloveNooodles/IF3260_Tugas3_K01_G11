@@ -21,17 +21,10 @@ ObjectNode.prototype.setParent = function (parent) {
   this.parent = parent;
 };
 
-ObjectNode.prototype.updateWorldMatrix = function (
-  parentWorldMatrix,
-  parentWorldInverseMatrix
-) {
+ObjectNode.prototype.updateWorldMatrix = function (parentWorldMatrix) {
   if (parentWorldMatrix) {
     // a matrix was passed in so do the math
     this.worldMatrix = matrices.multiply(parentWorldMatrix, this.localMatrix);
-    this.worldInverseMatrix = matrices.multiply(
-      parentWorldInverseMatrix,
-      this.localInverseMatrix
-    );
   } else {
     // no matrix was passed in so just copy local to world
     this.worldMatrix = this.localMatrix;
@@ -39,8 +32,10 @@ ObjectNode.prototype.updateWorldMatrix = function (
 
   // now process all the children
   var worldMatrix = this.worldMatrix;
-  var worldInverseMatrix = this.worldInverseMatrix;
+  this.worldInverseMatrix = matrices.transpose(
+    matrices.inverse(this.worldMatrix)
+  );
   this.children.forEach(function (child) {
-    child.updateWorldMatrix(worldMatrix, worldInverseMatrix);
+    child.updateWorldMatrix(worldMatrix);
   });
 };

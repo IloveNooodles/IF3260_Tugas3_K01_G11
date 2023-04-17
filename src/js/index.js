@@ -170,9 +170,6 @@ function render() {
     }
 
     object.localMatrix = setTransform(object);
-    object.localInverseMatrix = matrices.transpose(
-      matrices.inverse(object.localMatrix)
-    );
   });
 
   state.objects[0].updateWorldMatrix();
