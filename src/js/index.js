@@ -1,6 +1,5 @@
 /* ======= Get Document Object Model ======= */
 const canvas = document.getElementById("canvas");
-const components = document.getElementById("components");
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
 
@@ -22,89 +21,7 @@ function setDefaultState() {
     phi: 90.0,
   };
 
-  components.innerHTML = "";
-  for (var model in state.objects) {
-    let component = document.createElement("div");
-    component.className = "component";
-    component.id = "component-" + model;
-    component.innerHTML = `
-      <div class="component-header">
-        <h3>${state.objects[model].name}</h3>
-      </div>`;
-    //   <div class="component-body">
-    //     <div class="component-body-row">
-    //       <div class="component-body-col">
-    //         <label for="translate-x-${model}">Translate X</label>
-    //         <input type="number" class="form-control" id="translate-x-${model}" value="${
-    //   state.objects[model].transform.translate[0]
-    // }" onchange="updateModel(${model}, 'translate', 'x', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="translate-y-${model}">Translate Y</label>
-    //         <input type="number" class="form-control" id="translate-y-${model}" value="${
-    //   state.objects[model].transform.translate[1]
-    // }" onchange="updateModel(${model}, 'translate', 'y', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="translate-z-${model}">Translate Z</label>
-    //         <input type="number" class="form-control" id="translate-z-${model}" value="${
-    //   state.objects[model].transform.translate[2]
-    // }" onchange="updateModel(${model}, 'translate', 'z', this.value)">
-    //       </div>
-    //     </div>
-    //     <div class="component-body-row">
-    //       <div class="component-body-col">
-    //         <label for="rotate-x-${model}">Rotate X</label>
-    //         <input type="number" class="form-control" id="rotate-x-${model}" value="${
-    //   state.objects[model].transform.rotate[0]
-    // }" onchange="updateModel(${model}, 'rotate', 'x', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="rotate-y-${model}">Rotate Y</label>
-    //         <input type="number" class="form-control" id="rotate-y-${model}" value="${
-    //   state.objects[model].transform.rotate[1]
-    // }" onchange="updateModel(${model}, 'rotate', 'y', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="rotate-z-${model}">Rotate Z</label>
-    //         <input type="number" class="form-control" id="rotate-z-${model}" value="${
-    //   state.objects[model].transform.rotate[2]
-    // }" onchange="updateModel(${model}, 'rotate', 'z', this.value)">
-    //       </div>
-    //     </div>
-    //     <div class="component-body-row">
-    //       <div class="component-body-col">
-    //         <label for="scale-x-${model}">Scale X</label>
-    //         <input type="number" class="form-control" id="scale-x-${model}" value="${
-    //   state.objects[model].transform.scale[0]
-    // }" onchange="updateModel(${model}, 'scale', 'x', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="scale-y-${model}">Scale Y</label>
-    //         <input type="number" class="form-control" id="scale-y-${model}" value="${
-    //   state.objects[model].transform.scale[1]
-    // }" onchange="updateModel(${model}, 'scale', 'y', this.value)">
-    //       </div>
-    //       <div class="component-body-col">
-    //         <label for="scale-z-${model}">Scale Z</label>
-    //         <input type="number" class="form-control" id="scale-z-${model}" value="${
-    //   state.objects[model].transform.scale[2]
-    // }" onchange="updateModel(${model}, 'scale', 'z', this.value)">
-    //       </div>
-    //     </div>
-    //     <div class="component-body-row">
-    //       <div class="component-body-col">
-    //         <label for="color-${model}">Color</label>
-    //         <input type="color" class="form-control" id="color-${model}" value="#${rgbToHex(
-    //   state.objects[model].pickedColor[0],
-    //   state.objects[model].pickedColor[1],
-    //   state.objects[model].pickedColor[2]
-    // )}" onchange="updateModel(${model}, 'color', this.value)">
-    //       </div>
-    //     </div>
-    //   </div>
-    components.appendChild(component);
-  }
+  showComponents(state.objects);
 }
 
 window.requestAnimFrame = (function () {
@@ -138,15 +55,8 @@ function clear() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 }
 
-function render() {
-  // prepare for rendering
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  clear();
-  gl.enable(gl.CULL_FACE);
-  gl.enable(gl.DEPTH_TEST);
-
-  // precalculation loop
-  state.objects.forEach((object) => {
+function setStateBeforeRender(objects) {
+  objects.forEach((object) => {
     // precalculations
     if (!object.model.colors) {
       object.model.colors = generateRandomColors(object.model.vertices);
@@ -170,12 +80,14 @@ function render() {
     }
 
     object.localMatrix = setTransform(object);
+    if (object.children.length > 0) {
+      setStateBeforeRender(object.children);
+    }
   });
+}
 
-  state.objects[0].updateWorldMatrix();
-  normalizeLight = matrices.normalize(state.lighting.lightDirection);
-
-  state.objects.forEach((object) => {
+function renderLoop(objects) {
+  objects.forEach((object) => {
     /* Render loop for webgl canvas */
     gl.useProgram(object.program);
 
@@ -215,7 +127,26 @@ function render() {
     // render
     // console.log(object.name, object.localMatrix, object.localInverseMatrix);
     gl.drawArrays(gl.TRIANGLES, 0, object.model.vertices.length);
+    if (object.children.length > 0) {
+      renderLoop(object.children);
+    }
   });
+}
+
+function render() {
+  // prepare for rendering
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  clear();
+  gl.enable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);
+
+  // precalculation loop
+  setStateBeforeRender(state.objects);
+
+  state.objects[0].updateWorldMatrix();
+  normalizeLight = matrices.normalize(state.lighting.lightDirection);
+
+  renderLoop(state.objects);
   window.requestAnimFrame(render);
 }
 

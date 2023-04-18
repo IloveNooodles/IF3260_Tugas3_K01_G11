@@ -1,4 +1,5 @@
 /* ======= Get Document Object Model ======= */
+const components = document.getElementById("components");
 const projectionRadio = document.getElementsByName("projection");
 const modelInput = document.getElementById("objFile");
 const buttonSave = document.getElementById("save");
@@ -367,4 +368,22 @@ function setSliderState() {
   thetaValue.innerHTML = state.theta;
   phi.value = state.phi;
   phiValue.innerHTML = state.phi;
+}
+
+function showComponents(objects, level = 0) {
+  const paddingString = "padding-left: " + level * 20 + "px;";
+  objects.forEach((object) => {
+    let component = document.createElement("div");
+    component.className = "component";
+    component.style = paddingString;
+    component.id = "component-" + object.id;
+    component.innerHTML += `
+      <div class="component-header">
+        <p>${object.name}</p>
+      </div>`;
+    components.appendChild(component);
+    if (object.children.length > 0) {
+      showComponents(object.children, level + 1);
+    }
+  });
 }

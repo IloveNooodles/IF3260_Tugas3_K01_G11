@@ -130,4 +130,4 @@ leftLeg.setParent(torso);
 rightLeg.setParent(torso);
 head.setParent(torso);
 
-var endModel = [torso, leftHand, rightHand, leftLeg, rightLeg, head];
+var endModel = [torso];
