@@ -2,7 +2,7 @@ const torso = new ObjectNode();
 torso.name = "torso";
 torso.model = generateCuboid(1, 1, 2, [0, 0, 0]);
 torso.transform = {
-  translate: [0, 0, 0],
+  translate: [0, -0.3, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -145,13 +145,57 @@ tailBelow.animation = {
   degAnimate: 0.1,
 };
 
+const neck = new ObjectNode();
+neck.name = "neck";
+neck.model = generateCuboid(1.5, 0.7, 0.5, [0, 0, 0]);
+neck.transform = {
+  translate: [0, 1, 1],
+  rotate: [-100, 0, 0],
+  scale: [1, 1, 1],
+};
+(neck.pickedColor = [1, 0, 0]),
+  (neck.viewMatrix = {
+    camera: [0, 0, 1],
+    lookAt: [0, 0, 0],
+    up: [0, 1, 0],
+    near: 0.1,
+    far: 50,
+  });
+neck.animation = {
+  isAnimate: false,
+  degAnimate: 0.1,
+};
+
+const head = new ObjectNode();
+head.name = "head";
+head.model = generateCuboid(0.6, 0.6, 1, [0, 0, 0]);
+head.transform = {
+  translate: [0, 0.8, 0.3],
+  rotate: [100, 0, 0],
+  scale: [1, 1, 1],
+};
+(head.pickedColor = [1, 0, 0]),
+  (head.viewMatrix = {
+    camera: [0, 0, 1],
+    lookAt: [0, 0, 0],
+    up: [0, 1, 0],
+    near: 0.1,
+    far: 50,
+  });
+head.animation = {
+  isAnimate: false,
+  degAnimate: 0.1,
+};
+
 /* Set parent */
 leftFrontLeg.setParent(torso);
 rightFrontLeg.setParent(torso);
 leftBackLeg.setParent(torso);
 rightBackLeg.setParent(torso);
 tail.setParent(torso);
-tailBelow.setParent(tail)
+tailBelow.setParent(tail);
+neck.setParent(torso);
+head.setParent(neck);
 
 const endModel = [
   torso,
@@ -160,5 +204,7 @@ const endModel = [
   leftBackLeg,
   rightBackLeg,
   tail,
-  tailBelow
+  tailBelow,
+  neck,
+  head,
 ];
