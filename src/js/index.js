@@ -59,7 +59,15 @@ function setStateBeforeRender(objects) {
   objects.forEach((object) => {
     // precalculations
     if (!object.model.colors) {
-      object.model.colors = generateRandomColors(object.model.vertices);
+      console.log(object.pickedColor);
+      if (!object.pickedColor) {
+        object.model.colors = generateColors(object.model.vertices);
+      } else {
+        object.model.colors = generateColors(
+          object.model.vertices,
+          object.pickedColor
+        );
+      }
     }
 
     if (!object.program && !state.lighting.useLighting) {
@@ -197,22 +205,11 @@ function setCamera(object) {
 function setTransform(object) {
   /* Setup transform matrix */
 
-  // let centroid = locateCentroid(object.model.vertices);
-
   var transformMatrix = matrices.translate(
     object.transform.translate[0],
     object.transform.translate[1],
     object.transform.translate[2]
   );
-
-  // var transformMatrix = matrices.multiply(
-  //   matrices.translate(
-  //     object.transform.translate[0],
-  //     object.transform.translate[1],
-  //     object.transform.translate[2]
-  //   ),
-  //   matrices.translate(centroid[0], centroid[1], centroid[2])
-  // );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
@@ -238,15 +235,10 @@ function setTransform(object) {
     )
   );
 
-  // transformMatrix = matrices.multiply(
-  //   transformMatrix,
-  //   matrices.translate(-centroid[0], -centroid[1], -centroid[2])
-  // );
-
   return transformMatrix;
 }
 
-function setProjection(object) {
+function setProjection() {
   /* Setup projection matrix */
 
   const aspect = canvas.width / canvas.height;

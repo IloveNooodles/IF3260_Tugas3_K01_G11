@@ -34,7 +34,7 @@ function generateCuboid(height, width, depth, offset) {
   vertices = toVertices(vertices, faces);
 
   // generate random color each vertices
-  let colors = generateRandomColors(vertices);
+  let colors = generateColors(vertices);
   return {
     vertices: vertices,
     normals: normals,

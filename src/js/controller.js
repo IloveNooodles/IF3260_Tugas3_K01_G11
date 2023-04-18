@@ -76,16 +76,23 @@ modelInput.addEventListener("change", () => {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result;
+    const loadObj = [];
     setDefaultState();
     clear();
-    state.objects = loadObject(text);
+    parsedObject = JSON.parse(text);
+    loadObject(parsedObject, loadObj);
+    state.objects = loadObj;
+    components.innerHTML = "";
+    showComponents(state.objects);
   };
   reader.readAsText(file);
 });
 
 buttonSave.addEventListener("click", () => {
-  const obj = saveObject(state.objects);
-  const blob = new Blob([obj], { type: "text/plain" });
+  var saveObj = [];
+  saveObject(state.objects, saveObj);
+  saveObj = JSON.stringify(saveObj);
+  const blob = new Blob([saveObj], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;

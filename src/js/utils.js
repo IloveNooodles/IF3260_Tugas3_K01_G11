@@ -105,10 +105,15 @@ function generateNormals(vertices, faces) {
   return normals;
 }
 
-function generateRandomColors(vertices) {
+function generateColors(vertices, color = null) {
   let colors = [];
   for (let i = 0; i < vertices.length; i += 3) {
-    temp = [Math.random(), Math.random(), Math.random()];
+    var temp = color;
+    if (color == null) {
+      temp = [Math.random(), Math.random(), Math.random()];
+    } else {
+      temp = color;
+    }
     colors.push(temp);
     colors.push(temp);
     colors.push(temp);
@@ -120,11 +125,31 @@ function generateRandomColors(vertices) {
 }
 
 /* ======= JSON Handler ======= */
-function loadObject(jsonString) {
-  parsedObject = JSON.parse(jsonString);
-  var objects = [];
-  for (var i = 0; i < parsedObject.length; i++) {
-    var node = parsedObject[i];
+// function loadObject(jsonString) {
+//   parsedObject = JSON.parse(jsonString);
+//   var objects = [];
+//   for (var i = 0; i < parsedObject.length; i++) {
+//     var node = parsedObject[i];
+//     var nodeData = new ObjectNode();
+//     nodeData.name = node.name;
+//     nodeData.model = node.model;
+//     nodeData.transform = node.transform;
+//     nodeData.pickedColor = node.pickedColor;
+//     nodeData.viewMatrix = node.viewMatrix;
+//     nodeData.animation = node.animation;
+//     if (node.parent != null) {
+//       nodeData.parent = node.parent;
+//       var parentIndex = objects.findIndex((obj) => obj.name == node.parent);
+//       console.log(parentIndex);
+//       objects[parentIndex].children.push(nodeData);
+//     }
+//     objects.push(nodeData);
+//   }
+//   return objects;
+// }
+
+function loadObject(parsedObject, toLoad) {
+  parsedObject.forEach((node) => {
     var nodeData = new ObjectNode();
     nodeData.name = node.name;
     nodeData.model = node.model;
@@ -132,21 +157,16 @@ function loadObject(jsonString) {
     nodeData.pickedColor = node.pickedColor;
     nodeData.viewMatrix = node.viewMatrix;
     nodeData.animation = node.animation;
-    if (node.parent != null) {
-      nodeData.parent = node.parent;
-      var parentIndex = objects.findIndex((obj) => obj.name == node.parent);
-      console.log(parentIndex);
-      objects[parentIndex].children.push(nodeData);
+    nodeData.children = [];
+    if (node.children.length > 0) {
+      loadObject(node.children, nodeData.children);
     }
-    objects.push(nodeData);
-  }
-  return objects;
+    toLoad.push(nodeData);
+  });
 }
 
-function saveObject(objects) {
-  var model = [];
-  for (var i = 0; i < objects.length; i++) {
-    var node = objects[i];
+function saveObject(objects, toSave) {
+  objects.forEach((node) => {
     var nodeData = {
       name: node.name,
       model: node.model,
@@ -154,12 +174,11 @@ function saveObject(objects) {
       pickedColor: node.pickedColor,
       viewMatrix: node.viewMatrix,
       animation: node.animation,
+      children: [],
     };
-    if (node.parent != null) {
-      nodeData.parent = node.parent;
+    if (node.children.length > 0) {
+      saveObject(node.children, nodeData.children);
     }
-    model.push(nodeData);
-  }
-  saveObject = JSON.stringify(model);
-  return saveObject;
+    toSave.push(nodeData);
+  });
 }
