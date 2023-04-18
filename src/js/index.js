@@ -15,6 +15,9 @@ function setDefaultState() {
       useLighting: false,
       lightDirection: [0, 0, 1],
     },
+    texture: {
+      textureType: "none",
+    },
     projection: "orthographic", // orthographic, oblique, perspective
     fudgeFactor: 0.0,
     theta: 90.0,
@@ -116,6 +119,10 @@ function renderLoop(objects) {
       aColor: {
         buffer: new Float32Array(object.model.colors.flat(1)),
         numComponents: 3,
+      },
+      aTexture: {
+        buffer: new Float32Array(),
+        numComponents: 2,
       },
     };
 

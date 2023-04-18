@@ -3,19 +3,22 @@ const vertex_shader_3d = `
 attribute vec3 aPosition;
 attribute vec3 aColor;
 attribute vec3 aNormal;
+attribute vec2 aTexture;
 
 uniform mat4 uWorldViewProjection;
 uniform mat4 uWorldInverseTranspose;
 
 varying vec3 vNormal;
 varying vec4 fragColor;
+varying vec2 vTexture;
 varying float colorFactor;
 
 void main(void) {
     gl_Position = uWorldViewProjection * vec4(aPosition, 1.0);
   
     vNormal = mat3(uWorldInverseTranspose) * aNormal;
-    fragColor = vec4(aColor, 1.0);  
+    fragColor = vec4(aColor, 1.0);
+    vTexture = aTexture;  
 }
 `;
 
@@ -43,6 +46,18 @@ varying vec4 fragColor;
 
 void main(void) {
     gl_FragColor = fragColor;
+}
+`;
+
+const fragment_shader_texture = `
+precision mediump float;
+
+varying vec2 vTexture;
+
+uniform sampler2D uTexture;
+
+void main(void) {
+  gl_FragColor = texture2D(uTexture, vTexture);
 }
 `;
 
@@ -99,6 +114,7 @@ function initAttribs(gl, program) {
     position: gl.getAttribLocation(program, "aPosition"),
     color: gl.getAttribLocation(program, "aColor"),
     normal: gl.getAttribLocation(program, "aNormal"),
+    texture: gl.getAttribLocation(program, "aTexture"),
   };
 }
 
@@ -120,6 +136,11 @@ function setAttribs(attribSetters, attribs) {
   gl.bufferData(gl.ARRAY_BUFFER, attribs.aColor.buffer, gl.STATIC_DRAW);
   gl.vertexAttribPointer(attribSetters.color, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attribSetters.color);
+
+  const textureBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
+  gl.vertexAttribPointer(attribSetters.texture, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(attribSetters.texture);
 }
 
 function initUniforms(gl, program) {
@@ -134,6 +155,7 @@ function initUniforms(gl, program) {
       program,
       "uReverseLightDirection"
     ),
+    texture: gl.getUniformLocation(program, "uTexture"),
   };
 }
 
@@ -153,4 +175,5 @@ function setUniforms(uniformSetters, uniforms) {
     uniformSetters.reverseLightDirection,
     uniforms.uReverseLightDirection
   );
+  gl.uniform1i(uniformSetters.texture, 0);
 }

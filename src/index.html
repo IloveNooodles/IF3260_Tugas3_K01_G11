@@ -125,6 +125,15 @@
           <label for="lighting">Shading</label>
           <input type="checkbox" id="lighting" />
         </div>
+        <div class="texture">
+          <label for="texture-dropdown">texture</label>
+          <select name="texture-dropdown" id="texture-dropdown">
+            <option>none</option>
+            <option value="custom">custom</option>
+            <option value="bump">bump</option>
+            <option value="environment">environment</option>
+          </select>
+        </div>
         <div class="bottom-buttons">
           <button id="help" onclick="location.href='help.html'">
             Show Help
@@ -148,6 +157,7 @@
     </div>
   </body>
   <script src="js/tree.js"></script>
+  <script src="js/texture.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/matrices.js"></script>
   <script src="js/webgl.js"></script>

@@ -10,6 +10,7 @@ const resetTransform = document.getElementById("reset-transform");
 const resetCamera = document.getElementById("reset-camera");
 const startAnim = document.getElementById("animation");
 const stopAnim = document.getElementById("stop-anim");
+const textureSelector = document.getElementById("texture-dropdown");
 
 /* ======= Transform Sliders ======= */
 const rangeTranslateX = document.getElementById("translate-x");
@@ -120,7 +121,7 @@ lightingCheckbox.addEventListener("change", () => {
         fragment_shader_3d
       );
     });
-  } else {
+  } else if (!state.lighting.useLighting) {
     state.objects.forEach((object) => {
       object.program = createShaderProgram(
         gl,
@@ -394,3 +395,25 @@ function showComponents(objects, level = 0) {
     }
   });
 }
+
+textureSelector.addEventListener("change", function (e) {
+  state.texture.textureType = this.value;
+  if (state.texture.textureType === "none") {
+    state.objects.forEach((object) => {
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_3d
+      );
+    });
+  } else if (state.texture.textureType === "custom") {
+    state.objects.forEach((object) => {
+      createCustomTexture(gl);
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_texture
+      );
+    });
+  }
+});
