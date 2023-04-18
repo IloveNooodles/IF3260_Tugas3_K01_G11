@@ -11,6 +11,8 @@ function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
     objects: endModel,
+    focus: endModel[0],
+    applyChild: false,
     lighting: {
       useLighting: false,
       lightDirection: [0, 0, 1],
@@ -45,6 +47,7 @@ window.onload = function () {
     alert("WebGL not supported");
   }
   setSliderState();
+  setTransformTo(state.focus);
   colorPicker.value = "#FF0000";
   state.objects.forEach((object) => {
     object.pickedColor = [1, 0, 0];

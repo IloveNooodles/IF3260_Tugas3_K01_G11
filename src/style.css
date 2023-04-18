@@ -55,3 +55,20 @@ header {
 .hidden {
   display: none;
 }
+
+.transform-title {
+  margin: 0 100px 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.component-name {
+  margin: 5px;
+}
+
+.component:hover {
+  background-color: #777;
+  cursor: pointer;
+}

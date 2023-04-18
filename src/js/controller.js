@@ -55,15 +55,25 @@ const thetaValue = document.getElementById("theta-value");
 const phi = document.getElementById("phi");
 const phiValue = document.getElementById("phi-value");
 
+/* ======= transforms container ======= */
+const transformTitle = document.getElementById("transform-title");
+const transformText = document.createElement("h2");
+transformText.innerHTML = "Transform";
+transformTitle.appendChild(transformText);
+const transformFor = document.createElement("span");
+
 /* ======= Event Listener ======= */
 projectionRadio.forEach((radio) => {
   radio.addEventListener("change", () => {
     state.projection = radio.value;
+    console.log(state.focus.transform.translate);
+    var offset = 0;
     if (state.projection === "perspective") {
-      state.objects[0].transform.translate[2] = -5;
+      offset = -5;
     } else {
-      state.objects[0].transform.translate[2] = -1;
+      offset = -1;
     }
+    state.focus.transform.translate[2] = offset;
   });
 });
 
@@ -83,8 +93,10 @@ modelInput.addEventListener("change", () => {
     parsedObject = JSON.parse(text);
     loadObject(parsedObject, loadObj);
     state.objects = loadObj;
+    state.focus = state.objects[0];
     components.innerHTML = "";
     showComponents(state.objects);
+    setTransformTo();
   };
   reader.readAsText(file);
 });
@@ -378,17 +390,38 @@ function setSliderState() {
   phiValue.innerHTML = state.phi;
 }
 
+function setTransformTo(object = null) {
+  var transformTo = document.getElementById("transform-to");
+  if (!transformTo) {
+    transformTo = document.createElement("p");
+    transformTo.id = "transform-to";
+  }
+  if (object) {
+    transformTo.innerHTML = `Applying to: ${object.name}`;
+  } else {
+    transformTo.innerHTML = `Applying to: ${state.objects[0].name}`;
+  }
+  if (object.children.length > 0) {
+    transformTo.innerHTML += ` and its children`;
+  }
+  transformTitle.appendChild(transformTo);
+}
+
 function showComponents(objects, level = 0) {
   const paddingString = "padding-left: " + level * 20 + "px;";
   objects.forEach((object) => {
     let component = document.createElement("div");
     component.className = "component";
     component.style = paddingString;
-    component.id = "component-" + object.id;
+    // component.id = "component-" + object.name;
     component.innerHTML += `
-      <div class="component-header">
-        <p>${object.name}</p>
-      </div>`;
+      <p class="component-name">${object.name}</p>`;
+    component.addEventListener("click", () => {
+      state.focus = object;
+      setTransformTo(object);
+      // setSliderState();
+      // console.log(state.focus);
+    });
     components.appendChild(component);
     if (object.children.length > 0) {
       showComponents(object.children, level + 1);

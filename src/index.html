@@ -33,43 +33,6 @@
           />
           <label for="perspective">Perspective</label>
         </div>
-        <h2>Transform</h2>
-        <label for="translate">Translate</label>
-        <div class="translate">
-          <label for="translateX">X</label>
-          <input type="range" id="translate-x" min="-100" max="100" value="0" />
-          <span id="translate-x-value">0</span>
-          <label for="translateY">Y</label>
-          <input type="range" id="translate-y" min="-100" max="100" value="0" />
-          <span id="translate-y-value">0</span>
-          <label for="translateZ">Z</label>
-          <input type="range" id="translate-z" min="-100" max="100" value="0" />
-          <span id="translate-z-value">0</span>
-        </div>
-        <label for="rotate">Rotate</label>
-        <div class="rotate">
-          <label for="rotateX">X</label>
-          <input type="range" id="rotate-x" min="-360" max="360" value="0" />
-          <span id="rotate-x-value">0</span>
-          <label for="rotateY">Y</label>
-          <input type="range" id="rotate-y" min="-360" max="360" value="-45" />
-          <span id="rotate-y-value">0</span>
-          <label for="rotateZ">Z</label>
-          <input type="range" id="rotate-z" min="-360" max="360" value="0" />
-          <span id="rotate-z-value">0</span>
-        </div>
-        <label for="scale">Scale</label>
-        <div class="scale">
-          <label for="scaleX">X</label>
-          <input type="range" id="scale-x" min="0.2" max="100" value="0" />
-          <span id="scale-x-value">0</span>
-          <label for="scaleY">Y</label>
-          <input type="range" id="scale-y" min="0.2" max="100" value="0" />
-          <span id="scale-y-value">0</span>
-          <label for="scaleZ">Z</label>
-          <input type="range" id="scale-z" min="0.2" max="100" value="0" />
-          <span id="scale-z-value">0</span>
-        </div>
         <h2>Camera</h2>
         <label for="camera-pos">Camera Position</label>
         <div class="camera-pos">
@@ -143,6 +106,43 @@
           <button id="reset">Reset All</button>
           <button id="animation">Start Animation</button>
           <button id="stop-anim" class="hidden">Stop Animation</button>
+        </div>
+        <div class="transform-title" id="transform-title"></div>
+        <label for="translate">Translate</label>
+        <div class="translate">
+          <label for="translateX">X</label>
+          <input type="range" id="translate-x" min="-100" max="100" value="0" />
+          <span id="translate-x-value">0</span>
+          <label for="translateY">Y</label>
+          <input type="range" id="translate-y" min="-100" max="100" value="0" />
+          <span id="translate-y-value">0</span>
+          <label for="translateZ">Z</label>
+          <input type="range" id="translate-z" min="-100" max="100" value="0" />
+          <span id="translate-z-value">0</span>
+        </div>
+        <label for="rotate">Rotate</label>
+        <div class="rotate">
+          <label for="rotateX">X</label>
+          <input type="range" id="rotate-x" min="-360" max="360" value="0" />
+          <span id="rotate-x-value">0</span>
+          <label for="rotateY">Y</label>
+          <input type="range" id="rotate-y" min="-360" max="360" value="-45" />
+          <span id="rotate-y-value">0</span>
+          <label for="rotateZ">Z</label>
+          <input type="range" id="rotate-z" min="-360" max="360" value="0" />
+          <span id="rotate-z-value">0</span>
+        </div>
+        <label for="scale">Scale</label>
+        <div class="scale">
+          <label for="scaleX">X</label>
+          <input type="range" id="scale-x" min="0.2" max="100" value="0" />
+          <span id="scale-x-value">0</span>
+          <label for="scaleY">Y</label>
+          <input type="range" id="scale-y" min="0.2" max="100" value="0" />
+          <span id="scale-y-value">0</span>
+          <label for="scaleZ">Z</label>
+          <input type="range" id="scale-z" min="0.2" max="100" value="0" />
+          <span id="scale-z-value">0</span>
         </div>
       </div>
       <!-- canvas -->
