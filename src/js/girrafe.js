@@ -2,8 +2,8 @@ const torso = new ObjectNode();
 torso.name = "torso";
 torso.model = generateCuboid(1, 1, 2, [0, 0, 0]);
 torso.transform = {
-  translate: [0, -0.3, 0],
-  rotate: [0, 0, 0],
+  translate: [0, -0.35, 0],
+  rotate: [0, 120, 0],
   scale: [1, 1, 1],
 };
 (torso.pickedColor = [1, 0, 0]),
@@ -147,7 +147,7 @@ tailBelow.animation = {
 
 const neck = new ObjectNode();
 neck.name = "neck";
-neck.model = generateCuboid(1.5, 0.7, 0.5, [0, 0, 0]);
+neck.model = generateCuboid(2, 0.7, 0.5, [0, 0, 0]);
 neck.transform = {
   translate: [0, 1, 1],
   rotate: [-100, 0, 0],
@@ -168,10 +168,10 @@ neck.animation = {
 
 const head = new ObjectNode();
 head.name = "head";
-head.model = generateCuboid(0.6, 0.6, 1, [0, 0, 0]);
+head.model = generateCuboid(0.6, 0.66, 1, [0, 0, 0]);
 head.transform = {
-  translate: [0, 0.8, 0.3],
-  rotate: [100, 0, 0],
+  translate: [0, 1.2, 0.3],
+  rotate: [50, 0, 0],
   scale: [1, 1, 1],
 };
 (head.pickedColor = [1, 0, 0]),
@@ -187,6 +187,69 @@ head.animation = {
   degAnimate: 0.1,
 };
 
+const leftEar = new ObjectNode();
+leftEar.name = "leftEar";
+leftEar.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
+leftEar.transform = {
+  translate: [0.3, 0, 0],
+  rotate: [0, 0, 0],
+  scale: [1, 1, 1],
+};
+(leftEar.pickedColor = [1, 0, 0]),
+  (leftEar.viewMatrix = {
+    camera: [0, 0, 1],
+    lookAt: [0, 0, 0],
+    up: [0, 1, 0],
+    near: 0.1,
+    far: 50,
+  });
+leftEar.animation = {
+  isAnimate: false,
+  degAnimate: 0.1,
+};
+
+const rightEar = new ObjectNode();
+rightEar.name = "rightEar";
+rightEar.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
+rightEar.transform = {
+  translate: [-0.3, 0, 0],
+  rotate: [0, 0, 0],
+  scale: [1, 1, 1],
+};
+(rightEar.pickedColor = [1, 0, 0]),
+  (rightEar.viewMatrix = {
+    camera: [0, 0, 1],
+    lookAt: [0, 0, 0],
+    up: [0, 1, 0],
+    near: 0.1,
+    far: 50,
+  });
+rightEar.animation = {
+  isAnimate: false,
+  degAnimate: 0.1,
+};
+
+const nose = new ObjectNode();
+nose.name = "nose";
+nose.model = generateCuboid(0.4, 0.4, 1, [0, 0, 0]);
+nose.transform = {
+  translate: [0, 0, 0.3],
+  rotate: [0, 0, 0],
+  scale: [1, 1, 1],
+};
+(nose.pickedColor = [1, 0, 0]),
+  (nose.viewMatrix = {
+    camera: [0, 0, 1],
+    lookAt: [0, 0, 0],
+    up: [0, 1, 0],
+    near: 0.1,
+    far: 50,
+  });
+nose.animation = {
+  isAnimate: false,
+  degAnimate: 0.1,
+};
+
 /* Set parent */
 leftFrontLeg.setParent(torso);
 rightFrontLeg.setParent(torso);
@@ -196,15 +259,11 @@ tail.setParent(torso);
 tailBelow.setParent(tail);
 neck.setParent(torso);
 head.setParent(neck);
+leftEar.setParent(head)
+rightEar.setParent(head)
+nose.setParent(head)
+
 
 const endModel = [
-  torso,
-  // leftFrontLeg,
-  // rightFrontLeg,
-  // leftBackLeg,
-  // rightBackLeg,
-  // tail,
-  // tailBelow,
-  // neck,
-  // head,
+  torso
 ];
