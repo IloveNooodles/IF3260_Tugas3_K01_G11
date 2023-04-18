@@ -123,27 +123,6 @@ colorPicker.addEventListener("change", () => {
   ];
 });
 
-lightingCheckbox.addEventListener("change", () => {
-  state.lighting.useLighting = lightingCheckbox.checked;
-  if (state.lighting.useLighting) {
-    state.objects.forEach((object) => {
-      object.program = createShaderProgram(
-        gl,
-        vertex_shader_3d,
-        fragment_shader_3d
-      );
-    });
-  } else if (!state.lighting.useLighting) {
-    state.objects.forEach((object) => {
-      object.program = createShaderProgram(
-        gl,
-        vertex_shader_3d,
-        fragment_shader_3d_no_lighting
-      );
-    });
-  }
-});
-
 reset.addEventListener("click", () => {
   program = createShaderProgram(
     gl,
@@ -428,6 +407,28 @@ function showComponents(objects, level = 0) {
     }
   });
 }
+
+/* ======= rendering options ======= */
+lightingCheckbox.addEventListener("change", () => {
+  state.lighting.useLighting = lightingCheckbox.checked;
+  if (state.lighting.useLighting) {
+    state.objects.forEach((object) => {
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_3d
+      );
+    });
+  } else if (!state.lighting.useLighting) {
+    state.objects.forEach((object) => {
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_3d_no_lighting
+      );
+    });
+  }
+});
 
 textureSelector.addEventListener("change", function (e) {
   state.texture.textureType = this.value;

@@ -123,8 +123,9 @@ function renderLoop(objects) {
         buffer: new Float32Array(object.model.colors.flat(1)),
         numComponents: 3,
       },
+      /* TODO: calculate texture pos */
       aTexture: {
-        buffer: new Float32Array(),
+        buffer: new Float32Array(object.model.normals.flat(1)),
         numComponents: 2,
       },
     };

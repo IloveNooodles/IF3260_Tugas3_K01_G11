@@ -139,6 +139,7 @@ function setAttribs(attribSetters, attribs) {
 
   const textureBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, attribs.aTexture.buffer, gl.STATIC_DRAW);
   gl.vertexAttribPointer(attribSetters.texture, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attribSetters.texture);
 }
