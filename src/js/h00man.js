@@ -1,4 +1,4 @@
-var torso = new ObjectNode();
+const torso = new ObjectNode();
 torso.name = "torso";
 torso.model = generateCuboid(1, 0.8, 0.6, [0, 0, 0]);
 torso.transform = {
@@ -19,7 +19,7 @@ torso.animation = {
   degAnimate: 0.1,
 };
 
-var leftHand = new ObjectNode();
+const leftHand = new ObjectNode();
 leftHand.name = "leftHand";
 leftHand.model = generateCuboid(0.9, 0.3, 0.3, [0, 0, 0]);
 leftHand.transform = {
@@ -40,7 +40,7 @@ leftHand.animation = {
   degAnimate: 0.1,
 };
 
-var rightHand = new ObjectNode();
+const rightHand = new ObjectNode();
 rightHand.name = "rightHand";
 rightHand.model = generateCuboid(0.9, 0.3, 0.3, [0, 0, 0]);
 rightHand.transform = {
@@ -61,7 +61,7 @@ rightHand.animation = {
   degAnimate: 0.1,
 };
 
-var leftLeg = new ObjectNode();
+const leftLeg = new ObjectNode();
 leftLeg.name = "leftLeg";
 leftLeg.model = generateCuboid(0.9, 0.3, 0.3, [0, 0, 0]);
 leftLeg.transform = {
@@ -82,7 +82,7 @@ leftLeg.animation = {
   degAnimate: 0.1,
 };
 
-var rightLeg = new ObjectNode();
+const rightLeg = new ObjectNode();
 rightLeg.name = "leftLeg";
 rightLeg.model = generateCuboid(0.9, 0.3, 0.3, [0, 0, 0]);
 rightLeg.transform = {
@@ -103,7 +103,7 @@ rightLeg.animation = {
   degAnimate: 0.1,
 };
 
-var head = new ObjectNode();
+const head = new ObjectNode();
 head.name = "head";
 head.model = generateCuboid(0.6, 0.5, 0.5, [0, 0, 0]);
 head.transform = {
@@ -130,4 +130,4 @@ leftLeg.setParent(torso);
 rightLeg.setParent(torso);
 head.setParent(torso);
 
-var endModel = [torso, leftHand, rightHand, leftLeg, rightLeg, head];
+const endModel = [torso, leftHand, rightHand, leftLeg, rightLeg, head];

@@ -1,6 +1,7 @@
 /* ======= Get Document Object Model ======= */
 const canvas = document.getElementById("canvas");
 const components = document.getElementById("components");
+
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
 
@@ -315,7 +316,7 @@ function setTransform(object) {
   return transformMatrix;
 }
 
-function setProjection(object) {
+function setProjection() {
   /* Setup projection matrix */
 
   const aspect = canvas.width / canvas.height;
