@@ -75,28 +75,15 @@ modelInput.addEventListener("change", () => {
   const reader = new FileReader();
   reader.onload = function (e) {
     const text = e.target.result;
-    const color = state.objects[0].pickedColor;
     setDefaultState();
     clear();
-    state.objects[0].model = JSON.parse(text);
-    state.objects[0].pickedColor = color;
+    state.objects = loadObject(text);
   };
   reader.readAsText(file);
 });
 
 buttonSave.addEventListener("click", () => {
-  const transform = setTransform(
-    state.objects[0].model,
-    state.objects[0].transform
-  );
-  // console.table(transform[1][0]);
-  // console.table(state.objects[0].model.vertices);
-  const appliedtransform = state.objects[0].model.vertices.map((x) =>
-    matrices.applyTransform(transform, x)
-  );
-  // console.table(appliedtransform);
-  state.objects[0].model.vertices = appliedtransform;
-  const obj = saveObject(state.objects[0].model);
+  const obj = saveObject(state.objects);
   const blob = new Blob([obj], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

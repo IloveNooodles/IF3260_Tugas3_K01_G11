@@ -266,16 +266,22 @@ function setCamera(object) {
 function setTransform(object) {
   /* Setup transform matrix */
 
-  let centroid = locateCentroid(object.model.vertices);
+  // let centroid = locateCentroid(object.model.vertices);
 
-  var transformMatrix = matrices.multiply(
-    matrices.translate(
-      object.transform.translate[0],
-      object.transform.translate[1],
-      object.transform.translate[2]
-    ),
-    matrices.translate(centroid[0], centroid[1], centroid[2])
+  var transformMatrix = matrices.translate(
+    object.transform.translate[0],
+    object.transform.translate[1],
+    object.transform.translate[2]
   );
+
+  // var transformMatrix = matrices.multiply(
+  //   matrices.translate(
+  //     object.transform.translate[0],
+  //     object.transform.translate[1],
+  //     object.transform.translate[2]
+  //   ),
+  //   matrices.translate(centroid[0], centroid[1], centroid[2])
+  // );
 
   transformMatrix = matrices.multiply(
     transformMatrix,
@@ -301,10 +307,10 @@ function setTransform(object) {
     )
   );
 
-  transformMatrix = matrices.multiply(
-    transformMatrix,
-    matrices.translate(-centroid[0], -centroid[1], -centroid[2])
-  );
+  // transformMatrix = matrices.multiply(
+  //   transformMatrix,
+  //   matrices.translate(-centroid[0], -centroid[1], -centroid[2])
+  // );
 
   return transformMatrix;
 }

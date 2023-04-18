@@ -122,10 +122,44 @@ function generateRandomColors(vertices) {
 /* ======= JSON Handler ======= */
 function loadObject(jsonString) {
   parsedObject = JSON.parse(jsonString);
-  return parsedObject;
+  var objects = [];
+  for (var i = 0; i < parsedObject.length; i++) {
+    var node = parsedObject[i];
+    var nodeData = new ObjectNode();
+    nodeData.name = node.name;
+    nodeData.model = node.model;
+    nodeData.transform = node.transform;
+    nodeData.pickedColor = node.pickedColor;
+    nodeData.viewMatrix = node.viewMatrix;
+    nodeData.animation = node.animation;
+    if (node.parent != null) {
+      nodeData.parent = node.parent;
+      var parentIndex = objects.findIndex((obj) => obj.name == node.parent);
+      console.log(parentIndex);
+      objects[parentIndex].children.push(nodeData);
+    }
+    objects.push(nodeData);
+  }
+  return objects;
 }
 
-function saveObject(model) {
+function saveObject(objects) {
+  var model = [];
+  for (var i = 0; i < objects.length; i++) {
+    var node = objects[i];
+    var nodeData = {
+      name: node.name,
+      model: node.model,
+      transform: node.transform,
+      pickedColor: node.pickedColor,
+      viewMatrix: node.viewMatrix,
+      animation: node.animation,
+    };
+    if (node.parent != null) {
+      nodeData.parent = node.parent;
+    }
+    model.push(nodeData);
+  }
   saveObject = JSON.stringify(model);
   return saveObject;
 }

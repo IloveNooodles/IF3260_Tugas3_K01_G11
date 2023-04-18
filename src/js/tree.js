@@ -18,7 +18,7 @@ ObjectNode.prototype.setParent = function (parent) {
   if (parent) {
     parent.children.push(this);
   }
-  this.parent = parent;
+  this.parent = parent.name;
 };
 
 ObjectNode.prototype.updateWorldMatrix = function (parentWorldMatrix) {
