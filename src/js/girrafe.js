@@ -187,46 +187,93 @@ head.animation = {
   degAnimate: 0.1,
 };
 
-const leftEar = new ObjectNode();
-leftEar.name = "leftEar";
-leftEar.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
-leftEar.transform = {
+const leftEye = new ObjectNode();
+leftEye.name = "leftEye";
+leftEye.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
+leftEye.transform = {
   translate: [0.3, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
-(leftEar.pickedColor = [1, 0, 0]),
-  (leftEar.viewMatrix = {
+(leftEye.pickedColor = [1, 0, 0]),
+  (leftEye.viewMatrix = {
     camera: [0, 0, 1],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
     far: 50,
   });
-leftEar.animation = {
+leftEye.animation = {
   isAnimate: false,
   degAnimate: 0.1,
 };
 
-const rightEar = new ObjectNode();
-rightEar.name = "rightEar";
-rightEar.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
-rightEar.transform = {
+const rightEye = new ObjectNode();
+rightEye.name = "rightEye";
+rightEye.model = generateCuboid(0.15, 0.15, 0.2, [0, 0, 0]);
+rightEye.transform = {
   translate: [-0.3, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
-(rightEar.pickedColor = [1, 0, 0]),
-  (rightEar.viewMatrix = {
+(rightEye.pickedColor = [1, 0, 0]),
+  (rightEye.viewMatrix = {
     camera: [0, 0, 1],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
     far: 50,
   });
-rightEar.animation = {
+rightEye.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.3, 0, 0],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const nose = new ObjectNode();
@@ -248,6 +295,53 @@ nose.transform = {
 nose.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0, 0, 0.3],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.31],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.33],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.35],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.33],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.31],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.3],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.31],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0.33],
+      rotate: [0, 0, 0],
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 /* Set parent */
@@ -259,11 +353,8 @@ tail.setParent(torso);
 tailBelow.setParent(tail);
 neck.setParent(torso);
 head.setParent(neck);
-leftEar.setParent(head)
-rightEar.setParent(head)
-nose.setParent(head)
+leftEye.setParent(head);
+rightEye.setParent(head);
+nose.setParent(head);
 
-
-const endModel = [
-  torso
-];
+const endModel = [torso];

@@ -133,6 +133,7 @@ reset.addEventListener("click", () => {
     vertex_shader_3d,
     fragment_shader_3d_no_lighting
   );
+  resetComponentsChild();
   setDefaultState();
   clear();
   resetTransf();
@@ -408,6 +409,12 @@ function setInitColor(objects, color) {
       setInitColor(object.children, color);
     }
   });
+}
+
+function resetComponentsChild() {
+  for (let comp in components.children) {
+    components.removeChild(comp);
+  }
 }
 
 function showComponents(objects, level = 0) {
