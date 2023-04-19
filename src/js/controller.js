@@ -176,11 +176,11 @@ resetCamera.addEventListener("click", () => {
 });
 
 function resetCam() {
-  state.objects[0].viewMatrix.camera = [0, 0, 1];
-  state.objects[0].viewMatrix.lookAt = [0, 0, 0];
-  state.objects[0].viewMatrix.up = [0, 1, 0];
-  state.objects[0].viewMatrix.near = 0.1;
-  state.objects[0].viewMatrix.far = 50;
+  state.focus.viewMatrix.camera = [0, 0, 1];
+  state.focus.viewMatrix.lookAt = [0, 0, 0];
+  state.focus.viewMatrix.up = [0, 1, 0];
+  state.focus.viewMatrix.near = 0.1;
+  state.focus.viewMatrix.far = 50;
   state.fudgeFactor = 0;
   state.theta = 90;
   state.phi = 90;
@@ -224,12 +224,12 @@ stopAnim.addEventListener("click", () => {
 
 rangeTranslateX.addEventListener("input", () => {
   state.focus.transform.translate[0] = -1 + (2 * rangeTranslateX.value) / 100;
-  translateXValue.innerHTML = rangeTranslateX.value.toFixed(2);
+  translateXValue.innerHTML = rangeTranslateX.value;
 });
 
 rangeTranslateY.addEventListener("input", () => {
   state.focus.transform.translate[1] = -1 + (2 * rangeTranslateY.value) / 100;
-  translateYValue.innerHTML = rangeTranslateY.value.toFixed(2);
+  translateYValue.innerHTML = rangeTranslateY.value;
 });
 
 rangeTranslateZ.addEventListener("input", () => {
@@ -245,17 +245,17 @@ rangeTranslateZ.addEventListener("input", () => {
 rangeRotateX.addEventListener("input", () => {
   // rotate -360 to 360
   state.focus.transform.rotate[0] = degToRad(rangeRotateX.value);
-  rotateXValue.innerHTML = rangeRotateX.value.toFixed(2);
+  rotateXValue.innerHTML = rangeRotateX.value;
 });
 
 rangeRotateY.addEventListener("input", () => {
   state.focus.transform.rotate[1] = degToRad(rangeRotateY.value);
-  rotateYValue.innerHTML = rangeRotateY.value.toFixed(2);
+  rotateYValue.innerHTML = rangeRotateY.value;
 });
 
 rangeRotateZ.addEventListener("input", () => {
   state.focus.transform.rotate[2] = degToRad(rangeRotateZ.value);
-  rotateZValue.innerHTML = rangeRotateZ.value.toFixed(2);
+  rotateZValue.innerHTML = rangeRotateZ.value;
 });
 
 /* scale from -5 to 5 */
@@ -275,37 +275,52 @@ rangeScaleZ.addEventListener("input", () => {
 });
 
 rangeCameraX.addEventListener("input", () => {
-  state.objects[0].viewMatrix.camera[0] = parseInt(rangeCameraX.value);
+  alterViewMatrix(state.focus);
   cameraXValue.innerHTML = rangeCameraX.value;
 });
 
 rangeCameraY.addEventListener("input", () => {
-  state.objects[0].viewMatrix.camera[1] = parseInt(rangeCameraY.value);
+  alterViewMatrix(state.focus);
   cameraYValue.innerHTML = rangeCameraY.value;
 });
 
 rangeCameraZ.addEventListener("input", () => {
-  state.objects[0].viewMatrix.camera[2] = parseInt(rangeCameraZ.value);
+  alterViewMatrix(state.focus);
   cameraZValue.innerHTML = rangeCameraZ.value;
 });
 
 rangeLookAtX.addEventListener("input", () => {
-  state.objects[0].viewMatrix.lookAt[0] =
-    (2 * rangeLookAtX.value * 2 * Math.PI) / 100;
+  alterViewMatrix(state.focus);
   lookAtXValue.innerHTML = rangeLookAtX.value;
 });
 
 rangeLookAtY.addEventListener("input", () => {
-  state.objects[0].viewMatrix.lookAt[1] =
-    (2 * rangeLookAtY.value * 2 * Math.PI) / 100;
+  alterViewMatrix(state.focus);
   lookAtYValue.innerHTML = rangeLookAtY.value;
 });
 
 rangeLookAtZ.addEventListener("input", () => {
-  state.objects[0].viewMatrix.lookAt[2] =
-    (2 * rangeLookAtZ.value * 2 * Math.PI) / 100;
-  lookAtZValue.innerHTML = rangeLookAtZ.value;
+  alterViewMatrix(state.focus);
+  lookAtZValue.innerHTML = 7 + rangeLookAtZ.value / 100;
 });
+
+function alterViewMatrix(object) {
+  object.viewMatrix.camera = [
+    parseInt(rangeCameraX.value),
+    parseInt(rangeCameraY.value),
+    parseInt(rangeCameraZ.value),
+  ];
+  object.viewMatrix.lookAt = [
+    (2 * rangeLookAtX.value * 2 * Math.PI) / 100,
+    (2 * rangeLookAtY.value * 2 * Math.PI) / 100,
+    (2 * rangeLookAtZ.value * 2 * Math.PI) / 100,
+  ];
+  if (object.children.length > 0) {
+    object.children.forEach((child) => {
+      alterViewMatrix(child);
+    });
+  }
+}
 
 rangeFOV.addEventListener("input", () => {
   state.fudgeFactor = rangeFOV.value / 100;
@@ -358,8 +373,8 @@ function setSliderState(object) {
   lookAtXValue.innerHTML = object.viewMatrix.lookAt[0];
   rangeLookAtY.value = object.viewMatrix.lookAt[1];
   lookAtYValue.innerHTML = object.viewMatrix.lookAt[1];
-  rangeLookAtZ.value = object.viewMatrix.lookAt[2];
-  lookAtZValue.innerHTML = object.viewMatrix.lookAt[2];
+  rangeLookAtZ.value = 7 + object.viewMatrix.lookAt[2];
+  lookAtZValue.innerHTML = 7 + object.viewMatrix.lookAt[2];
 
   rangeFOV.value = state.fudgeFactor;
   fovValue.innerHTML = state.fudgeFactor;

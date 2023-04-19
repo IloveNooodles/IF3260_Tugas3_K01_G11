@@ -46,12 +46,12 @@ window.onload = function () {
     alert("WebGL not supported");
   }
   colorPicker.value = "#FF0000";
-  console.log(hexToRgb(colorPicker.value));
-  setInitColor(state.objects, hexToRgb(colorPicker.value));
+  // console.log(hexToRgb(colorPicker.value));
+  // setInitColor(state.objects, hexToRgb(colorPicker.value));
   state.focus = state.objects[0];
   setSliderState(state.focus);
   setTransformTo(state.focus);
-  console.log(state);
+  // console.log(state);
   render();
 };
 
