@@ -442,24 +442,29 @@ function showComponents(objects, level = 0) {
 /* ======= rendering options ======= */
 lightingCheckbox.addEventListener("change", () => {
   state.lighting.useLighting = lightingCheckbox.checked;
-  if (state.lighting.useLighting) {
-    state.objects.forEach((object) => {
+  setColor(state.objects);
+});
+
+function setColor(objects) {
+  objects.forEach((object) => {
+    if (state.lighting.useLighting) {
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
         fragment_shader_3d
       );
-    });
-  } else if (!state.lighting.useLighting) {
-    state.objects.forEach((object) => {
+    } else if (!state.lighting.useLighting) {
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
         fragment_shader_3d_no_lighting
       );
-    });
-  }
-});
+    }
+    if (object.children.length > 0) {
+      setColor(object.children);
+    }
+  });
+}
 
 textureSelector.addEventListener("change", function (e) {
   state.texture.textureType = this.value;
