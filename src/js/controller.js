@@ -412,8 +412,8 @@ function setInitColor(objects, color) {
 }
 
 function resetComponentsChild() {
-  for (let comp in components.children) {
-    components.removeChild(comp);
+  while (components.children.length > 0) {
+    components.removeChild(components.firstChild);
   }
 }
 

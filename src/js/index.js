@@ -24,8 +24,18 @@ function setDefaultState() {
     theta: 90.0,
     phi: 90.0,
   };
-
+  setDefaultRotationToRadian(state.objects);
   showComponents(state.objects);
+}
+
+function setDefaultRotationToRadian(objects) {
+  objects.forEach((object) => {
+    updatedRotation = object.transform.rotate.map((val) => degToRad(val));
+    object.transform.rotate = updatedRotation;
+    if (object.children.length > 0) {
+      setDefaultRotationToRadian(object.children);
+    }
+  });
 }
 
 window.requestAnimFrame = (function () {
