@@ -46,7 +46,7 @@ function createEnvironmentTexture(gl) {
   const faceInfos = [
     { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: './texture/gambar-1.jpg' },
     { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: './texture/gambar-2.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: './texture/gambar-3.jpeg' },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: './texture/gambar-3.jpg' },
     { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: './texture/gambar-4.jpg' },
     { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: './texture/gambar-5.jpg' },
     { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: './texture/gambar-6.jpg' },
