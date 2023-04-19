@@ -13,6 +13,27 @@
       <!-- tools container -->
       <div class="tools-container">
         <h1>Tools</h1>
+        <div class="save-load">
+          <input type="file" id="objFile" accept="application/json" />
+          <button id="save">Save</button>
+        </div>
+        <div class="color">
+          <label for="color">Color: </label>
+          <input type="color" id="color-picker" />
+        </div>
+        <div class="shading">
+          <label for="lighting">Shading</label>
+          <input type="checkbox" id="lighting" />
+        </div>
+        <div class="texture">
+          <label for="texture-dropdown">texture</label>
+          <select name="texture-dropdown" id="texture-dropdown">
+            <option>none</option>
+            <option value="custom">custom</option>
+            <option value="bump">bump</option>
+            <option value="environment">environment</option>
+          </select>
+        </div>
         <h2>Projection</h2>
         <div class="projection" id="projection">
           <input
@@ -75,38 +96,6 @@
             <span id="phi-value">0</span>
           </div>
         </div>
-        <h2>Utilities</h2>
-        <div class="save-load">
-          <input type="file" id="objFile" accept="application/json" />
-          <button id="save">Save</button>
-        </div>
-        <div class="color">
-          <label for="color">Color: </label>
-          <input type="color" id="color-picker" />
-        </div>
-        <div class="shading">
-          <label for="lighting">Shading</label>
-          <input type="checkbox" id="lighting" />
-        </div>
-        <div class="texture">
-          <label for="texture-dropdown">texture</label>
-          <select name="texture-dropdown" id="texture-dropdown">
-            <option>none</option>
-            <option value="custom">custom</option>
-            <option value="bump">bump</option>
-            <option value="environment">environment</option>
-          </select>
-        </div>
-        <div class="bottom-buttons">
-          <button id="help" onclick="location.href='help.html'">
-            Show Help
-          </button>
-          <button id="reset-transform">Reset Transform</button>
-          <button id="reset-camera">Reset Camera</button>
-          <button id="reset">Reset All</button>
-          <button id="animation">Start Animation</button>
-          <button id="stop-anim" class="hidden">Stop Animation</button>
-        </div>
         <div class="transform-title" id="transform-title"></div>
         <label for="translate">Translate</label>
         <div class="translate">
@@ -143,6 +132,16 @@
           <label for="scaleZ">Z</label>
           <input type="range" id="scale-z" min="0.2" max="100" value="0" />
           <span id="scale-z-value">0</span>
+        </div>
+        <div class="bottom-buttons">
+          <button id="help" onclick="location.href='help.html'">
+            Show Help
+          </button>
+          <button id="reset-transform">Reset Transform</button>
+          <button id="reset-camera">Reset Camera</button>
+          <button id="reset">Reset All</button>
+          <button id="animation">Start Animation</button>
+          <button id="stop-anim" class="hidden">Stop Animation</button>
         </div>
       </div>
       <!-- canvas -->

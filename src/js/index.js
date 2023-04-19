@@ -11,8 +11,7 @@ function setDefaultState() {
   /* Setup default state for webgl canvas */
   state = {
     objects: endModel,
-    focus: endModel[0],
-    applyChild: false,
+    focus: null,
     lighting: {
       useLighting: false,
       lightDirection: [0, 0, 1],
@@ -46,12 +45,13 @@ window.onload = function () {
   if (!gl) {
     alert("WebGL not supported");
   }
-  setSliderState();
-  setTransformTo(state.focus);
   colorPicker.value = "#FF0000";
-  state.objects.forEach((object) => {
-    object.pickedColor = [1, 0, 0];
-  });
+  console.log(hexToRgb(colorPicker.value));
+  setInitColor(state.objects, hexToRgb(colorPicker.value));
+  state.focus = state.objects[0];
+  setSliderState(state.focus);
+  setTransformTo(state.focus);
+  console.log(state);
   render();
 };
 
@@ -140,6 +140,7 @@ function renderLoop(objects) {
       uColor: object.pickedColor.concat(1.0),
     };
 
+    // console.log(object.name, object.pickedColor.concat(1.0));
     var uniformSetters = initUniforms(gl, object.program);
     setUniforms(uniformSetters, uniforms);
 
@@ -171,7 +172,7 @@ function render() {
 
 function setWorldViewProjectionMatrix(transform, object) {
   const camera = setCamera(object);
-  const projection = setProjection(object);
+  const projection = setProjection();
   var view = matrices.inverse(camera);
   var viewProjectionMatrix = matrices.multiply(projection, view);
   if (state.fudgeFactor < 0.01) {

@@ -65,15 +65,19 @@ const transformFor = document.createElement("span");
 /* ======= Event Listener ======= */
 projectionRadio.forEach((radio) => {
   radio.addEventListener("change", () => {
-    state.projection = radio.value;
-    console.log(state.focus.transform.translate);
     var offset = 0;
-    if (state.projection === "perspective") {
+    if (radio.value == "perspective" && state.projection != "perspective") {
       offset = -5;
-    } else {
-      offset = -1;
+    } else if (
+      state.projection === "perspective" &&
+      radio.value !== "perspective"
+    ) {
+      offset = 5;
     }
-    state.focus.transform.translate[2] = offset;
+    state.projection = radio.value;
+    state.focus.transform.translate[2] += offset;
+    rangeTranslateZ.value = state.focus.transform.translate[2];
+    translateZValue.innerHTML = state.focus.transform.translate[2];
   });
 });
 
@@ -96,7 +100,7 @@ modelInput.addEventListener("change", () => {
     state.focus = state.objects[0];
     components.innerHTML = "";
     showComponents(state.objects);
-    setTransformTo();
+    setTransformTo(state.focus);
   };
   reader.readAsText(file);
 });
@@ -219,58 +223,54 @@ stopAnim.addEventListener("click", () => {
 });
 
 rangeTranslateX.addEventListener("input", () => {
-  state.objects[0].transform.translate[0] =
-    -1 + (2 * rangeTranslateX.value) / 100;
-  translateXValue.innerHTML = rangeTranslateX.value;
+  state.focus.transform.translate[0] = -1 + (2 * rangeTranslateX.value) / 100;
+  translateXValue.innerHTML = rangeTranslateX.value.toFixed(2);
 });
 
 rangeTranslateY.addEventListener("input", () => {
-  state.objects[0].transform.translate[1] =
-    -1 + (2 * rangeTranslateY.value) / 100;
-  translateYValue.innerHTML = rangeTranslateY.value;
+  state.focus.transform.translate[1] = -1 + (2 * rangeTranslateY.value) / 100;
+  translateYValue.innerHTML = rangeTranslateY.value.toFixed(2);
 });
 
 rangeTranslateZ.addEventListener("input", () => {
   if (state.projection === "perspective") {
-    state.objects[0].transform.translate[2] =
-      -5 + (2 * rangeTranslateZ.value) / 100;
+    state.focus.transform.translate[2] = -5 + rangeTranslateZ.value / 10;
   } else {
-    state.objects[0].transform.translate[2] =
-      -1 + (2 * rangeTranslateZ.value) / 100;
+    state.focus.transform.translate[2] = -1 + rangeTranslateZ.value / 10;
   }
-  translateZValue.innerHTML = rangeTranslateZ.value;
+  translateZValue.innerHTML = state.focus.transform.translate[2].toFixed(2);
 });
 
 /* rotate from -360 to 360 */
 rangeRotateX.addEventListener("input", () => {
   // rotate -360 to 360
-  state.objects[0].transform.rotate[0] = degToRad(rangeRotateX.value);
-  rotateXValue.innerHTML = rangeRotateX.value;
+  state.focus.transform.rotate[0] = degToRad(rangeRotateX.value);
+  rotateXValue.innerHTML = rangeRotateX.value.toFixed(2);
 });
 
 rangeRotateY.addEventListener("input", () => {
-  state.objects[0].transform.rotate[1] = degToRad(rangeRotateY.value);
-  rotateYValue.innerHTML = rangeRotateY.value;
+  state.focus.transform.rotate[1] = degToRad(rangeRotateY.value);
+  rotateYValue.innerHTML = rangeRotateY.value.toFixed(2);
 });
 
 rangeRotateZ.addEventListener("input", () => {
-  state.objects[0].transform.rotate[2] = degToRad(rangeRotateZ.value);
-  rotateZValue.innerHTML = rangeRotateZ.value;
+  state.focus.transform.rotate[2] = degToRad(rangeRotateZ.value);
+  rotateZValue.innerHTML = rangeRotateZ.value.toFixed(2);
 });
 
 /* scale from -5 to 5 */
 rangeScaleX.addEventListener("input", () => {
-  state.objects[0].transform.scale[0] = rangeScaleX.value / 20;
+  state.focus.transform.scale[0] = rangeScaleX.value / 20;
   scaleXValue.innerHTML = (rangeScaleX.value / 20).toFixed(2);
 });
 
 rangeScaleY.addEventListener("input", () => {
-  state.objects[0].transform.scale[1] = rangeScaleY.value / 20;
+  state.focus.transform.scale[1] = rangeScaleY.value / 20;
   scaleYValue.innerHTML = (rangeScaleY.value / 20).toFixed(2);
 });
 
 rangeScaleZ.addEventListener("input", () => {
-  state.objects[0].transform.scale[2] = rangeScaleZ.value / 20;
+  state.focus.transform.scale[2] = rangeScaleZ.value / 20;
   scaleZValue.innerHTML = (rangeScaleZ.value / 20).toFixed(2);
 });
 
@@ -323,43 +323,43 @@ phi.addEventListener("input", () => {
   phiValue.innerHTML = phi.value;
 });
 
-function setSliderState() {
+function setSliderState(object) {
   /* setup default state for sliders */
 
-  rangeTranslateX.value = state.objects[0].transform.translate[0];
-  translateXValue.innerHTML = state.objects[0].transform.translate[0];
-  rangeTranslateY.value = state.objects[0].transform.translate[1];
-  translateYValue.innerHTML = state.objects[0].transform.translate[1];
-  rangeTranslateZ.value = state.objects[0].transform.translate[2];
-  translateZValue.innerHTML = state.objects[0].transform.translate[2];
+  rangeTranslateX.value = object.transform.translate[0];
+  translateXValue.innerHTML = object.transform.translate[0].toFixed(2);
+  rangeTranslateY.value = object.transform.translate[1];
+  translateYValue.innerHTML = object.transform.translate[1].toFixed(2);
+  rangeTranslateZ.value = object.transform.translate[2];
+  translateZValue.innerHTML = object.transform.translate[2].toFixed(2);
 
-  rangeRotateX.value = state.objects[0].transform.rotate[0];
-  rotateXValue.innerHTML = state.objects[0].transform.rotate[0];
-  rangeRotateY.value = state.objects[0].transform.rotate[1];
-  rotateYValue.innerHTML = state.objects[0].transform.rotate[1];
-  rangeRotateZ.value = state.objects[0].transform.rotate[2];
-  rotateZValue.innerHTML = state.objects[0].transform.rotate[2];
+  rangeRotateX.value = object.transform.rotate[0];
+  rotateXValue.innerHTML = object.transform.rotate[0].toFixed(2);
+  rangeRotateY.value = object.transform.rotate[1];
+  rotateYValue.innerHTML = object.transform.rotate[1].toFixed(2);
+  rangeRotateZ.value = object.transform.rotate[2];
+  rotateZValue.innerHTML = object.transform.rotate[2].toFixed(2);
 
-  rangeScaleX.value = state.objects[0].transform.scale[0] * 20;
-  scaleXValue.innerHTML = state.objects[0].transform.scale[0];
-  rangeScaleY.value = state.objects[0].transform.scale[1] * 20;
-  scaleYValue.innerHTML = state.objects[0].transform.scale[1];
-  rangeScaleZ.value = state.objects[0].transform.scale[2] * 20;
-  scaleZValue.innerHTML = state.objects[0].transform.scale[2];
+  rangeScaleX.value = object.transform.scale[0] * 20;
+  scaleXValue.innerHTML = object.transform.scale[0].toFixed(2);
+  rangeScaleY.value = object.transform.scale[1] * 20;
+  scaleYValue.innerHTML = object.transform.scale[1].toFixed(2);
+  rangeScaleZ.value = object.transform.scale[2] * 20;
+  scaleZValue.innerHTML = object.transform.scale[2].toFixed(2);
 
-  rangeCameraX.value = state.objects[0].viewMatrix.camera[0];
-  cameraXValue.innerHTML = state.objects[0].viewMatrix.camera[0];
-  rangeCameraY.value = state.objects[0].viewMatrix.camera[1];
-  cameraYValue.innerHTML = state.objects[0].viewMatrix.camera[1];
-  rangeCameraZ.value = state.objects[0].viewMatrix.camera[2];
-  cameraZValue.innerHTML = state.objects[0].viewMatrix.camera[2];
+  rangeCameraX.value = object.viewMatrix.camera[0];
+  cameraXValue.innerHTML = object.viewMatrix.camera[0];
+  rangeCameraY.value = object.viewMatrix.camera[1];
+  cameraYValue.innerHTML = object.viewMatrix.camera[1];
+  rangeCameraZ.value = object.viewMatrix.camera[2];
+  cameraZValue.innerHTML = object.viewMatrix.camera[2];
 
-  rangeLookAtX.value = state.objects[0].viewMatrix.lookAt[0];
-  lookAtXValue.innerHTML = state.objects[0].viewMatrix.lookAt[0];
-  rangeLookAtY.value = state.objects[0].viewMatrix.lookAt[1];
-  lookAtYValue.innerHTML = state.objects[0].viewMatrix.lookAt[1];
-  rangeLookAtZ.value = state.objects[0].viewMatrix.lookAt[2];
-  lookAtZValue.innerHTML = state.objects[0].viewMatrix.lookAt[2];
+  rangeLookAtX.value = object.viewMatrix.lookAt[0];
+  lookAtXValue.innerHTML = object.viewMatrix.lookAt[0];
+  rangeLookAtY.value = object.viewMatrix.lookAt[1];
+  lookAtYValue.innerHTML = object.viewMatrix.lookAt[1];
+  rangeLookAtZ.value = object.viewMatrix.lookAt[2];
+  lookAtZValue.innerHTML = object.viewMatrix.lookAt[2];
 
   rangeFOV.value = state.fudgeFactor;
   fovValue.innerHTML = state.fudgeFactor;
@@ -378,12 +378,21 @@ function setTransformTo(object = null) {
   if (object) {
     transformTo.innerHTML = `Applying to: ${object.name}`;
   } else {
-    transformTo.innerHTML = `Applying to: ${state.objects[0].name}`;
+    transformTo.innerHTML = `Applying to: ${state.focus.name}`;
   }
   if (object.children.length > 0) {
     transformTo.innerHTML += ` and its children`;
   }
   transformTitle.appendChild(transformTo);
+}
+
+function setInitColor(objects, color) {
+  objects.forEach((object) => {
+    object.pickedColor = color;
+    if (object.children.length > 0) {
+      setInitColor(object.children, color);
+    }
+  });
 }
 
 function showComponents(objects, level = 0) {
@@ -398,7 +407,7 @@ function showComponents(objects, level = 0) {
     component.addEventListener("click", () => {
       state.focus = object;
       setTransformTo(object);
-      // setSliderState();
+      setSliderState(object);
       // console.log(state.focus);
     });
     components.appendChild(component);
