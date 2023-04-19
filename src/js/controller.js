@@ -456,31 +456,34 @@ lightingCheckbox.addEventListener("change", () => {
 
 textureSelector.addEventListener("change", function (e) {
   state.texture.textureType = this.value;
-  if (state.texture.textureType === "none") {
-    state.objects.forEach((object) => {
+  setTexture(state.objects, state.texture.textureType);
+});
+
+function setTexture(objects, textureType) {
+  objects.forEach((object) => {
+    if (textureType === "none") {
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
         fragment_shader_3d
       );
-    });
-  } else if (state.texture.textureType === "custom") {
-    state.objects.forEach((object) => {
+    } else if (textureType === "custom") {
       createCustomTexture(gl);
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
         fragment_shader_texture
       );
-    });
-  } else if (state.texture.textureType === "environment") {
-    state.objects.forEach((object) => {
+    } else if (textureType === "environment") {
       createEnvironmentTexture(gl);
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
         fragment_shader_environment
       );
-    });
-  }
-});
+    }
+    if (object.children.length > 0) {
+      setTexture(object.children, textureType);
+    }
+  });
+}
