@@ -193,15 +193,18 @@ function setWorldViewProjectionMatrix(transform, object) {
 
 function setCamera(object) {
   /* Setup view matrix */
-  let deg = object.viewMatrix.lookAt.map((x) => degToRad(x));
-  // console.log(deg);
-
   var viewMatrix = matrices.multiply(
     matrices.translate(0, 0, object.viewMatrix.camera[2]),
-    matrices.rotateX(deg[0])
+    matrices.rotateX(object.viewMatrix.lookAt[0])
   );
-  viewMatrix = matrices.multiply(viewMatrix, matrices.rotateY(deg[1]));
-  viewMatrix = matrices.multiply(viewMatrix, matrices.rotateZ(deg[2]));
+  viewMatrix = matrices.multiply(
+    viewMatrix,
+    matrices.rotateY(object.viewMatrix.lookAt[1])
+  );
+  viewMatrix = matrices.multiply(
+    viewMatrix,
+    matrices.rotateZ(object.viewMatrix.lookAt[2])
+  );
 
   let camPos = [viewMatrix[12], viewMatrix[13], viewMatrix[14]];
 
