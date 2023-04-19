@@ -2,7 +2,7 @@
 const canvas = document.getElementById("canvas");
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
-
+const fps = 60;
 /* ======= Global object ======= */
 var state;
 setDefaultState();
@@ -25,6 +25,11 @@ function setDefaultState() {
     phi: 90.0,
   };
   setDefaultRotationToRadian(state.objects);
+  generateFrameFromKeyFrame(
+    state.objects[0].animation.animate[0],
+    state.objects[0].animation.animate[1],
+    fps
+  );
   showComponents(state.objects);
 }
 
@@ -46,7 +51,7 @@ window.requestAnimFrame = (function () {
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function (callback) {
-      window.setTimeout(callback, 1000 / 60);
+      window.setTimeout(callback, 1000 / fps);
     }
   );
 })();

@@ -17,6 +17,18 @@ torso.transform = {
 torso.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0, -0.35, 0],
+      rotate: [0, -37, 0],
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, -0.4, 0],
+      rotate: [0, -37, 0],
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const leftFrontLeg = new ObjectNode();
