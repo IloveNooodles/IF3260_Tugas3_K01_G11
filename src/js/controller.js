@@ -311,9 +311,9 @@ function alterViewMatrix(object) {
     parseInt(rangeCameraZ.value),
   ];
   object.viewMatrix.lookAt = [
-    (2 * rangeLookAtX.value * 2 * Math.PI) / 100,
-    (2 * rangeLookAtY.value * 2 * Math.PI) / 100,
-    (2 * rangeLookAtZ.value * 2 * Math.PI) / 100,
+    degToRad(rangeLookAtX.value),
+    degToRad(rangeLookAtY.value),
+    degToRad(rangeLookAtZ.value),
   ];
   if (object.children.length > 0) {
     object.children.forEach((child) => {
