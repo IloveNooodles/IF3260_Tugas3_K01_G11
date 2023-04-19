@@ -16,7 +16,7 @@ function createCustomTexture(gl) {
 
   // Asynchronously load an image
   var image = new Image();
-  image.src = "./texture/f-texture.png";
+  image.src = "./texture/girrafe.avif";
   image.addEventListener("load", function () {
     console.log(image)
     // Now that the image has loaded make copy it to the texture.
