@@ -473,5 +473,14 @@ textureSelector.addEventListener("change", function (e) {
         fragment_shader_texture
       );
     });
+  } else if (state.texture.textureType === "environment") {
+    state.objects.forEach((object) => {
+      createEnvironmentTexture(gl);
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_3d,
+        fragment_shader_environment
+      );
+    });
   }
 });

@@ -38,3 +38,34 @@ function createCustomTexture(gl) {
 function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
+
+function createEnvironmentTexture(gl) {
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
+
+  const faceInfos = [
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: './texture/gambar-1.jpg' },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: './texture/gambar-2.jpg' },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: './texture/gambar-3.jpeg' },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: './texture/gambar-4.jpg' },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: './texture/gambar-5.jpg' },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: './texture/gambar-6.jpg' },
+  ];
+
+  faceInfos.forEach((faceInfo) => {
+    const {target, url} = faceInfo;
+
+    gl.texImage2D(target, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+    const image = new Image();
+    image.src = url;
+    image.addEventListener('load', function() {
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
+      gl.texImage2D(target, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+    });
+  });
+
+  gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+  gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+}
