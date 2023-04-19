@@ -97,41 +97,97 @@
           </div>
         </div>
         <div class="transform-title" id="transform-title"></div>
-        <label for="translate">Translate</label>
-        <div class="translate">
-          <label for="translateX">X</label>
-          <input type="range" id="translate-x" min="-100" max="100" value="0" />
-          <span id="translate-x-value">0</span>
-          <label for="translateY">Y</label>
-          <input type="range" id="translate-y" min="-100" max="100" value="0" />
-          <span id="translate-y-value">0</span>
-          <label for="translateZ">Z</label>
-          <input type="range" id="translate-z" min="-100" max="100" value="0" />
-          <span id="translate-z-value">0</span>
-        </div>
-        <label for="rotate">Rotate</label>
-        <div class="rotate">
-          <label for="rotateX">X</label>
-          <input type="range" id="rotate-x" min="-360" max="360" value="0" />
-          <span id="rotate-x-value">0</span>
-          <label for="rotateY">Y</label>
-          <input type="range" id="rotate-y" min="-360" max="360" value="-45" />
-          <span id="rotate-y-value">0</span>
-          <label for="rotateZ">Z</label>
-          <input type="range" id="rotate-z" min="-360" max="360" value="0" />
-          <span id="rotate-z-value">0</span>
-        </div>
-        <label for="scale">Scale</label>
-        <div class="scale">
-          <label for="scaleX">X</label>
-          <input type="range" id="scale-x" min="0.2" max="100" value="0" />
-          <span id="scale-x-value">0</span>
-          <label for="scaleY">Y</label>
-          <input type="range" id="scale-y" min="0.2" max="100" value="0" />
-          <span id="scale-y-value">0</span>
-          <label for="scaleZ">Z</label>
-          <input type="range" id="scale-z" min="0.2" max="100" value="0" />
-          <span id="scale-z-value">0</span>
+        <div class="transform-container">
+          <div class="translate-container">
+            <span>Translate</span>
+            <div class="transform">
+              <label for="translateX">X</label>
+              <input
+                type="range"
+                id="translate-x"
+                min="-100"
+                max="100"
+                value="0"
+              />
+              <span id="translate-x-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="translateY">Y</label>
+              <input
+                type="range"
+                id="translate-y"
+                min="-100"
+                max="100"
+                value="0"
+              />
+              <span id="translate-y-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="translateZ">Z</label>
+              <input
+                type="range"
+                id="translate-z"
+                min="-100"
+                max="100"
+                value="0"
+              />
+              <span id="translate-z-value">0</span>
+            </div>
+          </div>
+          <div class="rotate-container">
+            <span>Rotate</span>
+            <div class="transform">
+              <label for="rotateX">X</label>
+              <input
+                type="range"
+                id="rotate-x"
+                min="-360"
+                max="360"
+                value="0"
+              />
+              <span id="rotate-x-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="rotateY">Y</label>
+              <input
+                type="range"
+                id="rotate-y"
+                min="-360"
+                max="360"
+                value="-45"
+              />
+              <span id="rotate-y-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="rotateZ">Z</label>
+              <input
+                type="range"
+                id="rotate-z"
+                min="-360"
+                max="360"
+                value="0"
+              />
+              <span id="rotate-z-value">0</span>
+            </div>
+          </div>
+          <div class="scale-container">
+            <span>Scale</span>
+            <div class="transform">
+              <label for="scaleX">X</label>
+              <input type="range" id="scale-x" min="0.2" max="100" value="0" />
+              <span id="scale-x-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="scaleY">Y</label>
+              <input type="range" id="scale-y" min="0.2" max="100" value="0" />
+              <span id="scale-y-value">0</span>
+            </div>
+            <div class="transform">
+              <label for="scaleZ">Z</label>
+              <input type="range" id="scale-z" min="0.2" max="100" value="0" />
+              <span id="scale-z-value">0</span>
+            </div>
+          </div>
         </div>
         <div class="bottom-buttons">
           <button id="help" onclick="location.href='help.html'">
