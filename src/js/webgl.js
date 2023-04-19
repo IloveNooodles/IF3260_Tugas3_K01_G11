@@ -9,6 +9,7 @@ uniform mat4 uWorldViewProjection;
 uniform mat4 uWorldInverseTranspose;
 
 varying vec3 vNormal;
+varying vec3 vPosition;
 varying vec4 fragColor;
 varying vec2 vTexture;
 varying float colorFactor;
@@ -16,9 +17,10 @@ varying float colorFactor;
 void main(void) {
     gl_Position = uWorldViewProjection * vec4(aPosition, 1.0);
   
+    vPosition = (uWorldInverseTranspose * vec4(aPosition, 1.0)).xyz;
     vNormal = mat3(uWorldInverseTranspose) * aNormal;
     fragColor = vec4(aColor, 1.0);
-    vTexture = aTexture;  
+    vTexture = aTexture;
 }
 `;
 
@@ -58,6 +60,25 @@ uniform sampler2D uTexture;
 
 void main(void) {
   gl_FragColor = texture2D(uTexture, vTexture);
+}
+`;
+
+const fragment_shader_environment = `
+precision mediump float;
+
+varying vec3 vPosition;
+varying vec3 vNormal;
+
+uniform samplerCube uTexture;
+
+uniform vec3 uWorldCameraPosition;
+
+void main(void) {
+  vec3 worldNormal = normalize(vNormal);
+  vec3 eyeToSurfaceDir = normalize(vPosition - uWorldCameraPosition);
+  vec3 direction = reflect(eyeToSurfaceDir, worldNormal);
+
+  gl_FragColor = textureCube(uTexture, direction);
 }
 `;
 
@@ -157,6 +178,7 @@ function initUniforms(gl, program) {
       "uReverseLightDirection"
     ),
     texture: gl.getUniformLocation(program, "uTexture"),
+    worldCameraPosition: gl.getUniformLocation(program, "uWorldCameraPosition"),
   };
 }
 
