@@ -29,7 +29,7 @@ header {
 }
 
 .tools-container {
-  width: 600px;
+  width: 1000px;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -57,11 +57,22 @@ header {
 }
 
 .transform-title {
-  margin: 0 50px 0 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  column-gap: 50px;
+}
+
+.transform-container {
+  display: flex;
+  flex-direction: row;
+  column-gap: 24px;
+}
+
+.transform {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
 }
 
 .component-name {
