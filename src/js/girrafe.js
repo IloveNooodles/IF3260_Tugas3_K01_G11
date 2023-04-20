@@ -20,12 +20,12 @@ torso.animation = {
   animate: [
     {
       translate: [0, -0.35, 0],
-      rotate: [0, -37, 0],
+      rotate: arrDegToRad([0, -37, 0]),
       scale: [1, 1, 1],
     },
     {
       translate: [0, -1, 0],
-      rotate: [0, -37, 0],
+      rotate: arrDegToRad([0, -37, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -53,12 +53,12 @@ leftFrontLeg.animation = {
   animate: [
     {
       translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
       translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -86,12 +86,12 @@ rightFrontLeg.animation = {
   animate: [
     {
       translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
       translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -119,12 +119,12 @@ leftBackLeg.animation = {
   animate: [
     {
       translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
       translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -152,12 +152,12 @@ rightBackLeg.animation = {
   animate: [
     {
       translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
       translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],

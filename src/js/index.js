@@ -112,7 +112,7 @@ function setStateBeforeRender(objects) {
 
     if (object.animation.isObjectAnimate && object.animation.animate) {
       object.transform = object.animation.animate[counter % fps];
-      console.log(object);
+      console.log(object.transform);
     }
 
     // object.transform = object.animation.animate[counter % fps];
