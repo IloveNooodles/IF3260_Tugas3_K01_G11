@@ -10,25 +10,67 @@
   <body>
     <div class="help-page">
       <h1>Help</h1>
+
+      <br>
+
+      <h2>Tools</h2>
+
+      <h4>Save & Load</h4>
+      <p>Tekan tombol Save untuk menyimpan konfigurasi model objek pada local directory perangkat. Masukkan nama file untuk kemudian diunduh dalam format JSON. Tekan tombol Choose File untuk memuat model objek yang tersimpan pada file berformat JSON. File yang berhasil dimuat ditandai dengan adanya nama file yang tertulis pada section Load File.</p>
+
+      <h4>Color & Shading</h4>
+      <p>Pada saat dimuat, model akan memiliki warna secara acak pada masing-masing bagiannya. Tekan checkbox ‘Shading’ pada panel kiri untuk memberikan warna model secara keseluruhan. Tekan tombol ‘Color’ pada panel kiri untuk membuka color picker dan memilih warna yang diinginkan.</p>
+
+      <h4>Texture</h4>
+      <p>Pilih salah satu opsi pada dropdown button ‘Texture’ yang terletak di panel Tools.</p>
+      <ul>
+        <li>Jika memilih ‘None’, akan tergambar model articulated biasa tanpa tekstur.</li>
+        <li>Jika memilih ‘Custom’, akan tergambar model articulated bertekstur mapping dari suatu gambar.</li>
+        <li>Jika memilih ‘Environment’, akan tergambar model articulated bertekstur refleksi atau pantulan dari gambar lingkungan sekitar model.</li>
+        <li>Jika memilih ‘Bump’, akan tergambar model articulated bertekstur tidak rata.</li>
+      </ul>
+
+      <hr>
+
       <h2>Projections</h2>
-        <p>Pilih antara 3 jenis proyeksi, antara Orthographic, Oblique, ataupun Perspective.</p>
-      <h2>Transform</h2>
-        <p>Gunakan slider untuk melakukan transformasi pada objek 3D. transformasi dapat berupa translasi, rotasi, dan dilatasi.</p>
+      <p>Pilih antara 3 jenis proyeksi, antara Orthographic, Oblique, ataupun Perspective.</p>
+
+      <hr>
+
       <h2>Camera</h2>
-        <p>Gunakan slider untuk mengatur posisi, arah tangkap, FOV, zNear serta zFar kamera.</p>
+      <p>Geser salah satu slider pada panel kiri Camera.</p>
+      <ul>
+        <li>Jika mengubah vertical position, kamera akan berputar pada sumbu rotasi vertical.</li>
+        <li>Jika mengubah horizontal position, kamera akan berputar pada sumbu rotasi horizontal.</li>
+        <li>Jika mengubah distance to object, kamera akan mengubah jarak dari camera terhadap model proyeksi perspective.</li>
+        <li>Jika mengubah FOV, kamera akan mengubah area penglihatan camera proyeksi perspective.</li>
+        <li>Jika mengubah theta, kamera akan mengubah sudut pandang horizontal proyeksi oblique.</li>
+        <li>Jika mengubah phi, kamera akan mengubah sudut pandang vertical proyeksi oblique.</li>
+      </ul>
+      
+      <hr>
+      
+      <h2>Transform</h2>
+      <p>Pilih component model yang ingin diubah dengan menekan salah satu component pada panel kanan. Transformasi model akan berlaku pada component yang ditekan beserta dengan child component di bawahnya. Component yang dipilih dapat dilihat pada panel kiri. Geser salah satu slider pada panel kiri Transformation.</p>
+      <ul>
+        <li>Jika mengubah translasi, model akan bergeser sepanjang sumbu kartesian (x, y, atau z).</li>
+        <li>Jika mengubah rotasi, model akan berputar dengan sumbu rotasi kartesian (x, y, atau z).</li>
+        <li>Jika mengubah scaling, model akan diperbesar sepanjang sumbu kartesian (x, y, atau z).</li>
+      </ul>
+
+      <hr>
+
       <h2>Utilities</h2>
-        <h3>Save Load</h3>
-          <p>Pilih file model yang akan di-load dengan tombol "Choose File". Lakukan save model dengan tombol "Save".</p>
-        <h3>Color</h3>
-          <p>Pilih Warna model</p>
-        <h3>Lighting</h3>
-          <p>Pilih jenis lighting yang akan digunakan, apakah flat ataupun dengan shading.</p>
-        <h3>Lain-lain:</h3>
-          <p>- Show Help: Menampilkan halaman ini</p>
-          <p>- Reset Transform: Mengembalikan transformasi yang telah dilakukan</p>
-          <p>- Reset Camera: Mengembalikan kamera ke transformasi awal</p>
-          <p>- Reset All: Mengembalikan semua transformasi yang telah dilakukan</p>
-        <button id="back" onclick="location.href='index.html'">Kembali ke Menu semula</button>
+
+      <h4>Animation</h4>
+      <p>Tekan tombol ‘Start Animation’ untuk menjalankan animasi pada model yang dipilih. Untuk menghentikan animasi, tekan tombol ‘Stop Animation’ pada panel kiri.</p>
+      
+      <h4>Reset</h4>
+      <p>Tekan tombol ‘Reset All’ untuk mengubah seluruh pengaturan ke pengaturan awal. Tekan tombol ‘Reset Transform’ untuk mengubah pengaturan transformasi model, yaitu rotasi, translasi, dan scaling, ke pengaturan awal. Tekan tombol ‘Reset Camera’ untuk mengubah pengaturan transformasi model, yaitu camera position, look at, FOV, phi, dan theta, ke pengaturan awal.</p>
+      
+      <hr>
+
+      <button id="back" onclick="location.href='index.html'">Kembali ke Menu semula</button>
     </div>
   </body>
 </html>
