@@ -18,7 +18,7 @@ function createCustomTexture(gl) {
   var image = new Image();
   image.src = "./texture/girrafe.avif";
   image.addEventListener("load", function () {
-    console.log(image)
+    // console.log(image);
     // Now that the image has loaded make copy it to the texture.
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
@@ -44,22 +44,32 @@ function createEnvironmentTexture(gl) {
   gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
   const faceInfos = [
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: './texture/gambar-1.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: './texture/gambar-2.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: './texture/gambar-3.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: './texture/gambar-4.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: './texture/gambar-5.jpg' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: './texture/gambar-6.jpg' },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: "./texture/gambar-1.jpg" },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: "./texture/gambar-2.jpg" },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: "./texture/gambar-3.jpg" },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: "./texture/gambar-4.jpg" },
+    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: "./texture/gambar-5.jpg" },
+    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: "./texture/gambar-6.jpg" },
   ];
 
   faceInfos.forEach((faceInfo) => {
-    const {target, url} = faceInfo;
+    const { target, url } = faceInfo;
 
-    gl.texImage2D(target, 0, gl.RGBA, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texImage2D(
+      target,
+      0,
+      gl.RGBA,
+      512,
+      512,
+      0,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      null
+    );
 
     const image = new Image();
     image.src = url;
-    image.addEventListener('load', function() {
+    image.addEventListener("load", function () {
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
       gl.texImage2D(target, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
       gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
@@ -67,5 +77,9 @@ function createEnvironmentTexture(gl) {
   });
 
   gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-  gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(
+    gl.TEXTURE_CUBE_MAP,
+    gl.TEXTURE_MIN_FILTER,
+    gl.LINEAR_MIPMAP_LINEAR
+  );
 }
