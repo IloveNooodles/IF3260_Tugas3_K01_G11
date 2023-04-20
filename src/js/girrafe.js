@@ -61,41 +61,6 @@ leftFrontLeg.animation = {
       rotate: [19, 0, 0],
       scale: [1, 1, 1],
     },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
   ],
 };
 
@@ -127,41 +92,6 @@ rightFrontLeg.animation = {
     {
       translate: [0.4, -1, 0.85],
       rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
       scale: [1, 1, 1],
     },
   ],
@@ -197,41 +127,6 @@ leftBackLeg.animation = {
       rotate: [19, 0, 0],
       scale: [1, 1, 1],
     },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
   ],
 };
 
@@ -255,36 +150,6 @@ rightBackLeg.animation = {
   isAnimate: false,
   degAnimate: 0.1,
   animate: [
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
     {
       translate: [-0.4, -1, -0.85],
       rotate: [-19, 0, 0],
@@ -540,16 +405,16 @@ nose.animation = {
 };
 
 /* Set parent */
-// leftFrontLeg.setParent(torso);
-// rightFrontLeg.setParent(torso);
-// leftBackLeg.setParent(torso);
-// rightBackLeg.setParent(torso);
-// tail.setParent(torso);
-// tailBelow.setParent(tail);
-// neck.setParent(torso);
-// head.setParent(neck);
-// leftEye.setParent(head);
-// rightEye.setParent(head);
-// nose.setParent(head);
+leftFrontLeg.setParent(torso);
+rightFrontLeg.setParent(torso);
+leftBackLeg.setParent(torso);
+rightBackLeg.setParent(torso);
+tail.setParent(torso);
+tailBelow.setParent(tail);
+neck.setParent(torso);
+head.setParent(neck);
+leftEye.setParent(head);
+rightEye.setParent(head);
+nose.setParent(head);
 
 const endModel = [torso];

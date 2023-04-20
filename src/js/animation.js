@@ -1,26 +1,30 @@
 function generateFrameFromKeyFrame(firstKeyFrame, secondKeyFrame, fps) {
+  if (!firstKeyFrame || !secondKeyFrame) return;
+
   let endFrame = [];
   let translateDelta = [];
   let rotateDelta = [];
   let scaleDelta = [];
 
   for (let i = 0; i < 3; i++) {
-    translateDelta.push(secondKeyFrame.translate[i] - firstKeyFrame.translate[i]);
+    translateDelta.push(
+      secondKeyFrame.translate[i] - firstKeyFrame.translate[i]
+    );
     rotateDelta.push(secondKeyFrame.rotate[i] - firstKeyFrame.rotate[i]);
     scaleDelta.push(secondKeyFrame.scale[i] - firstKeyFrame.scale[i]);
   }
 
-  console.log(translateDelta, rotateDelta, scaleDelta)
+  // console.log(translateDelta, rotateDelta, scaleDelta)
 
   for (let i = 0; i < fps; i++) {
     generatedRotate = firstKeyFrame.rotate.map(
-      (val, index) => val + rotateDelta[index] * i / fps
+      (val, index) => val + (rotateDelta[index] * i) / fps
     );
     generatedTranslate = firstKeyFrame.translate.map(
-      (val, index) => val + translateDelta[index] * i / fps
+      (val, index) => val + (translateDelta[index] * i) / fps
     );
     generatedScale = firstKeyFrame.scale.map(
-      (val, index) => val + scaleDelta[index] * i / fps
+      (val, index) => val + (scaleDelta[index] * i) / fps
     );
 
     frame = {
@@ -31,6 +35,6 @@ function generateFrameFromKeyFrame(firstKeyFrame, secondKeyFrame, fps) {
     endFrame.push(frame);
   }
 
-  console.log(endFrame);
+  // console.log(endFrame);
   return endFrame;
 }

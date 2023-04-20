@@ -193,18 +193,25 @@ function resetCam() {
   phiValue.innerHTML = 90;
 }
 
-startAnim.addEventListener("click", () => {
-  state.objects.forEach((object) => {
-    object.animation.isObjectAnimate = true;
+function setAnimState(objects, state) {
+  objects.forEach((object) => {
+    object.animation.isObjectAnimate = state;
+    if (object.children.length > 0) {
+      setAnimState(object.children, state);
+    }
   });
+}
+
+startAnim.addEventListener("click", () => {
+  setAnimState(state.objects, true);
+  isAnimationRun = true;
   startAnim.classList.add("hidden");
   stopAnim.classList.remove("hidden");
 });
 
 stopAnim.addEventListener("click", () => {
-  state.objects.forEach((object) => {
-    object.animation.isObjectAnimate = false;
-  });
+  setAnimState(state.objects, false);
+  isAnimationRun = false;
   stopAnim.classList.add("hidden");
   startAnim.classList.remove("hidden");
 });
