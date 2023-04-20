@@ -99,25 +99,13 @@ function toVertices(vertices, faces) {
 
 function generateTangents(vertices, faces) {
   let tangents = [];
-  for (let i = 0; i < faces.length; i += 3) {
-    let v0 = vertices[i];
-    let v1 = vertices[i + 1];
-    let v2 = vertices[i + 2];
+  for (let i = 0; i < faces.length; i++) {
+    let face = faces[i];
+    let v1 = vertices[face[0] - 1];
+    let v2 = vertices[face[1] - 1];
 
-    let uv0 = faces[i];
-    let uv1 = faces[i + 1];
-    let uv2 = faces[i + 2];
-    
-    let dv1 = subtractVectors(v1, v0);
-    let dv2 = subtractVectors(v2, v0);
-
-    console.log(uv0);
-    console.log(uv1);
-    let duv1 = subtractVectors(uv1, uv0);
-    let duv2 = subtractVectors(uv2, uv0);
-
-    let r = 1.0 / (duv1[0] * duv2[1] - duv1[1] * duv2[0]);
-    let tangent = (dv1 * duv2[1]   - dv2 * duv1[1]) * r;
+    let v1v2 = subtractVectors(v2, v1);
+    let tangent = normalize(v1v2);
 
     tangents.push(tangent);
     tangents.push(tangent);
@@ -128,24 +116,14 @@ function generateTangents(vertices, faces) {
 
 function generateBitangents(vertices, faces) {
   let bitangents = [];
-  for (let i = 0; i < faces.length; i += 3) {
-    let v0 = vertices[i];
-    let v1 = vertices[i + 1];
-    let v2 = vertices[i + 2];
+  for (let i = 0; i < faces.length; i++) {
+    let face = faces[i];
+    let v1 = vertices[face[0] - 1];
+    let v3 = vertices[face[2] - 1];
 
-    let uv0 = faces[i];
-    let uv1 = faces[i + 1];
-    let uv2 = faces[i + 2];
-    
-    let dv1 = subtractVectors(v1, v0);
-    let dv2 = subtractVectors(v2, v0);
+    let v1v3 = subtractVectors(v3, v1);
+    let bitangent = normalize(v1v3);
 
-    let duv1 = subtractVectors(uv1, uv0);
-    let duv2 = subtractVectors(uv2, uv0);
-
-    let r = 1.0 / (duv1[0] * duv2[1] - duv1[1] * duv2[0]);
-    let bitangent = (dv2 * duv1[0]   - dv1 * duv2[0]) * r;
-    
     bitangents.push(bitangent);
     bitangents.push(bitangent);
     bitangents.push(bitangent);
@@ -166,7 +144,6 @@ function generateNormals(vertices, faces) {
 
     let crossRes = normalize(cross(v1v2, v1v3));
 
-    // add for each 3 vertices
     normals.push(crossRes);
     normals.push(crossRes);
     normals.push(crossRes);

@@ -5,7 +5,7 @@ const modelInput = document.getElementById("objFile");
 const buttonSave = document.getElementById("save");
 const colorPicker = document.getElementById("color-picker");
 const lightingCheckbox = document.getElementById("lighting");
-const reset = document.getElementById("reset");
+// const reset = document.getElementById("reset");
 const resetTransform = document.getElementById("reset-transform");
 const resetCamera = document.getElementById("reset-camera");
 const startAnim = document.getElementById("animation");
@@ -129,20 +129,20 @@ function changeAllColor(objects, r, g, b) {
   });
 }
 
-reset.addEventListener("click", () => {
-  program = createShaderProgram(
-    gl,
-    vertex_shader_3d,
-    fragment_shader_3d_no_lighting
-  );
-  resetComponentsChild();
-  setDefaultState();
-  clear();
-  resetTransf();
-  resetCam();
-  document.getElementById("orthographic").checked = true;
-  lightingCheckbox.checked = false;
-});
+// reset.addEventListener("click", () => {
+//   program = createShaderProgram(
+//     gl,
+//     vertex_shader_3d,
+//     fragment_shader_3d_no_lighting
+//   );
+//   resetComponentsChild();
+//   setDefaultState();
+//   clear();
+//   resetTransf();
+//   resetCam();
+//   document.getElementById("orthographic").checked = true;
+//   lightingCheckbox.checked = false;
+// });
 
 resetTransform.addEventListener("click", () => {
   resetTransf();
@@ -448,7 +448,7 @@ function setTexture(objects, textureType) {
       object.program = createShaderProgram(
         gl,
         vertex_shader_3d,
-        fragment_shader_3d
+        fragment_shader_3d_no_lighting
       );
     } else if (textureType === "custom") {
       createCustomTexture(gl);
@@ -461,7 +461,7 @@ function setTexture(objects, textureType) {
       createBumpTexture(gl);
       object.program = createShaderProgram(
         gl,
-        vertex_shader_bump,
+        vertex_shader_3d,
         fragment_shader_bump
       )
     } else if (textureType === "environment") {

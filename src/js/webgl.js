@@ -2,6 +2,8 @@
 const vertex_shader_3d = `
 attribute vec3 aPosition;
 attribute vec3 aColor;
+attribute vec3 aTangent;
+attribute vec3 aBitangent;
 attribute vec3 aNormal;
 attribute vec2 aTexture;
 
@@ -13,15 +15,49 @@ varying vec3 vPosition;
 varying vec4 fragColor;
 varying vec2 vTexture;
 varying float colorFactor;
+varying mat4 viewMatrix;
+varying mat3 vTBN;
+varying vec3 ts_light_pos; 
+varying vec3 ts_view_pos;  
+varying vec3 ts_frag_pos;
+
+mat3 transpose(in mat3 inMatrix)
+{
+    vec3 i0 = inMatrix[0];
+    vec3 i1 = inMatrix[1];
+    vec3 i2 = inMatrix[2];
+
+    mat3 outMatrix = mat3(
+        vec3(i0.x, i1.x, i2.x),
+        vec3(i0.y, i1.y, i2.y),
+        vec3(i0.z, i1.z, i2.z)
+    );
+
+    return outMatrix;
+}
 
 void main(void) {
+    viewMatrix = uWorldViewProjection;
     gl_Position = uWorldViewProjection * vec4(aPosition, 1.0);
   
     vPosition = (uWorldInverseTranspose * vec4(aPosition, 1.0)).xyz;
     vNormal = mat3(uWorldInverseTranspose) * aNormal;
     fragColor = vec4(aColor, 1.0);
     vTexture = aTexture;
-}
+
+    vec3 t = normalize(mat3(uWorldInverseTranspose) * aTangent);
+    vec3 b = normalize(mat3(uWorldInverseTranspose) * aBitangent);
+    vec3 n = normalize(mat3(uWorldInverseTranspose) * aNormal);
+    mat3 tbn = transpose(mat3(t, b, n));
+
+    ts_frag_pos = vec3(uWorldViewProjection * vec4(aPosition, 1.0));
+
+    vTBN = tbn;
+    vec3 light_pos = vec3(0, 0, 1);
+    ts_light_pos = tbn * light_pos;
+    ts_view_pos = tbn * vec3(0, 0, 0);
+    ts_frag_pos = tbn * ts_frag_pos;
+  }
 `;
 
 const fragment_shader_3d = `
@@ -82,97 +118,33 @@ void main(void) {
 }
 `;
 
-const vertex_shader_bump = `
-precision highp float;
-
-// attribute vec3 vert_pos;
-attribute vec3 aPosition;
-// attribute vec3 vert_tang;
-attribute vec3 aTangent;
-// attribute vec3 vert_bitang;
-attribute vec3 aBitangent;
-// attribute vec2 vert_uv;
-attribute vec2 aUpVector;
-
-// uniform mat4 model_mtx;
-uniform mat4 uModelMatrix;
-// uniform mat4 norm_mtx;
-uniform mat4 uWorldInverseTranspose;
-// uniform mat4 proj_mtx;
-uniform mat4 uWorldViewProjection;
-
-varying vec2 frag_uv;
-varying vec3 ts_light_pos; // Tangent space values
-varying vec3 ts_view_pos;  //
-varying vec3 ts_frag_pos;  //
-
-mat3 transpose(in mat3 inMatrix)
-{
-    vec3 i0 = inMatrix[0];
-    vec3 i1 = inMatrix[1];
-    vec3 i2 = inMatrix[2];
-
-    mat3 outMatrix = mat3(
-        vec3(i0.x, i1.x, i2.x),
-        vec3(i0.y, i1.y, i2.y),
-        vec3(i0.z, i1.z, i2.z)
-    );
-
-    return outMatrix;
-}
-
-void main(void)
-{
-    gl_Position = uWorldViewProjection * vec4(aPosition, 1.0);
-    ts_frag_pos = vec3(uModelMatrix * vec4(aPosition, 1.0));
-    vec3 aNormal = cross(aBitangent, aTangent);
-
-    vec3 t = normalize(mat3(uWorldInverseTranspose) * aTangent);
-    vec3 b = normalize(mat3(uWorldInverseTranspose) * aBitangent);
-    vec3 n = normalize(mat3(uWorldInverseTranspose) * aNormal);
-    mat3 tbn = transpose(mat3(t, b, n));
-
-    vec3 light_pos = vec3(1, 2, 0);
-    ts_light_pos = tbn * light_pos;
-    ts_view_pos = tbn * vec3(0, 0, 0);
-    ts_frag_pos = tbn * ts_frag_pos;
- 
-    frag_uv = aUpVector;
-}
-`;
-
 const fragment_shader_bump = `
-precision highp float;
+precision mediump float;
 
 uniform sampler2D uTexture;
-// uniform sampler2D tex_diffuse;
-// uniform sampler2D tex_depth;
+uniform vec3 uReverseLightDirection;
+uniform vec4 uColor;
 
-// uniform int show_tex;
-// uniform float depth_scale;
-// uniform float num_layers;
-
-varying vec2 frag_uv;
+varying mat4 viewMatrix;
+varying mat3 vTBN;
+varying vec3 vNormal;
+varying vec2 vTexture;
 varying vec3 ts_light_pos;
 varying vec3 ts_view_pos;
 varying vec3 ts_frag_pos;
 
 void main(void)
 {
+    vec3 normal = normalize(vNormal);
     vec3 light_dir = normalize(ts_light_pos - ts_frag_pos);
-    vec3 view_dir = normalize(ts_view_pos - ts_frag_pos);
+    vec3 albedo = texture2D(uTexture, vTexture).rgb;
+    vec3 ambient = albedo * 0.3;
 
-    vec2 uv = frag_uv;
+    vec3 bump = normalize(texture2D(uTexture, vTexture).rgb * 2.0 - 1.0);
 
-    // vec3 albedo = texture2D(tex_diffuse, uv).rgb;
-    // if (show_tex == 0) { albedo = vec3(1,1,1); }
-    vec3 albedo = vec3(1,1,1);
-    vec3 ambient = 0.3 * albedo;
-
-    // Normal mapping
-    vec3 norm = normalize(texture2D(uTexture, uv).rgb * 2.0 - 1.0);
-    float diffuse = max(dot(light_dir, norm), 0.0);
-    gl_FragColor = vec4(diffuse * albedo + ambient, 1.0);
+    float light = max(dot(light_dir, bump), 0.0);  
+    
+    gl_FragColor = vec4(albedo * light + ambient, 1.0);
 }
 `;
 
@@ -233,7 +205,7 @@ function initAttribs(gl, program) {
     // bump_pos: gl.getAttribLocation(program, "vert_pos"),
     bump_tang: gl.getAttribLocation(program, "aTangent"),
     bump_bitang: gl.getAttribLocation(program, "aBitangent"),
-    bump_uv: gl.getAttribLocation(program, "aUpVector")
+    // bump_uv: gl.getAttribLocation(program, "aUpVector")
   };
 }
 
@@ -279,12 +251,6 @@ function setAttribs(attribSetters, attribs) {
   gl.bufferData(gl.ARRAY_BUFFER, attribs.aBitangent.buffer, gl.STATIC_DRAW);
   gl.vertexAttribPointer(attribSetters.bump_bitang, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attribSetters.bump_bitang);
-
-  const vbo_uv = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vbo_uv);
-  gl.bufferData(gl.ARRAY_BUFFER, attribs.aUpVector.buffer, gl.STATIC_DRAW);
-  gl.vertexAttribPointer(attribSetters.bump_uv, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(attribSetters.bump_uv);
 }
 
 function initUniforms(gl, program) {
