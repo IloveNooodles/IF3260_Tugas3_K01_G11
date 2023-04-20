@@ -276,7 +276,7 @@ function alterViewMatrix(object) {
   object.viewMatrix.camera = [
     degToRad(rangeCameraX.value),
     degToRad(rangeCameraY.value),
-    rangeCameraZ.value / 10,
+    rangeCameraZ.value / 10 == 0 ? 0.0001 : rangeCameraZ.value / 10,
   ];
   if (object.children.length > 0) {
     object.children.forEach((child) => {
