@@ -17,25 +17,13 @@ torso.transform = {
 torso.animation = {
   isAnimate: false,
   degAnimate: 0.1,
-  animate: [
-    {
-      translate: [0, -0.35, 0],
-      rotate: [0, -37, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, -0.4, 0],
-      rotate: [0, -37, 0],
-      scale: [1, 1, 1],
-    },
-  ],
 };
 
 const leftFrontLeg = new ObjectNode();
 leftFrontLeg.name = "leftFrontLeg";
-leftFrontLeg.model = generateCuboid(1, 0.2, 0.3, [0, 0, 0]);
+leftFrontLeg.model = generateCuboid(1, 0.2, 0.3, [0, -0.5, 0]);
 leftFrontLeg.transform = {
-  translate: [-0.4, -1, 0.85],
+  translate: [-0.4, -0.5, 0.85],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -52,48 +40,13 @@ leftFrontLeg.animation = {
   degAnimate: 0.1,
   animate: [
     {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      translate: [-0.4, -0.5, 0.85],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      translate: [-0.4, -0.5, 0.85],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -101,9 +54,9 @@ leftFrontLeg.animation = {
 
 const rightFrontLeg = new ObjectNode();
 rightFrontLeg.name = "rightFrontLeg";
-rightFrontLeg.model = generateCuboid(1, 0.2, 0.3, [0, 0, 0]);
+rightFrontLeg.model = generateCuboid(1, 0.2, 0.3, [0, -0.5, 0]);
 rightFrontLeg.transform = {
-  translate: [0.4, -1, 0.85],
+  translate: [0.4, -0.5, 0.85],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -120,48 +73,13 @@ rightFrontLeg.animation = {
   degAnimate: 0.1,
   animate: [
     {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      translate: [0.4, -0.5, 0.85],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, 0.85],
-      rotate: [-19, 0, 0],
+      translate: [0.4, -0.5, 0.85],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -169,9 +87,9 @@ rightFrontLeg.animation = {
 
 const leftBackLeg = new ObjectNode();
 leftBackLeg.name = "leftBackLeg";
-leftBackLeg.model = generateCuboid(1, 0.2, 0.3, [0, 0, 0]);
+leftBackLeg.model = generateCuboid(1, 0.2, 0.3, [0, -0.5, 0]);
 leftBackLeg.transform = {
-  translate: [0.4, -1, -0.85],
+  translate: [0.4, -0.5, -0.85],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -188,48 +106,13 @@ leftBackLeg.animation = {
   degAnimate: 0.1,
   animate: [
     {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
+      translate: [0.4, -0.5, -0.85],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
+      translate: [0.4, -0.5, -0.85],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -237,9 +120,9 @@ leftBackLeg.animation = {
 
 const rightBackLeg = new ObjectNode();
 rightBackLeg.name = "rightBackLeg";
-rightBackLeg.model = generateCuboid(1, 0.2, 0.3, [0, 0, 0]);
+rightBackLeg.model = generateCuboid(1, 0.2, 0.3, [0, -0.5, 0]);
 rightBackLeg.transform = {
-  translate: [-0.4, -1, -0.85],
+  translate: [-0.4, -0.5, -0.85],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -256,43 +139,13 @@ rightBackLeg.animation = {
   degAnimate: 0.1,
   animate: [
     {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
+      translate: [-0.4, -0.5, -0.85],
+      rotate: arrDegToRad([-19, 0, 0]),
       scale: [1, 1, 1],
     },
     {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [-19, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.4, -1, -0.85],
-      rotate: [19, 0, 0],
+      translate: [-0.4, -0.5, -0.85],
+      rotate: arrDegToRad([19, 0, 0]),
       scale: [1, 1, 1],
     },
   ],
@@ -366,7 +219,7 @@ head.name = "head";
 head.model = generateCuboid(0.6, 0.66, 1, [0, 0, 0]);
 head.transform = {
   translate: [0, 1.2, 0.3],
-  rotate: [344.78897565411626, 0, 0],
+  rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
 (head.pickedColor = [1, 0, 0]),
@@ -380,6 +233,18 @@ head.transform = {
 head.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0, 1.2, 0.3],
+      rotate: arrDegToRad([-14, 0, 0]),
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 1.2, 0.3],
+      rotate: arrDegToRad([14, 0, 0]),
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const leftEye = new ObjectNode();
@@ -422,53 +287,6 @@ rightEye.transform = {
 rightEye.animation = {
   isAnimate: false,
   degAnimate: 0.1,
-  animate: [
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [-0.3, 0, 0],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-  ],
 };
 
 const nose = new ObjectNode();
@@ -490,53 +308,6 @@ nose.transform = {
 nose.animation = {
   isAnimate: false,
   degAnimate: 0.1,
-  animate: [
-    {
-      translate: [0, 0, 0.3],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.31],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.33],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.35],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.33],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.31],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.3],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.31],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-    {
-      translate: [0, 0, 0.33],
-      rotate: [0, 0, 0],
-      scale: [1, 1, 1],
-    },
-  ],
 };
 
 /* Set parent */

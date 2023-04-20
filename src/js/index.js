@@ -3,6 +3,9 @@ const canvas = document.getElementById("canvas");
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
 const fps = 60;
+var counter = 0;
+var offset = 1;
+var isAnimationRun = false;
 /* ======= Global object ======= */
 var state;
 setDefaultState();
@@ -25,12 +28,23 @@ function setDefaultState() {
     phi: 90.0,
   };
   setDefaultRotationToRadian(state.objects);
-  generateFrameFromKeyFrame(
-    state.objects[0].animation.animate[0],
-    state.objects[0].animation.animate[1],
-    fps
-  );
+  initAnimation(state.objects);
   showComponents(state.objects);
+}
+
+function initAnimation(objects) {
+  objects.forEach((object) => {
+    if (object.animation.animate) {
+      object.animation.animate = generateFrameFromKeyFrame(
+        object.animation.animate[0],
+        object.animation.animate[1],
+        fps
+      );
+    }
+    if (object.children.length > 0) {
+      initAnimation(object.children);
+    }
+  });
 }
 
 function setDefaultRotationToRadian(objects) {
@@ -51,7 +65,7 @@ window.requestAnimFrame = (function () {
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function (callback) {
-      window.setTimeout(callback, 1000 / fps);
+      window.setTimeout(callback, 1000 / 1);
     }
   );
 })();
@@ -77,7 +91,7 @@ function setStateBeforeRender(objects) {
   objects.forEach((object) => {
     // precalculations
     if (!object.model.colors) {
-      console.log(object.pickedColor);
+      // console.log(object.pickedColor);
       if (!object.pickedColor) {
         object.model.colors = generateColors(object.model.vertices);
       } else {
@@ -96,15 +110,12 @@ function setStateBeforeRender(objects) {
       );
     }
 
-    if (object.animation.isObjectAnimate) {
-      object.transform.rotate[1] +=
-        (object.animation.degAnimate * Math.PI) / 100;
-      object.transform.rotate[2] +=
-        (object.animation.degAnimate * Math.PI) / 100;
-      object.transform.rotate[3] +=
-        (object.animation.degAnimate * Math.PI) / 100;
+    if (object.animation.isObjectAnimate && object.animation.animate) {
+      object.transform = object.animation.animate[counter % fps];
+      console.log(object.transform);
     }
 
+    // object.transform = object.animation.animate[counter % fps];
     object.localMatrix = setTransform(object);
     if (object.children.length > 0) {
       setStateBeforeRender(object.children);
@@ -139,7 +150,7 @@ function renderLoop(objects) {
       },
       /* TODO: calculate texture pos */
       aTexture: {
-        buffer: new Float32Array(object.model.colors.flat(1)),
+        buffer: new Float32Array(object.model.texCoord),
         numComponents: 2,
       },
       // vert_pos: {
@@ -216,7 +227,15 @@ function renderLoop(objects) {
 }
 
 function render() {
-  // prepare for rendering
+  if (isAnimationRun) {
+    counter += offset;
+    if (counter >= fps - 1) {
+      offset *= -1;
+    } else if (counter <= 0) {
+      offset *= -1;
+    }
+  }
+
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   clear();
   gl.enable(gl.CULL_FACE);

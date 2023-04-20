@@ -30,6 +30,19 @@ function generateCuboid(height, width, depth, offset) {
     [8, 7, 6],
   ];
 
+  let texCoord = [
+    1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+
+    0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1,
+
+    0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0,
+
+    1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0,
+
+    1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0,
+
+    0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1,
+  ];
   let normals = generateNormals(vertices, faces);
   vertices = toVertices(vertices, faces);
 
@@ -46,5 +59,6 @@ function generateCuboid(height, width, depth, offset) {
     bitangents: bitangents,
     normals: normals,
     colors: colors,
+    texCoord: texCoord,
   };
 }

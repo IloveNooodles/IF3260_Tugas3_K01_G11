@@ -2,6 +2,7 @@ const torsoHorizontal = new ObjectNode();
 torsoHorizontal.name = "torsoHorizontal";
 torsoHorizontal.model = generateCuboid(0.2, 1, 0.3, [0, 0, 0]);
 torsoHorizontal.transform = {
+  anchorOffset: [0, 0, 0],
   translate: [0, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
@@ -38,6 +39,18 @@ headMiddle.transform = {
 headMiddle.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0, 0.32, 0],
+      rotate: arrDegToRad([0, -25, 0]),
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0.32, 0],
+      rotate: arrDegToRad([0, 25, 0]),
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const rightEyeMiddle = new ObjectNode();
@@ -122,6 +135,18 @@ headRight.transform = {
 headRight.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [-0.5, 0.2, 0],
+      rotate: arrDegToRad([0, 0, 0]),
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [-0.5, 0.2, 0],
+      rotate: arrDegToRad([0, 0, 25]),
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const rightEyeRight = new ObjectNode();
@@ -206,6 +231,18 @@ headLeft.transform = {
 headLeft.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0.5, 0.2, 0],
+      rotate: arrDegToRad([0, 0, 0]),
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0.5, 0.2, 0],
+      rotate: arrDegToRad([0, 0, -25]),
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const rightEyeLeft = new ObjectNode();
@@ -273,9 +310,9 @@ lipLeft.animation = {
 
 const torsoVertical = new ObjectNode();
 torsoVertical.name = "torsoVertical";
-torsoVertical.model = generateCuboid(0.6, 0.2, 0.3, [0, 0, 0]);
+torsoVertical.model = generateCuboid(0.6, 0.2, 0.3, [0, -0.4, 0]);
 torsoVertical.transform = {
-  translate: [0, -0.4, 0],
+  translate: [0, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -290,13 +327,25 @@ torsoVertical.viewMatrix = {
 torsoVertical.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    {
+      translate: [0, 0, 0],
+      rotate: arrDegToRad([-7, 0, 0]),
+      scale: [1, 1, 1],
+    },
+    {
+      translate: [0, 0, 0],
+      rotate: arrDegToRad([7, 0, 0]),
+      scale: [1, 1, 1],
+    },
+  ],
 };
 
 const ribTop = new ObjectNode();
 ribTop.name = "ribTop";
 ribTop.model = generateCuboid(0.1, 0.6, 0.25, [0, 0, 0]);
 ribTop.transform = {
-  translate: [0, 0.15, 0],
+  translate: [0, 0.15 -0.4, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -317,7 +366,7 @@ const ribMiddle = new ObjectNode();
 ribMiddle.name = "ribMiddle";
 ribMiddle.model = generateCuboid(0.1, 0.6, 0.25, [0, 0, 0]);
 ribMiddle.transform = {
-  translate: [0, 0, 0],
+  translate: [0, 0 - 0.4, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -338,7 +387,7 @@ const ribBottom = new ObjectNode();
 ribBottom.name = "ribBottom";
 ribBottom.model = generateCuboid(0.1, 0.6, 0.25, [0, 0, 0]);
 ribBottom.transform = {
-  translate: [0, -0.15, 0],
+  translate: [0, -0.15 - 0.4, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -359,8 +408,8 @@ const tail = new ObjectNode();
 tail.name = "tail";
 tail.model = generateCuboid(0.4, 0.19, 0.29, [0, 0, 0]);
 tail.transform = {
-  translate: [0, -0.35, -0.1],
-  rotate: [0.75, 0, 0],
+  translate: [0, -0.35 - 0.4, -0.1],
+  rotate:  [25, 0, 0],
   scale: [1, 1, 1],
 };
 tail.pickedColor = [1, 0, 0];
