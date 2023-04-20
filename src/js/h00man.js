@@ -9,7 +9,7 @@ torso.transform = {
 };
 (torso.pickedColor = [1, 0, 0]),
   (torso.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -32,7 +32,7 @@ head.transform = {
 };
 head.pickedColor = [1, 0, 0];
 head.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -65,7 +65,7 @@ leftUpperArm.transform = {
 };
 leftUpperArm.pickedColor = [1, 0, 0];
 leftUpperArm.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -98,7 +98,7 @@ leftLowerArm.transform = {
 };
 leftLowerArm.pickedColor = [1, 0, 0];
 leftLowerArm.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -131,7 +131,7 @@ rightUpperArm.transform = {
 };
 rightUpperArm.pickedColor = [1, 0, 0];
 rightUpperArm.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -164,7 +164,7 @@ rightLowerArm.transform = {
 };
 rightLowerArm.pickedColor = [1, 0, 0];
 rightLowerArm.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -197,7 +197,7 @@ leftUpperLeg.transform = {
 };
 leftUpperLeg.pickedColor = [1, 0, 0];
 leftUpperLeg.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -230,7 +230,7 @@ leftLowerLeg.transform = {
 };
 leftLowerLeg.pickedColor = [1, 0, 0];
 leftLowerLeg.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -263,7 +263,7 @@ rightUpperLeg.transform = {
 };
 rightUpperLeg.pickedColor = [1, 0, 0];
 rightUpperLeg.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -296,7 +296,7 @@ rightLowerLeg.transform = {
 };
 rightLowerLeg.pickedColor = [1, 0, 0];
 rightLowerLeg.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,

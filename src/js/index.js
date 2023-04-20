@@ -190,13 +190,18 @@ function setWorldViewProjectionMatrix(transform, object) {
   if (state.fudgeFactor < 0.01) {
     state.fudgeFactor = 0.01;
   }
-  var worldViewProjectionMatrix = matrices.makeZtoWMatrix(state.fudgeFactor);
+  var worldViewProjectionMatrix = () => {
+    if (state.projection === "perspective") {
+      return matrices.multiply(
+        matrices.makeZtoWMatrix(state.fudgeFactor),
+        viewProjectionMatrix
+      );
+    } else {
+      return viewProjectionMatrix;
+    }
+  };
   worldViewProjectionMatrix = matrices.multiply(
-    worldViewProjectionMatrix,
-    viewProjectionMatrix
-  );
-  worldViewProjectionMatrix = matrices.multiply(
-    worldViewProjectionMatrix,
+    worldViewProjectionMatrix(),
     transform
   );
 
@@ -206,16 +211,13 @@ function setWorldViewProjectionMatrix(transform, object) {
 function setCamera(object) {
   /* Setup view matrix */
   var viewMatrix = matrices.multiply(
-    matrices.translate(0, 0, object.viewMatrix.camera[2]),
-    matrices.rotateX(object.viewMatrix.lookAt[0])
+    matrices.rotateY(object.viewMatrix.camera[1]),
+    matrices.rotateX(object.viewMatrix.camera[0])
   );
+
   viewMatrix = matrices.multiply(
     viewMatrix,
-    matrices.rotateY(object.viewMatrix.lookAt[1])
-  );
-  viewMatrix = matrices.multiply(
-    viewMatrix,
-    matrices.rotateZ(object.viewMatrix.lookAt[2])
+    matrices.translate(0, 0, object.viewMatrix.camera[2])
   );
 
   let camPos = [viewMatrix[12], viewMatrix[13], viewMatrix[14]];

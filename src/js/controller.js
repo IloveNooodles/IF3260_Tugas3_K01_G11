@@ -41,13 +41,6 @@ const cameraYValue = document.getElementById("camera-y-value");
 const rangeCameraZ = document.getElementById("camera-z");
 const cameraZValue = document.getElementById("camera-z-value");
 
-const rangeLookAtX = document.getElementById("look-at-x");
-const lookAtXValue = document.getElementById("look-at-x-value");
-const rangeLookAtY = document.getElementById("look-at-y");
-const lookAtYValue = document.getElementById("look-at-y-value");
-const rangeLookAtZ = document.getElementById("look-at-z");
-const lookAtZValue = document.getElementById("look-at-z-value");
-
 const rangeFOV = document.getElementById("fov");
 const fovValue = document.getElementById("fov-value");
 const theta = document.getElementById("theta");
@@ -66,14 +59,14 @@ const transformFor = document.createElement("span");
 projectionRadio.forEach((radio) => {
   radio.addEventListener("change", () => {
     var offset = 0;
-    if (radio.value == "perspective" && state.projection != "perspective") {
-      offset = -5;
-    } else if (
-      state.projection === "perspective" &&
-      radio.value !== "perspective"
-    ) {
-      offset = 5;
-    }
+    // if (radio.value == "perspective" && state.projection != "perspective") {
+    //   offset = -5;
+    // } else if (
+    //   state.projection === "perspective" &&
+    //   radio.value !== "perspective"
+    // ) {
+    //   offset = 5;
+    // }
     state.projection = radio.value;
     state.focus.transform.translate[2] += offset;
     rangeTranslateZ.value = state.focus.transform.translate[2];
@@ -192,13 +185,6 @@ function resetCam() {
   rangeCameraZ.value = 0;
   cameraZValue.innerHTML = 1;
 
-  rangeLookAtX.value = 0;
-  lookAtXValue.innerHTML = 0;
-  rangeLookAtY.value = 0;
-  lookAtYValue.innerHTML = 0;
-  rangeLookAtZ.value = 0;
-  lookAtZValue.innerHTML = 0;
-
   rangeFOV.value = 0;
   fovValue.innerHTML = 0;
   theta.value = 90;
@@ -224,21 +210,17 @@ stopAnim.addEventListener("click", () => {
 });
 
 rangeTranslateX.addEventListener("input", () => {
-  state.focus.transform.translate[0] = -1 + (2 * rangeTranslateX.value) / 100;
-  translateXValue.innerHTML = rangeTranslateX.value;
+  state.focus.transform.translate[0] = (2 * rangeTranslateX.value) / 10;
+  translateXValue.innerHTML = state.focus.transform.translate[0].toFixed(2);
 });
 
 rangeTranslateY.addEventListener("input", () => {
-  state.focus.transform.translate[1] = -1 + (2 * rangeTranslateY.value) / 100;
-  translateYValue.innerHTML = rangeTranslateY.value;
+  state.focus.transform.translate[1] = (2 * rangeTranslateY.value) / 10;
+  translateYValue.innerHTML = state.focus.transform.translate[1].toFixed(2);
 });
 
 rangeTranslateZ.addEventListener("input", () => {
-  if (state.projection === "perspective") {
-    state.focus.transform.translate[2] = -5 + rangeTranslateZ.value / 10;
-  } else {
-    state.focus.transform.translate[2] = -1 + rangeTranslateZ.value / 10;
-  }
+  state.focus.transform.translate[2] = (2 * rangeTranslateZ.value) / 10;
   translateZValue.innerHTML = state.focus.transform.translate[2].toFixed(2);
 });
 
@@ -287,34 +269,14 @@ rangeCameraY.addEventListener("input", () => {
 
 rangeCameraZ.addEventListener("input", () => {
   alterViewMatrix(state.focus);
-  cameraZValue.innerHTML = rangeCameraZ.value;
-});
-
-rangeLookAtX.addEventListener("input", () => {
-  alterViewMatrix(state.focus);
-  lookAtXValue.innerHTML = rangeLookAtX.value;
-});
-
-rangeLookAtY.addEventListener("input", () => {
-  alterViewMatrix(state.focus);
-  lookAtYValue.innerHTML = rangeLookAtY.value;
-});
-
-rangeLookAtZ.addEventListener("input", () => {
-  alterViewMatrix(state.focus);
-  lookAtZValue.innerHTML = 7 + rangeLookAtZ.value / 100;
+  cameraZValue.innerHTML = rangeCameraZ.value / 10;
 });
 
 function alterViewMatrix(object) {
   object.viewMatrix.camera = [
-    parseInt(rangeCameraX.value),
-    parseInt(rangeCameraY.value),
-    parseInt(rangeCameraZ.value),
-  ];
-  object.viewMatrix.lookAt = [
-    degToRad(rangeLookAtX.value),
-    degToRad(rangeLookAtY.value),
-    degToRad(rangeLookAtZ.value),
+    degToRad(rangeCameraX.value),
+    degToRad(rangeCameraY.value),
+    rangeCameraZ.value / 10,
   ];
   if (object.children.length > 0) {
     object.children.forEach((child) => {
@@ -324,9 +286,9 @@ function alterViewMatrix(object) {
 }
 
 rangeFOV.addEventListener("input", () => {
-  state.fudgeFactor = rangeFOV.value / 100;
+  state.fudgeFactor = rangeFOV.value / 10;
   // console.log(state.fudgeFactor);
-  fovValue.innerHTML = rangeFOV.value;
+  fovValue.innerHTML = rangeFOV.value / 10;
 });
 
 theta.addEventListener("input", () => {
@@ -342,19 +304,19 @@ phi.addEventListener("input", () => {
 function setSliderState(object) {
   /* setup default state for sliders */
 
-  rangeTranslateX.value = object.transform.translate[0];
-  translateXValue.innerHTML = object.transform.translate[0].toFixed(2);
-  rangeTranslateY.value = object.transform.translate[1];
-  translateYValue.innerHTML = object.transform.translate[1].toFixed(2);
-  rangeTranslateZ.value = object.transform.translate[2];
-  translateZValue.innerHTML = object.transform.translate[2].toFixed(2);
+  rangeTranslateX.value = (object.transform.translate[0] / 2) * 10;
+  translateXValue.innerHTML = (object.transform.translate[0] / 2).toFixed(2);
+  rangeTranslateY.value = (object.transform.translate[1] / 2) * 10;
+  translateYValue.innerHTML = (object.transform.translate[1] / 2).toFixed(2);
+  rangeTranslateZ.value = (object.transform.translate[2] / 2) * 10;
+  translateZValue.innerHTML = (object.transform.translate[2] / 2).toFixed(2);
 
-  rangeRotateX.value = object.transform.rotate[0];
-  rotateXValue.innerHTML = object.transform.rotate[0].toFixed(2);
-  rangeRotateY.value = object.transform.rotate[1];
-  rotateYValue.innerHTML = object.transform.rotate[1].toFixed(2);
-  rangeRotateZ.value = object.transform.rotate[2];
-  rotateZValue.innerHTML = object.transform.rotate[2].toFixed(2);
+  rangeRotateX.value = radToDeg(object.transform.rotate[0]);
+  rotateXValue.innerHTML = radToDeg(object.transform.rotate[0]).toFixed(2);
+  rangeRotateY.value = radToDeg(object.transform.rotate[1]);
+  rotateYValue.innerHTML = radToDeg(object.transform.rotate[1]).toFixed(2);
+  rangeRotateZ.value = radToDeg(object.transform.rotate[2]);
+  rotateZValue.innerHTML = radToDeg(object.transform.rotate[2]).toFixed(2);
 
   rangeScaleX.value = object.transform.scale[0] * 20;
   scaleXValue.innerHTML = object.transform.scale[0].toFixed(2);
@@ -367,15 +329,8 @@ function setSliderState(object) {
   cameraXValue.innerHTML = object.viewMatrix.camera[0];
   rangeCameraY.value = object.viewMatrix.camera[1];
   cameraYValue.innerHTML = object.viewMatrix.camera[1];
-  rangeCameraZ.value = object.viewMatrix.camera[2];
+  rangeCameraZ.value = object.viewMatrix.camera[2] * 10;
   cameraZValue.innerHTML = object.viewMatrix.camera[2];
-
-  rangeLookAtX.value = object.viewMatrix.lookAt[0];
-  lookAtXValue.innerHTML = object.viewMatrix.lookAt[0];
-  rangeLookAtY.value = object.viewMatrix.lookAt[1];
-  lookAtYValue.innerHTML = object.viewMatrix.lookAt[1];
-  rangeLookAtZ.value = 7 + object.viewMatrix.lookAt[2];
-  lookAtZValue.innerHTML = 7 + object.viewMatrix.lookAt[2];
 
   rangeFOV.value = state.fudgeFactor;
   fovValue.innerHTML = state.fudgeFactor;

@@ -8,7 +8,7 @@ seat.transform = {
 };
 (seat.pickedColor = [1, 0, 0]),
   (seat.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -29,7 +29,7 @@ rightFrontLeg.transform = {
 };
 (rightFrontLeg.pickedColor = [1, 0, 0]),
   (rightFrontLeg.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -50,7 +50,7 @@ rightRearLeg.transform = {
 };
 (rightRearLeg.pickedColor = [1, 0, 0]),
   (rightRearLeg.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -71,7 +71,7 @@ leftRearLeg.transform = {
 };
 (leftRearLeg.pickedColor = [1, 0, 0]),
   (leftRearLeg.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -92,7 +92,7 @@ rightStile.transform = {
 };
 (rightStile.pickedColor = [1, 0, 0]),
   (rightStile.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -113,7 +113,7 @@ leftStile.transform = {
 };
 (leftStile.pickedColor = [1, 0, 0]),
   (leftStile.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -134,7 +134,7 @@ back.transform = {
 };
 (back.pickedColor = [1, 0, 0]),
   (back.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -155,7 +155,7 @@ leftEye.transform = {
 };
 (leftEye.pickedColor = [1, 0, 0]),
   (leftEye.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -176,7 +176,7 @@ rightEye.transform = {
 };
 (rightEye.pickedColor = [1, 0, 0]),
   (rightEye.viewMatrix = {
-    camera: [0, 0, 1],
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,

@@ -5,10 +5,11 @@ body {
   background-color: #222;
 }
 
-h1 {
+h2 {
   margin: 5px 0px;
 }
-h2 {
+
+h3 {
   margin: 10px 0px;
 }
 
@@ -17,6 +18,10 @@ header {
   color: #fff;
   padding: 10px;
   text-align: center;
+}
+
+input[type="range"] {
+  width: 100px;
 }
 
 .container {
@@ -56,6 +61,14 @@ header {
   display: none;
 }
 
+.camera-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  column-gap: 20px;
+}
+
 .transform-title {
   display: flex;
   flex-direction: row;
@@ -67,6 +80,10 @@ header {
   display: flex;
   flex-direction: row;
   column-gap: 24px;
+}
+
+.slider-container {
+  width: 180px;
 }
 
 .transform {

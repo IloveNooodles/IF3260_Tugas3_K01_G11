@@ -7,8 +7,8 @@ torsoHorizontal.transform = {
   scale: [1, 1, 1],
 };
 (torsoHorizontal.pickedColor = [1, 0, 0]),
-  (torsoHorizontal.viewMatrix = { 
-    camera: [0, 0, 1],
+  (torsoHorizontal.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -28,8 +28,8 @@ headMiddle.transform = {
   scale: [1, 1, 1],
 };
 (headMiddle.pickedColor = [1, 0, 0]),
-  (headMiddle.viewMatrix = { 
-    camera: [0, 0, 1],
+  (headMiddle.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -49,8 +49,8 @@ rightEyeMiddle.transform = {
   scale: [1, 1, 1],
 };
 (rightEyeMiddle.pickedColor = [1, 0, 0]),
-  (rightEyeMiddle.viewMatrix = { 
-    camera: [0, 0, 1],
+  (rightEyeMiddle.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -70,8 +70,8 @@ leftEyeMiddle.transform = {
   scale: [1, 1, 1],
 };
 (leftEyeMiddle.pickedColor = [1, 0, 0]),
-  (leftEyeMiddle.viewMatrix = { 
-    camera: [0, 0, 1],
+  (leftEyeMiddle.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -91,8 +91,8 @@ lipMiddle.transform = {
   scale: [1, 1, 1],
 };
 (lipMiddle.pickedColor = [1, 0, 0]),
-  (lipMiddle.viewMatrix = { 
-    camera: [0, 0, 1],
+  (lipMiddle.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -112,8 +112,8 @@ headRight.transform = {
   scale: [1, 1, 1],
 };
 (headRight.pickedColor = [1, 0, 0]),
-  (headRight.viewMatrix = { 
-    camera: [0, 0, 1],
+  (headRight.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -133,8 +133,8 @@ rightEyeRight.transform = {
   scale: [1, 1, 1],
 };
 (rightEyeRight.pickedColor = [1, 0, 0]),
-  (rightEyeRight.viewMatrix = { 
-    camera: [0, 0, 1],
+  (rightEyeRight.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -154,8 +154,8 @@ leftEyeRight.transform = {
   scale: [1, 1, 1],
 };
 (leftEyeRight.pickedColor = [1, 0, 0]),
-  (leftEyeRight.viewMatrix = { 
-    camera: [0, 0, 1],
+  (leftEyeRight.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -175,8 +175,8 @@ lipRight.transform = {
   scale: [1, 1, 1],
 };
 (lipRight.pickedColor = [1, 0, 0]),
-  (lipRight.viewMatrix = { 
-    camera: [0, 0, 1],
+  (lipRight.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -196,8 +196,8 @@ headLeft.transform = {
   scale: [1, 1, 1],
 };
 (headLeft.pickedColor = [1, 0, 0]),
-  (headLeft.viewMatrix = { 
-    camera: [0, 0, 1],
+  (headLeft.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -217,8 +217,8 @@ rightEyeLeft.transform = {
   scale: [1, 1, 1],
 };
 (rightEyeLeft.pickedColor = [1, 0, 0]),
-  (rightEyeLeft.viewMatrix = { 
-    camera: [0, 0, 1],
+  (rightEyeLeft.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -238,8 +238,8 @@ leftEyeLeft.transform = {
   scale: [1, 1, 1],
 };
 (leftEyeLeft.pickedColor = [1, 0, 0]),
-  (leftEyeLeft.viewMatrix = { 
-    camera: [0, 0, 1],
+  (leftEyeLeft.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -259,8 +259,8 @@ lipLeft.transform = {
   scale: [1, 1, 1],
 };
 (lipLeft.pickedColor = [1, 0, 0]),
-  (lipLeft.viewMatrix = { 
-    camera: [0, 0, 1],
+  (lipLeft.viewMatrix = {
+    camera: [0, 0, 5],
     lookAt: [0, 0, 0],
     up: [0, 1, 0],
     near: 0.1,
@@ -281,7 +281,7 @@ torsoVertical.transform = {
 };
 torsoVertical.pickedColor = [1, 0, 0];
 torsoVertical.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -302,7 +302,7 @@ ribTop.transform = {
 };
 ribTop.pickedColor = [1, 0, 0];
 ribTop.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -323,7 +323,7 @@ ribMiddle.transform = {
 };
 ribMiddle.pickedColor = [1, 0, 0];
 ribMiddle.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -344,7 +344,7 @@ ribBottom.transform = {
 };
 ribBottom.pickedColor = [1, 0, 0];
 ribBottom.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -365,7 +365,7 @@ tail.transform = {
 };
 tail.pickedColor = [1, 0, 0];
 tail.viewMatrix = {
-  camera: [0, 0, 1],
+  camera: [0, 0, 5],
   lookAt: [0, 0, 0],
   up: [0, 1, 0],
   near: 0.1,
@@ -398,22 +398,22 @@ ribBottom.setParent(torsoVertical);
 tail.setParent(torsoVertical);
 
 const endModel = [
-    torsoHorizontal, 
-    // headMiddle, 
-    // rightEyeMiddle, 
-    // leftEyeMiddle, 
-    // lipMiddle, 
-    // headRight, 
-    // rightEyeRight, 
-    // leftEyeRight, 
-    // lipRight, 
-    // headLeft, 
-    // rightEyeLeft, 
-    // leftEyeLeft, 
-    // lipLeft, 
-    // torsoVertical, 
-    // ribTop, 
-    // ribMiddle, 
-    // ribBottom, 
-    // tail
+  torsoHorizontal,
+  // headMiddle,
+  // rightEyeMiddle,
+  // leftEyeMiddle,
+  // lipMiddle,
+  // headRight,
+  // rightEyeRight,
+  // leftEyeRight,
+  // lipRight,
+  // headLeft,
+  // rightEyeLeft,
+  // leftEyeLeft,
+  // lipLeft,
+  // torsoVertical,
+  // ribTop,
+  // ribMiddle,
+  // ribBottom,
+  // tail
 ];

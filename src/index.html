@@ -12,7 +12,7 @@
     <div class="container">
       <!-- tools container -->
       <div class="tools-container">
-        <h1>Tools</h1>
+        <h2>Tools</h2>
         <div class="save-load">
           <input type="file" id="objFile" accept="application/json" />
           <button id="save">Save</button>
@@ -34,7 +34,7 @@
             <option value="environment">environment</option>
           </select>
         </div>
-        <h2>Projection</h2>
+        <h3>Projection</h3>
         <div class="projection" id="projection">
           <input
             type="radio"
@@ -54,51 +54,58 @@
           />
           <label for="perspective">Perspective</label>
         </div>
-        <h2>Camera</h2>
-        <label for="camera-pos">Camera Position</label>
-        <div class="camera-pos">
-          <label for="rangeCameraX">X</label>
-          <input type="range" id="camera-x" min="-100" max="100" value="0" />
-          <span id="camera-x-value">0</span>
-          <label for="rangeCameraY">Y</label>
-          <input type="range" id="camera-y" min="-100" max="100" value="0" />
-          <span id="camera-y-value">0</span>
-          <label for="rangeCameraZ">Z</label>
-          <input type="range" id="camera-z" min="1" max="45" value="1" />
-          <span id="camera-z-value">0</span>
-        </div>
-        <label for="camera-lookat">Camera LookAt</label>
-        <div class="camera-lookat">
-          <label for="lookatX">X</label>
-          <input type="range" id="look-at-x" min="-360" max="360" value="0" />
-          <span id="look-at-x-value">0</span>
-          <label for="lookatY">Y</label>
-          <input type="range" id="look-at-y" min="-360" max="360" value="0" />
-          <span id="look-at-y-value">0</span>
-          <label for="lookatZ">Z</label>
-          <input type="range" id="look-at-z" min="-360" max="360" value="0" />
-          <span id="look-at-z-value">0</span>
-        </div>
-        <div class="camera-misc">
-          <label for="camera-fov">FOV</label>
-          <div class="camera-fov">
-            <input type="range" id="fov" />
-            <span id="fov-value">0</span>
+        <h3>Camera</h3>
+        <div class="camera-container">
+          <div class="camera-pos">
+            <label for="camera-x">Vertical Position</label>
+            <div class="camera-pos">
+              <input type="range" id="camera-x" min="-89" max="89" value="0" />
+              <span id="camera-x-value">0</span>
+            </div>
+            <label for="camera-x">Horizontal Position</label>
+            <div class="camera-pos">
+              <input
+                type="range"
+                id="camera-y"
+                min="-360"
+                max="360"
+                value="0"
+              />
+              <span id="camera-y-value">0</span>
+            </div>
+            <label for="camera-x">Distance to Object(s)</label>
+            <div class="camera-pos">
+              <input
+                type="range"
+                id="camera-z"
+                min="-100"
+                max="100"
+                value="1"
+              />
+              <span id="camera-z-value">0</span>
+            </div>
           </div>
-          <label for="theta">Theta</label>
-          <div class="theta">
-            <input type="range" id="theta" min="7" max="173" />
-            <span id="theta-value">0</span>
-          </div>
-          <label for="phi">phi</label>
-          <div class="phi">
-            <input type="range" id="phi" min="7" max="173" />
-            <span id="phi-value">0</span>
+          <div class="camera-misc">
+            <label for="fov">FOV</label>
+            <div class="camera-misc">
+              <input type="range" id="fov" />
+              <span id="fov-value">0</span>
+            </div>
+            <label for="theta">Theta</label>
+            <div class="camera-misc">
+              <input type="range" id="theta" min="7" max="173" />
+              <span id="theta-value">0</span>
+            </div>
+            <label for="phi">phi</label>
+            <div class="camera-misc">
+              <input type="range" id="phi" min="7" max="173" />
+              <span id="phi-value">0</span>
+            </div>
           </div>
         </div>
         <div class="transform-title" id="transform-title"></div>
         <div class="transform-container">
-          <div class="translate-container">
+          <div class="slider-container">
             <span>Translate</span>
             <div class="transform">
               <label for="translateX">X</label>
@@ -134,7 +141,7 @@
               <span id="translate-z-value">0</span>
             </div>
           </div>
-          <div class="rotate-container">
+          <div class="slider-container">
             <span>Rotate</span>
             <div class="transform">
               <label for="rotateX">X</label>
@@ -170,7 +177,7 @@
               <span id="rotate-z-value">0</span>
             </div>
           </div>
-          <div class="scale-container">
+          <div class="slider-container">
             <span>Scale</span>
             <div class="transform">
               <label for="scaleX">X</label>
@@ -206,7 +213,7 @@
       </div>
       <!-- component container -->
       <div class="component-container">
-        <h1>Components</h1>
+        <h2>Components</h2>
         <div id="components"></div>
       </div>
     </div>
