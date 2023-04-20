@@ -303,7 +303,6 @@ function alterViewMatrix(object) {
 
 rangeFOV.addEventListener("input", () => {
   state.fudgeFactor = rangeFOV.value / 10;
-  // console.log(state.fudgeFactor);
   fovValue.innerHTML = rangeFOV.value / 10;
 });
 
@@ -401,7 +400,6 @@ function showComponents(objects, level = 0) {
       state.focus = object;
       setTransformTo(object);
       setSliderState(object);
-      // console.log(state.focus);
     });
     components.appendChild(component);
     if (object.children.length > 0) {

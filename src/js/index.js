@@ -91,7 +91,6 @@ function setStateBeforeRender(objects) {
   objects.forEach((object) => {
     // precalculations
     if (!object.model.colors) {
-      // console.log(object.pickedColor);
       if (!object.pickedColor) {
         object.model.colors = generateColors(object.model.vertices);
       } else {
@@ -112,7 +111,6 @@ function setStateBeforeRender(objects) {
 
     if (object.animation.isObjectAnimate && object.animation.animate) {
       object.transform = object.animation.animate[counter % fps];
-      console.log(object.transform);
     }
 
     // object.transform = object.animation.animate[counter % fps];
@@ -174,12 +172,10 @@ function renderLoop(objects) {
       uModelMatrix: modelMatrix,
     };
 
-    // console.log(object.name, object.pickedColor.concat(1.0));
     var uniformSetters = initUniforms(gl, object.program);
     setUniforms(uniformSetters, uniforms);
 
     // render
-    // console.log(object.name, object.localMatrix, object.localInverseMatrix);
     gl.drawArrays(gl.TRIANGLES, 0, object.model.vertices.length);
     if (object.children.length > 0) {
       renderLoop(object.children);

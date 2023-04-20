@@ -186,7 +186,6 @@ function generateColors(vertices, color = null) {
 //     if (node.parent != null) {
 //       nodeData.parent = node.parent;
 //       var parentIndex = objects.findIndex((obj) => obj.name == node.parent);
-//       console.log(parentIndex);
 //       objects[parentIndex].children.push(nodeData);
 //     }
 //     objects.push(nodeData);

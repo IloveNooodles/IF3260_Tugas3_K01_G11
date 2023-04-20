@@ -14,7 +14,6 @@ function generateFrameFromKeyFrame(firstKeyFrame, secondKeyFrame, fps) {
     scaleDelta.push(secondKeyFrame.scale[i] - firstKeyFrame.scale[i]);
   }
 
-  // console.log(translateDelta, rotateDelta, scaleDelta)
 
   for (let i = 0; i < fps; i++) {
     generatedRotate = firstKeyFrame.rotate.map(
