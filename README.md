@@ -1,16 +1,13 @@
-# IF3260_Tugas3_K01_G11
+# <b>IF3260 Tugas Besar 3</b> | 3D WebGL Articulated Model
 
-Repository containing tugas besar grafkom 3 WebGL Articulated model
+3D WebGL Articulated Model Viewer adalah sebuah program berbasis web jenis 3D Object Viewer yang dibangun menggunakan kakas WebGL. WebGL adalah library yang digunakan untuk menampilkan render dari objek-objek sederhana pada web, salah satunya adalah objek tiga dimensi. Aplikasi dapat menampilkan model 3D Articulated Model yang disediakan oleh aplikasi, yang dipilih oleh pengguna. Pengguna dapat memanipulasi properti yang dimiliki model, serta menyimpan model hasil manipulasi untuk dimuat kembali. Model juga memungkinkan memiliki animasi yang dapat ditampilkan pada program.
 
 ## Cara Menggunakan
-
 1. `git pull` repositori ini ke suatu folder pada penyimpanan lokal,
 2. Jalankan file `index.html` dengan live server / preview dari VS Code atau metode lainnya.
 
 ## Fitur
-
-**[TO BE ADDED]** (Penjelasan fitur serta cara penggunaan lengkap ada di [laporan](/doc/IF3260_Laporan-Tubes-3.pdf))
-
+Penjelasan fitur serta cara penggunaan lengkap ada di [laporan](/doc/IF3260_Laporan-Tubes-3.pdf)
 1. Menampilkan 3D articulated model.
 2. Translasi, rotasi, dan dilatasi model dengan slider yang disediakan, baik pada model secara keseluruhan maupun pada bagian tertentu.
 3. Mengubah tekstur dengan dropdown yang disediakan menjadi bump, reflection, atau custom.
@@ -21,8 +18,9 @@ Repository containing tugas besar grafkom 3 WebGL Articulated model
 8. Save dan Load model.
 
 ## Anggota Kelompok
-
-1. 13520001 - Fayza Nadia
-2. 13520003 - Dzaky Fattan Rizqullah
-3. 13520029 - Muhammad GareBaldhie Er Rahman
-4. 13520031 - Taufan Fajarama Putrawansyah R
+| NIM | Nama |
+| :-: | :--: |
+| 13520001 | Fayza Nadia |
+| 13520003 | Dzaky Fattan Rizqullah |
+| 13520029 | Muhammad GareBaldhie Er Rahman |
+| 13520031 | Taufan Fajarama Putrawansyah R |
