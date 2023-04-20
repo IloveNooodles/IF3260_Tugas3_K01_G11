@@ -3,6 +3,7 @@ const canvas = document.getElementById("canvas");
 /* ======= WebGL Functions ======= */
 const gl = canvas.getContext("webgl");
 const fps = 60;
+var counter = 0;
 /* ======= Global object ======= */
 var state;
 setDefaultState();
@@ -25,12 +26,21 @@ function setDefaultState() {
     phi: 90.0,
   };
   setDefaultRotationToRadian(state.objects);
-  generateFrameFromKeyFrame(
-    state.objects[0].animation.animate[0],
-    state.objects[0].animation.animate[1],
-    fps
-  );
+  initAnimation(state.objects);
   showComponents(state.objects);
+}
+
+function initAnimation(objects) {
+  objects.forEach((object) => {
+    object.animation.animate = generateFrameFromKeyFrame(
+      object.animation.animate[0],
+      object.animation.animate[1],
+      fps
+    );
+    if (object.children.length > 0) {
+      initAnimation(object.children);
+    }
+  });
 }
 
 function setDefaultRotationToRadian(objects) {
@@ -51,7 +61,7 @@ window.requestAnimFrame = (function () {
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function (callback) {
-      window.setTimeout(callback, 1000 / fps);
+      window.setTimeout(callback, 1000 / 1);
     }
   );
 })();
@@ -105,6 +115,7 @@ function setStateBeforeRender(objects) {
         (object.animation.degAnimate * Math.PI) / 100;
     }
 
+    object.transform = object.animation.animate[counter % fps];
     object.localMatrix = setTransform(object);
     if (object.children.length > 0) {
       setStateBeforeRender(object.children);
@@ -167,6 +178,7 @@ function renderLoop(objects) {
 
 function render() {
   // prepare for rendering
+  counter += 1
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
   clear();
   gl.enable(gl.CULL_FACE);

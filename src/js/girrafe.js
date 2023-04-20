@@ -24,7 +24,7 @@ torso.animation = {
       scale: [1, 1, 1],
     },
     {
-      translate: [0, -0.4, 0],
+      translate: [0, -1, 0],
       rotate: [0, -37, 0],
       scale: [1, 1, 1],
     },
@@ -540,16 +540,16 @@ nose.animation = {
 };
 
 /* Set parent */
-leftFrontLeg.setParent(torso);
-rightFrontLeg.setParent(torso);
-leftBackLeg.setParent(torso);
-rightBackLeg.setParent(torso);
-tail.setParent(torso);
-tailBelow.setParent(tail);
-neck.setParent(torso);
-head.setParent(neck);
-leftEye.setParent(head);
-rightEye.setParent(head);
-nose.setParent(head);
+// leftFrontLeg.setParent(torso);
+// rightFrontLeg.setParent(torso);
+// leftBackLeg.setParent(torso);
+// rightBackLeg.setParent(torso);
+// tail.setParent(torso);
+// tailBelow.setParent(tail);
+// neck.setParent(torso);
+// head.setParent(neck);
+// leftEye.setParent(head);
+// rightEye.setParent(head);
+// nose.setParent(head);
 
 const endModel = [torso];
