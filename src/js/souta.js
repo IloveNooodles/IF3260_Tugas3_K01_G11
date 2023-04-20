@@ -21,9 +21,9 @@ seat.animation = {
 
 const rightFrontLeg = new ObjectNode();
 rightFrontLeg.name = "rightFrontLeg";
-rightFrontLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, 0, 0]);
+rightFrontLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, -0.4, 0]);
 rightFrontLeg.transform = {
-  translate: [-0.4, -0.5, 0.3],
+  translate: [-0.4, -0.05, 0.3],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -38,13 +38,17 @@ rightFrontLeg.transform = {
 rightFrontLeg.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    { rotate: [0.3, 0, 0], translate: [-0.4, -0.05, 0.3], scale: [1, 1, 1] },
+    { rotate: [-0.8, 0, 0], translate: [-0.4, -0.05, 0.3], scale: [1, 1, 1] },
+  ]
 };
 
 const rightRearLeg = new ObjectNode();
 rightRearLeg.name = "rightRearLeg";
-rightRearLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, 0, 0]);
+rightRearLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, -0.4, 0]);
 rightRearLeg.transform = {
-  translate: [-0.4, -0.5, -0.3],
+  translate: [-0.4, -0.05, -0.3],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -59,13 +63,17 @@ rightRearLeg.transform = {
 rightRearLeg.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    { rotate: [0.3, 0, 0], translate: [-0.4, -0.05, -0.3], scale: [1, 1, 1] },
+    { rotate: [-0.8, 0, 0], translate: [-0.4, -0.05, -0.3], scale: [1, 1, 1] },
+  ]
 };
 
 const leftRearLeg = new ObjectNode();
 leftRearLeg.name = "leftRearLeg";
-leftRearLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, 0, 0]);
+leftRearLeg.model = generateCuboid(0.8, 0.15, 0.15, [0, -0.4, 0]);
 leftRearLeg.transform = {
-  translate: [0.4, -0.5, -0.3],
+  translate: [0.4, -0.05, -0.3],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -80,13 +88,17 @@ leftRearLeg.transform = {
 leftRearLeg.animation = {
   isAnimate: false,
   degAnimate: 0.1,
+  animate: [
+    { rotate: [-0.3, 0, 0], translate: [0.4, -0.05, -0.3], scale: [1, 1, 1] },
+    { rotate: [0.9, 0, 0], translate: [0.4, -0.05, -0.3], scale: [1, 1, 1] },
+  ]
 };
 
 const rightStile = new ObjectNode();
 rightStile.name = "rightStile";
-rightStile.model = generateCuboid(0.2, 0.12, 0.12, [0, 0, 0]);
+rightStile.model = generateCuboid(0.2, 0.12, 0.12, [0, -0.1, 0]);
 rightStile.transform = {
-  translate: [-0.15, -0.45, 0],
+  translate: [-0.15, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -105,9 +117,9 @@ rightStile.animation = {
 
 const leftStile = new ObjectNode();
 leftStile.name = "leftStile";
-leftStile.model = generateCuboid(0.2, 0.12, 0.12, [0, 0, 0]);
+leftStile.model = generateCuboid(0.2, 0.12, 0.12, [0, -0.1, 0]);
 leftStile.transform = {
-  translate: [0.15, -0.45, 0],
+  translate: [0.15, 0, 0],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -126,9 +138,9 @@ leftStile.animation = {
 
 const back = new ObjectNode();
 back.name = "back";
-back.model = generateCuboid(0.7, 1.2, 0.15, [0, 0, 0]);
+back.model = generateCuboid(0.7, 1.2, 0.15, [0, 0.35, 0]);
 back.transform = {
-  translate: [0, 0.65, -0.35],
+  translate: [0, 0.3, -0.35],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -149,7 +161,7 @@ const leftEye = new ObjectNode();
 leftEye.name = "leftEye";
 leftEye.model = generateCuboid(0.12, 0.05, 0.01, [0, 0, 0]);
 leftEye.transform = {
-  translate: [0.3, 0.1, 0.1],
+  translate: [0.3, 0.4, 0.1],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
@@ -170,7 +182,7 @@ const rightEye = new ObjectNode();
 rightEye.name = "rightEye";
 rightEye.model = generateCuboid(0.12, 0.05, 0.01, [0, 0, 0]);
 rightEye.transform = {
-  translate: [-0.3, 0.1, 0.1],
+  translate: [-0.3, 0.4, 0.1],
   rotate: [0, 0, 0],
   scale: [1, 1, 1],
 };
