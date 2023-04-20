@@ -93,6 +93,62 @@ function toVertices(vertices, faces) {
   return newVertices;
 }
 
+function generateTangents(vertices, faces) {
+  let tangents = [];
+  for (let i = 0; i < faces.length; i += 3) {
+    let v0 = vertices[i];
+    let v1 = vertices[i + 1];
+    let v2 = vertices[i + 2];
+
+    let uv0 = faces[i];
+    let uv1 = faces[i + 1];
+    let uv2 = faces[i + 2];
+    
+    let dv1 = subtractVectors(v1, v0);
+    let dv2 = subtractVectors(v2, v0);
+
+    console.log(uv0);
+    console.log(uv1);
+    let duv1 = subtractVectors(uv1, uv0);
+    let duv2 = subtractVectors(uv2, uv0);
+
+    let r = 1.0 / (duv1[0] * duv2[1] - duv1[1] * duv2[0]);
+    let tangent = (dv1 * duv2[1]   - dv2 * duv1[1]) * r;
+
+    tangents.push(tangent);
+    tangents.push(tangent);
+    tangents.push(tangent);
+  }
+  return tangents;
+}
+
+function generateBitangents(vertices, faces) {
+  let bitangents = [];
+  for (let i = 0; i < faces.length; i += 3) {
+    let v0 = vertices[i];
+    let v1 = vertices[i + 1];
+    let v2 = vertices[i + 2];
+
+    let uv0 = faces[i];
+    let uv1 = faces[i + 1];
+    let uv2 = faces[i + 2];
+    
+    let dv1 = subtractVectors(v1, v0);
+    let dv2 = subtractVectors(v2, v0);
+
+    let duv1 = subtractVectors(uv1, uv0);
+    let duv2 = subtractVectors(uv2, uv0);
+
+    let r = 1.0 / (duv1[0] * duv2[1] - duv1[1] * duv2[0]);
+    let bitangent = (dv2 * duv1[0]   - dv1 * duv2[0]) * r;
+    
+    bitangents.push(bitangent);
+    bitangents.push(bitangent);
+    bitangents.push(bitangent);
+  }
+  return bitangents;
+}
+
 function generateNormals(vertices, faces) {
   let normals = [];
   for (let i = 0; i < faces.length; i++) {

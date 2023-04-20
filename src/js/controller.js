@@ -441,6 +441,13 @@ function setTexture(objects, textureType) {
         vertex_shader_3d,
         fragment_shader_texture
       );
+    } else if (textureType === "bump") {
+      createBumpTexture(gl);
+      object.program = createShaderProgram(
+        gl,
+        vertex_shader_bump,
+        fragment_shader_bump
+      )
     } else if (textureType === "environment") {
       createEnvironmentTexture(gl);
       object.program = createShaderProgram(
