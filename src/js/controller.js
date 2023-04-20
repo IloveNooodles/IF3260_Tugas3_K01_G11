@@ -113,12 +113,21 @@ buttonSave.addEventListener("click", () => {
 colorPicker.addEventListener("change", () => {
   const color = colorPicker.value;
   /* convert hex to rgb, normalize */
-  state.objects[0].pickedColor = [
-    parseInt(color.substring(1, 3), 16) / 255,
-    parseInt(color.substring(3, 5), 16) / 255,
-    parseInt(color.substring(5, 7), 16) / 255,
-  ];
+  r = parseInt(color.substring(1, 3), 16) / 255;
+  g = parseInt(color.substring(3, 5), 16) / 255;
+  b = parseInt(color.substring(5, 7), 16) / 255;
+  changeAllColor(state.objects, r, g, b);
 });
+
+function changeAllColor(objects, r, g, b) {
+  objects.forEach((object) => {
+    object.pickedColor = [r, g, b];
+
+    if (object.children.length > 0) {
+      changeAllColor(object.children, r, g, b);
+    }
+  });
+}
 
 reset.addEventListener("click", () => {
   program = createShaderProgram(
