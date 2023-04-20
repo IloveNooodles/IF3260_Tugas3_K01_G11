@@ -46,10 +46,17 @@ function generateCuboid(height, width, depth, offset) {
   let normals = generateNormals(vertices, faces);
   vertices = toVertices(vertices, faces);
 
+  let tangents = generateTangents(vertices, faces);
+  let bitangents = generateBitangents(vertices, faces);
+  console.log(tangents);
+
   // generate random color each vertices
   let colors = generateColors(vertices);
   return {
     vertices: vertices,
+    faces: faces,
+    tangents: tangents,
+    bitangents: bitangents,
     normals: normals,
     colors: colors,
     texCoord: texCoord,

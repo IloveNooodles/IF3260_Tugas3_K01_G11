@@ -128,6 +128,8 @@ function renderLoop(objects) {
     /* Render loop for webgl canvas */
     gl.useProgram(object.program);
 
+    var modelMatrix = object.worldMatrix;
+
     object.worldMatrix = setWorldViewProjectionMatrix(
       object.worldMatrix,
       object
@@ -151,6 +153,53 @@ function renderLoop(objects) {
         buffer: new Float32Array(object.model.texCoord),
         numComponents: 2,
       },
+      // vert_pos: {
+      //   buffer: new Float32Array([
+      //     -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, 1, // Front
+      //     -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, -1, // Back
+      //     1, -1, -1, 1, 1, 1, 1, -1, 1, 1, 1, -1, // Right
+      //     -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1, // Left
+      //     -1, 1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, // Top
+      //     -1, -1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, // Bottom
+      //   ]),
+      //   numComponents: 3,
+      // },
+      aTangent: {
+        // buffer: new Float32Array(object.model.tangents.flat(1)),
+        buffer: new Float32Array([
+          1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, // Front
+          -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, // Back
+          0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, // Right
+          0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, // Left
+          1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, // Top
+          1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, // Bottom
+        ]),
+        numComponents: 3,
+      },
+      aBitangent: {
+        // buffer: new Float32Array(object.model.bitangents.flat(1)),
+        buffer: new Float32Array([
+          0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, // Front
+          0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, // Back
+          0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, // Right
+          0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, 0, // Left
+          0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, // Top
+          0, 0, -1, 0, 0, -1, 0, 0, -1, 0, 0, -1, // Bot
+        ]),
+        numComponents: 3,
+      },
+      aUpVector: {
+        // buffer: new Float32Array(object.model.faces.flat(1)),
+        buffer: new Float32Array([
+          0, 1, 1, 0, 0, 0, 1, 1, // Front
+          1, 1, 0, 0, 1, 0, 0, 1, // Back
+          1, 1, 0, 0, 0, 1, 1, 0, // Right
+          0, 1, 1, 0, 1, 1, 0, 0, // Left
+          0, 0, 1, 1, 0, 1, 1, 0, // Top
+          0, 1, 1, 0, 0, 0, 1, 1, // Bottom
+        ]),
+        numComponents: 2,
+      },
     };
 
     var attribSetters = initAttribs(gl, object.program);
@@ -161,6 +210,7 @@ function renderLoop(objects) {
       uWorldInverseTranspose: object.worldInverseMatrix,
       uReverseLightDirection: normalizeLight,
       uColor: object.pickedColor.concat(1.0),
+      uModelMatrix: modelMatrix,
     };
 
     // console.log(object.name, object.pickedColor.concat(1.0));
