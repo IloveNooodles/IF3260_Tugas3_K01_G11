@@ -35,6 +35,5 @@ function generateFrameFromKeyFrame(firstKeyFrame, secondKeyFrame, fps) {
     endFrame.push(frame);
   }
 
-  // console.log(endFrame);
   return endFrame;
 }

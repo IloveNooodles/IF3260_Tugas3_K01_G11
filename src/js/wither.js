@@ -448,21 +448,4 @@ tail.setParent(torsoVertical);
 
 const endModel = [
   torsoHorizontal,
-  // headMiddle,
-  // rightEyeMiddle,
-  // leftEyeMiddle,
-  // lipMiddle,
-  // headRight,
-  // rightEyeRight,
-  // leftEyeRight,
-  // lipRight,
-  // headLeft,
-  // rightEyeLeft,
-  // leftEyeLeft,
-  // lipLeft,
-  // torsoVertical,
-  // ribTop,
-  // ribMiddle,
-  // ribBottom,
-  // tail
 ];

@@ -234,12 +234,6 @@ function setAttribs(attribSetters, attribs) {
   gl.vertexAttribPointer(attribSetters.texture, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(attribSetters.texture);
 
-  // const vbo_pos = gl.createBuffer();
-  // gl.bindBuffer(gl.ARRAY_BUFFER, vbo_pos);
-  // gl.bufferData(gl.ARRAY_BUFFER, attribs.vert_pos.buffer, gl.STATIC_DRAW);
-  // gl.vertexAttribPointer(attribSetters.bump_pos, 3, gl.FLOAT, false, 0, 0);
-  // gl.enableVertexAttribArray(attribSetters.bump_pos);
-
   const vbo_tang = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vbo_tang);
   gl.bufferData(gl.ARRAY_BUFFER, attribs.aTangent.buffer, gl.STATIC_DRAW);

@@ -210,12 +210,4 @@ rightEye.setParent(back);
 
 var endModel = [
   seat,
-  //   rightFrontLeg,
-  //   rightRearLeg,
-  //   leftRearLeg,
-  //   rightStile,
-  //   leftStile,
-  //   back,
-  //   leftEye,
-  //   rightEye,
 ];
