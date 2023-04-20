@@ -6,6 +6,12 @@
 1. `git pull` repositori ini ke suatu folder pada penyimpanan lokal,
 2. Jalankan file `index.html` dengan live server / preview dari VS Code atau metode lainnya.
 
+## Model Articulated
+1. Giraffe
+2. Hooman
+3. Souta
+4. Wither
+
 ## Fitur
 Penjelasan fitur serta cara penggunaan lengkap ada di [laporan](/doc/IF3260-Laporan-Tubes-3.pdf)
 1. Menampilkan 3D articulated model.
